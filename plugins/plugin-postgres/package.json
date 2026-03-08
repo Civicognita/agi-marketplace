@@ -1,0 +1,19 @@
+{
+  "name": "@aionima/plugin-postgres",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "aionima-postgres",
+    "name": "PostgreSQL",
+    "description": "PostgreSQL database service for projects",
+    "category": "service",
+    "permissions": [],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0"
+  },
+  "dependencies": {
+    "@aionima/plugins": "workspace:*"
+  }
+}

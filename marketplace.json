@@ -1,0 +1,178 @@
+{
+  "name": "Aionima Official",
+  "owner": { "name": "Civicognita" },
+  "metadata": {
+    "version": "1.0",
+    "description": "Official Aionima plugin marketplace — default plugin catalog for Aionima gateways"
+  },
+  "plugins": [
+    {
+      "name": "adminer",
+      "source": "./plugins/plugin-adminer",
+      "type": "plugin",
+      "category": "service",
+      "version": "0.1.0",
+      "description": "Database management portal"
+    },
+    {
+      "name": "aionima-mysql",
+      "source": "./plugins/plugin-mysql",
+      "type": "plugin",
+      "category": "service",
+      "version": "0.1.0",
+      "description": "MariaDB database service for projects"
+    },
+    {
+      "name": "aionima-node-runtime",
+      "source": "./plugins/plugin-node-runtime",
+      "type": "plugin",
+      "category": "runtime",
+      "version": "0.1.0",
+      "description": "Node.js runtime versions for project hosting"
+    },
+    {
+      "name": "aionima-openclaw",
+      "source": "./plugins/plugin-openclaw",
+      "type": "plugin",
+      "category": "integration",
+      "version": "0.1.0",
+      "description": "Bridge OpenClaw agents into the AGI dashboard"
+    },
+    {
+      "name": "aionima-php-runtime",
+      "source": "./plugins/plugin-php-runtime",
+      "type": "plugin",
+      "category": "runtime",
+      "version": "0.1.0",
+      "description": "PHP runtime versions for project hosting"
+    },
+    {
+      "name": "aionima-postgres",
+      "source": "./plugins/plugin-postgres",
+      "type": "plugin",
+      "category": "service",
+      "version": "0.1.0",
+      "description": "PostgreSQL database service for projects"
+    },
+    {
+      "name": "project-art",
+      "source": "./plugins/plugin-project-art",
+      "type": "plugin",
+      "category": "project",
+      "version": "0.1.0",
+      "description": "Art/Media project type for creative assets and multimedia content"
+    },
+    {
+      "name": "project-laravel",
+      "source": "./plugins/plugin-project-laravel",
+      "type": "plugin",
+      "category": "project",
+      "version": "0.1.0",
+      "description": "Laravel project type with Apache container hosting"
+    },
+    {
+      "name": "project-nextjs",
+      "source": "./plugins/plugin-project-nextjs",
+      "type": "plugin",
+      "category": "project",
+      "version": "0.1.0",
+      "description": "Next.js project type with Node container hosting"
+    },
+    {
+      "name": "project-node",
+      "source": "./plugins/plugin-project-node",
+      "type": "plugin",
+      "category": "project",
+      "version": "0.1.0",
+      "description": "Node.js project type with container hosting support"
+    },
+    {
+      "name": "project-nuxt",
+      "source": "./plugins/plugin-project-nuxt",
+      "type": "plugin",
+      "category": "project",
+      "version": "0.1.0",
+      "description": "Nuxt project type with Node container hosting"
+    },
+    {
+      "name": "project-php",
+      "source": "./plugins/plugin-project-php",
+      "type": "plugin",
+      "category": "project",
+      "version": "0.1.0",
+      "description": "PHP project type with Apache container hosting"
+    },
+    {
+      "name": "project-production",
+      "source": "./plugins/plugin-project-production",
+      "type": "plugin",
+      "category": "project",
+      "version": "0.1.0",
+      "description": "General production/administration project type for task management and operations"
+    },
+    {
+      "name": "project-react-vite",
+      "source": "./plugins/plugin-project-react-vite",
+      "type": "plugin",
+      "category": "project",
+      "version": "0.1.0",
+      "description": "React (Vite) project type with nginx container hosting"
+    },
+    {
+      "name": "project-static",
+      "source": "./plugins/plugin-project-static",
+      "type": "plugin",
+      "category": "project",
+      "version": "0.1.0",
+      "description": "Static site project type with nginx container hosting"
+    },
+    {
+      "name": "project-writing",
+      "source": "./plugins/plugin-project-writing",
+      "type": "plugin",
+      "category": "project",
+      "version": "0.1.0",
+      "description": "Writing/Literature project type for manuscripts and documentation"
+    },
+    {
+      "name": "aionima-redis",
+      "source": "./plugins/plugin-redis",
+      "type": "plugin",
+      "category": "service",
+      "version": "0.1.0",
+      "description": "Redis in-memory cache and data store service"
+    },
+    {
+      "name": "plugin-rustdesk",
+      "source": "./plugins/plugin-rustdesk",
+      "type": "plugin",
+      "category": "system",
+      "version": "0.1.0",
+      "description": "RustDesk remote desktop server management"
+    },
+    {
+      "name": "aionima-screensaver",
+      "source": "./plugins/plugin-screensaver",
+      "type": "plugin",
+      "category": "system",
+      "version": "0.1.0",
+      "description": "Drifting-panel screensaver with system stats and gateway status"
+    },
+    {
+      "name": "aionima-stacks",
+      "source": "./plugins/plugin-stacks",
+      "type": "plugin",
+      "category": "runtime",
+      "version": "0.1.0",
+      "description": "Technology stack definitions for project recognition and tooling"
+    },
+    {
+      "name": "aionima-xrdp",
+      "source": "./plugins/plugin-xrdp",
+      "type": "plugin",
+      "category": "system",
+      "version": "0.1.0",
+      "description": "xrdp remote desktop server management"
+    }
+  ]
+}

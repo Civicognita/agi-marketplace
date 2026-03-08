@@ -1,0 +1,20 @@
+{
+  "name": "@aionima/plugin-xrdp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "aionima-xrdp",
+    "name": "xrdp",
+    "description": "xrdp remote desktop server management — isolated RDP sessions with service control, logs, and connection info",
+    "aionimaVersion": ">=0.1.0",
+    "category": "system",
+    "bakedIn": true,
+    "permissions": ["shell.exec", "filesystem.read"],
+    "entry": "./src/index.ts"
+  },
+  "dependencies": {
+    "@aionima/plugins": "workspace:*"
+  }
+}

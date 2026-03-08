@@ -1,0 +1,22 @@
+{
+  "name": "@aionima/plugin-project-writing",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "project-writing",
+    "name": "Literature Projects",
+    "description": "Writing/Literature project type — non-hostable projects for manuscripts, articles, and documentation",
+    "category": "project",
+    "bakedIn": true,
+    "disableable": false,
+    "permissions": [],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0"
+  },
+  "dependencies": {
+    "@aionima/plugins": "workspace:*",
+    "@aionima/gateway-core": "workspace:*"
+  }
+}

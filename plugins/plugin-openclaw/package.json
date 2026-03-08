@@ -1,0 +1,26 @@
+{
+  "name": "@aionima/plugin-openclaw",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "aionima-openclaw",
+    "name": "OpenClaw Bridge",
+    "description": "Bridge OpenClaw agents into the AGI dashboard",
+    "category": "integration",
+    "bakedIn": true,
+    "disableable": true,
+    "permissions": [
+      "filesystem.read",
+      "filesystem.write",
+      "network",
+      "config.read"
+    ],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0"
+  },
+  "dependencies": {
+    "@aionima/plugins": "workspace:*"
+  }
+}

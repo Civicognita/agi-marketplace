@@ -1,0 +1,19 @@
+{
+  "name": "@aionima/plugin-stacks",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "aionima-stacks",
+    "name": "Framework Stacks",
+    "description": "Technology stack definitions for project recognition and tooling",
+    "category": "runtime",
+    "permissions": [],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0"
+  },
+  "dependencies": {
+    "@aionima/plugins": "workspace:*"
+  }
+}

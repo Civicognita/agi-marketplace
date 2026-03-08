@@ -1,0 +1,20 @@
+{
+  "name": "@aionima/plugin-project-node",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "project-node",
+    "name": "Node.js Projects",
+    "description": "Node.js project type with container hosting support",
+    "category": "project",
+    "permissions": [],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0"
+  },
+  "dependencies": {
+    "@aionima/plugins": "workspace:*",
+    "@aionima/gateway-core": "workspace:*"
+  }
+}

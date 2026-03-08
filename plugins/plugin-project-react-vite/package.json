@@ -1,0 +1,20 @@
+{
+  "name": "@aionima/plugin-project-react-vite",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "project-react-vite",
+    "name": "React (Vite) Projects",
+    "description": "React (Vite) project type with nginx container hosting",
+    "category": "project",
+    "permissions": [],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0"
+  },
+  "dependencies": {
+    "@aionima/plugins": "workspace:*",
+    "@aionima/gateway-core": "workspace:*"
+  }
+}

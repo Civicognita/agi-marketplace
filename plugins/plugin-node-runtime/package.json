@@ -1,0 +1,19 @@
+{
+  "name": "@aionima/plugin-node-runtime",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "aionima-node-runtime",
+    "name": "Node.js Runtimes",
+    "description": "Node.js runtime versions for project hosting",
+    "category": "runtime",
+    "permissions": [],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0"
+  },
+  "dependencies": {
+    "@aionima/plugins": "workspace:*"
+  }
+}

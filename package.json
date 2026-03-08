@@ -1,0 +1,7 @@
+{
+  "name": "@aionima/marketplace",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Official Aionima plugin marketplace catalog",
+  "type": "module"
+}

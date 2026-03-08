@@ -1,0 +1,33 @@
+import type { AionimaPlugin, AionimaPluginAPI } from "@aionima/plugins";
+
+const plugin: AionimaPlugin = {
+  async activate(api: AionimaPluginAPI) {
+    api.registerProjectType({
+      id: "writing",
+      label: "Writing Project",
+      category: "literature",
+      hostable: false,
+      defaultMeta: {
+        type: "writing",
+        mode: "production",
+        internalPort: null,
+      },
+      tools: [
+        { id: "word-count", label: "Word Count", description: "Count words across all documents", action: "shell", command: "find . -name '*.md' -o -name '*.txt' | xargs wc -w" },
+        { id: "export", label: "Export", description: "Export project for publishing", action: "ui" },
+        { id: "outline", label: "Outline", description: "View document outline", action: "ui" },
+      ],
+    });
+
+    api.registerSettingsPage({
+      id: "project-writing",
+      label: "Literature Projects",
+      description: "Writing/literature project type for manuscripts, articles, and documentation.",
+      icon: "book",
+      position: 97,
+      sections: [],
+    });
+  },
+};
+
+export default plugin;

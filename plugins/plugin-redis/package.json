@@ -1,0 +1,19 @@
+{
+  "name": "@aionima/plugin-redis",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "aionima-redis",
+    "name": "Redis",
+    "description": "Redis in-memory cache and data store service",
+    "category": "service",
+    "permissions": [],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0"
+  },
+  "dependencies": {
+    "@aionima/plugins": "workspace:*"
+  }
+}

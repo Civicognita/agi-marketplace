@@ -1,0 +1,10 @@
+{
+  "id": "aionima-node-runtime",
+  "name": "Node.js Runtimes",
+  "version": "0.1.0",
+  "description": "Node.js runtime versions for project hosting",
+  "author": "Aionima",
+  "aionimaVersion": ">=0.1.0",
+  "permissions": [],
+  "entry": "./src/index.ts"
+}

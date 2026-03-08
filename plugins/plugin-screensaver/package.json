@@ -1,0 +1,24 @@
+{
+  "name": "@aionima/plugin-screensaver",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "aionima-screensaver",
+    "name": "Screensaver",
+    "description": "Drifting-panel screensaver with system stats, gateway status, and sparkle effects",
+    "category": "system",
+    "bakedIn": true,
+    "disableable": true,
+    "permissions": ["shell.exec", "config.read", "config.write"],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0"
+  },
+  "dependencies": {
+    "@aionima/plugins": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "@aionima/plugin-rustdesk",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "aionima": {
+    "id": "plugin-rustdesk",
+    "name": "RustDesk",
+    "description": "RustDesk remote desktop server management — system service, knowledge, and agent tools",
+    "aionimaVersion": ">=0.1.0",
+    "category": "system",
+    "permissions": ["shell.exec", "filesystem.read"],
+    "entry": "./src/index.ts"
+  },
+  "dependencies": {
+    "@aionima/plugins": "workspace:*"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "@aionima/plugin-project-static",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "project-static",
+    "name": "Static Site Projects",
+    "description": "Static site project type with nginx container hosting",
+    "category": "project",
+    "permissions": [],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0"
+  },
+  "dependencies": {
+    "@aionima/plugins": "workspace:*",
+    "@aionima/gateway-core": "workspace:*"
+  }
+}
