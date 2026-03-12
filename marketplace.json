@@ -159,12 +159,28 @@
       "description": "Drifting-panel screensaver with system stats and gateway status"
     },
     {
-      "name": "aionima-stacks",
-      "source": "./plugins/plugin-stacks",
+      "name": "stack-tall",
+      "source": "./plugins/plugin-stack-tall",
       "type": "plugin",
-      "category": "runtime",
+      "category": "stack",
       "version": "0.1.0",
-      "description": "Technology stack definitions for project recognition and tooling"
+      "description": "Laravel full-stack with Livewire, Tailwind CSS, and Vite asset bundling"
+    },
+    {
+      "name": "stack-nextjs",
+      "source": "./plugins/plugin-stack-nextjs",
+      "type": "plugin",
+      "category": "stack",
+      "version": "0.1.0",
+      "description": "React framework with SSR, file-based routing, and Tailwind CSS"
+    },
+    {
+      "name": "stack-hono",
+      "source": "./plugins/plugin-stack-hono",
+      "type": "plugin",
+      "category": "stack",
+      "version": "0.1.0",
+      "description": "Lightweight Node.js API with Drizzle ORM and Lucia auth"
     },
     {
       "name": "aionima-xrdp",
