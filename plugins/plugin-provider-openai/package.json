@@ -1,0 +1,22 @@
+{
+  "name": "@aionima/provider-openai",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "aionima": {
+    "id": "provider-openai",
+    "name": "OpenAI",
+    "description": "GPT models — connect to OpenAI's API",
+    "aionimaVersion": ">=0.1.0",
+    "category": "integration",
+    "entry": "./src/index.ts",
+    "bakedIn": true,
+    "disableable": true
+  },
+  "dependencies": {
+    "@aionima/plugins": "workspace:*"
+  }
+}

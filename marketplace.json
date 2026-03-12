@@ -173,6 +173,30 @@
       "category": "system",
       "version": "0.1.0",
       "description": "xrdp remote desktop server management"
+    },
+    {
+      "name": "provider-anthropic",
+      "source": "./plugins/plugin-provider-anthropic",
+      "type": "plugin",
+      "category": "integration",
+      "version": "0.1.0",
+      "description": "Claude models — Anthropic API provider"
+    },
+    {
+      "name": "provider-openai",
+      "source": "./plugins/plugin-provider-openai",
+      "type": "plugin",
+      "category": "integration",
+      "version": "0.1.0",
+      "description": "GPT models — OpenAI API provider"
+    },
+    {
+      "name": "provider-ollama",
+      "source": "./plugins/plugin-provider-ollama",
+      "type": "plugin",
+      "category": "integration",
+      "version": "0.1.0",
+      "description": "Local models — Ollama provider"
     }
   ]
 }

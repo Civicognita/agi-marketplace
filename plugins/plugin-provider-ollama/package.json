@@ -1,0 +1,22 @@
+{
+  "name": "@aionima/provider-ollama",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "aionima": {
+    "id": "provider-ollama",
+    "name": "Ollama",
+    "description": "Local models — connect to Ollama for on-device inference",
+    "aionimaVersion": ">=0.1.0",
+    "category": "integration",
+    "entry": "./src/index.ts",
+    "bakedIn": true,
+    "disableable": true
+  },
+  "dependencies": {
+    "@aionima/plugins": "workspace:*"
+  }
+}
