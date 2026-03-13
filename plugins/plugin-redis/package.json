@@ -9,6 +9,7 @@
     "name": "Redis",
     "description": "Redis in-memory cache and data store service",
     "category": "service",
+    "provides": ["services", "runtimes", "stacks"],
     "permissions": [],
     "entry": "./src/index.ts",
     "aionimaVersion": ">=0.1.0"

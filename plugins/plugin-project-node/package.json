@@ -9,6 +9,8 @@
     "name": "Node.js Projects",
     "description": "Node.js project type with container hosting support",
     "category": "project",
+    "provides": ["project-types"],
+    "depends": ["aionima-node-runtime"],
     "permissions": [],
     "entry": "./src/index.ts",
     "aionimaVersion": ">=0.1.0"

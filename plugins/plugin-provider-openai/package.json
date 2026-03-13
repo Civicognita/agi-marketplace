@@ -12,6 +12,7 @@
     "description": "GPT models — connect to OpenAI's API",
     "aionimaVersion": ">=0.1.0",
     "category": "integration",
+    "provides": ["ux"],
     "entry": "./src/index.ts",
     "bakedIn": true,
     "disableable": true

@@ -9,6 +9,7 @@
     "name": "PostgreSQL",
     "description": "PostgreSQL database service for projects",
     "category": "service",
+    "provides": ["services", "runtimes", "stacks"],
     "permissions": [],
     "entry": "./src/index.ts",
     "aionimaVersion": ">=0.1.0"

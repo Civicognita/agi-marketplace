@@ -12,7 +12,8 @@
     "aionimaVersion": ">=0.3.0",
     "permissions": ["network", "shell.exec"],
     "entry": "./src/index.ts",
-    "category": "service"
+    "category": "service",
+    "provides": ["ux", "services"]
   },
   "dependencies": {
     "@aionima/plugins": "workspace:*"

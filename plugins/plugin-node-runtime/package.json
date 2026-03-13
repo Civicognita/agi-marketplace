@@ -9,6 +9,7 @@
     "name": "Node.js Runtimes",
     "description": "Node.js runtime versions for project hosting",
     "category": "runtime",
+    "provides": ["runtimes"],
     "permissions": [],
     "entry": "./src/index.ts",
     "aionimaVersion": ">=0.1.0"

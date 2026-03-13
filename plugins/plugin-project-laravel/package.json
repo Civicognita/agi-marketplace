@@ -9,6 +9,8 @@
     "name": "Laravel Projects",
     "description": "Laravel project type with Apache container hosting",
     "category": "project",
+    "provides": ["project-types"],
+    "depends": ["aionima-php-runtime"],
     "permissions": [],
     "entry": "./src/index.ts",
     "aionimaVersion": ">=0.1.0"

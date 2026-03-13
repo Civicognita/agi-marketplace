@@ -9,6 +9,7 @@
     "name": "Administrative Projects",
     "description": "General production/administration project type — non-hostable projects for task management and operations",
     "category": "project",
+    "provides": ["project-types"],
     "bakedIn": true,
     "disableable": false,
     "permissions": [],

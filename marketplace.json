@@ -11,6 +11,7 @@
       "source": "./plugins/plugin-adminer",
       "type": "plugin",
       "category": "service",
+      "provides": ["ux", "services"],
       "version": "0.1.0",
       "description": "Database management portal"
     },
@@ -19,6 +20,7 @@
       "source": "./plugins/plugin-mysql",
       "type": "plugin",
       "category": "service",
+      "provides": ["services", "runtimes", "stacks"],
       "version": "0.1.0",
       "description": "MariaDB database service for projects"
     },
@@ -27,6 +29,7 @@
       "source": "./plugins/plugin-node-runtime",
       "type": "plugin",
       "category": "runtime",
+      "provides": ["runtimes"],
       "version": "0.1.0",
       "description": "Node.js runtime versions for project hosting"
     },
@@ -35,6 +38,7 @@
       "source": "./plugins/plugin-openclaw",
       "type": "plugin",
       "category": "integration",
+      "provides": ["ux"],
       "version": "0.1.0",
       "description": "Bridge OpenClaw agents into the AGI dashboard"
     },
@@ -43,6 +47,7 @@
       "source": "./plugins/plugin-php-runtime",
       "type": "plugin",
       "category": "runtime",
+      "provides": ["runtimes"],
       "version": "0.1.0",
       "description": "PHP runtime versions for project hosting"
     },
@@ -51,6 +56,7 @@
       "source": "./plugins/plugin-postgres",
       "type": "plugin",
       "category": "service",
+      "provides": ["services", "runtimes", "stacks"],
       "version": "0.1.0",
       "description": "PostgreSQL database service for projects"
     },
@@ -59,6 +65,7 @@
       "source": "./plugins/plugin-project-art",
       "type": "plugin",
       "category": "project",
+      "provides": ["project-types"],
       "version": "0.1.0",
       "description": "Art/Media project type for creative assets and multimedia content"
     },
@@ -67,6 +74,8 @@
       "source": "./plugins/plugin-project-laravel",
       "type": "plugin",
       "category": "project",
+      "provides": ["project-types"],
+      "depends": ["aionima-php-runtime"],
       "version": "0.1.0",
       "description": "Laravel project type with Apache container hosting"
     },
@@ -75,6 +84,8 @@
       "source": "./plugins/plugin-project-nextjs",
       "type": "plugin",
       "category": "project",
+      "provides": ["project-types"],
+      "depends": ["aionima-node-runtime"],
       "version": "0.1.0",
       "description": "Next.js project type with Node container hosting"
     },
@@ -83,6 +94,8 @@
       "source": "./plugins/plugin-project-node",
       "type": "plugin",
       "category": "project",
+      "provides": ["project-types"],
+      "depends": ["aionima-node-runtime"],
       "version": "0.1.0",
       "description": "Node.js project type with container hosting support"
     },
@@ -91,6 +104,8 @@
       "source": "./plugins/plugin-project-nuxt",
       "type": "plugin",
       "category": "project",
+      "provides": ["project-types"],
+      "depends": ["aionima-node-runtime"],
       "version": "0.1.0",
       "description": "Nuxt project type with Node container hosting"
     },
@@ -99,6 +114,8 @@
       "source": "./plugins/plugin-project-php",
       "type": "plugin",
       "category": "project",
+      "provides": ["project-types"],
+      "depends": ["aionima-php-runtime"],
       "version": "0.1.0",
       "description": "PHP project type with Apache container hosting"
     },
@@ -107,6 +124,7 @@
       "source": "./plugins/plugin-project-production",
       "type": "plugin",
       "category": "project",
+      "provides": ["project-types"],
       "version": "0.1.0",
       "description": "General production/administration project type for task management and operations"
     },
@@ -115,6 +133,8 @@
       "source": "./plugins/plugin-project-react-vite",
       "type": "plugin",
       "category": "project",
+      "provides": ["project-types"],
+      "depends": ["aionima-node-runtime"],
       "version": "0.1.0",
       "description": "React (Vite) project type with nginx container hosting"
     },
@@ -123,6 +143,7 @@
       "source": "./plugins/plugin-project-static",
       "type": "plugin",
       "category": "project",
+      "provides": ["project-types"],
       "version": "0.1.0",
       "description": "Static site project type with nginx container hosting"
     },
@@ -131,6 +152,7 @@
       "source": "./plugins/plugin-project-writing",
       "type": "plugin",
       "category": "project",
+      "provides": ["project-types"],
       "version": "0.1.0",
       "description": "Writing/Literature project type for manuscripts and documentation"
     },
@@ -139,6 +161,7 @@
       "source": "./plugins/plugin-redis",
       "type": "plugin",
       "category": "service",
+      "provides": ["services", "runtimes", "stacks"],
       "version": "0.1.0",
       "description": "Redis in-memory cache and data store service"
     },
@@ -147,6 +170,7 @@
       "source": "./plugins/plugin-rustdesk",
       "type": "plugin",
       "category": "system",
+      "provides": ["system-services", "ux"],
       "version": "0.1.0",
       "description": "RustDesk remote desktop server management"
     },
@@ -155,6 +179,7 @@
       "source": "./plugins/plugin-screensaver",
       "type": "plugin",
       "category": "system",
+      "provides": ["ux"],
       "version": "0.1.0",
       "description": "Drifting-panel screensaver with system stats and gateway status"
     },
@@ -163,6 +188,8 @@
       "source": "./plugins/plugin-stack-tall",
       "type": "plugin",
       "category": "stack",
+      "provides": ["stacks"],
+      "depends": ["aionima-php-runtime"],
       "version": "0.1.0",
       "description": "Laravel full-stack with Livewire, Tailwind CSS, and Vite asset bundling"
     },
@@ -171,6 +198,8 @@
       "source": "./plugins/plugin-stack-nextjs",
       "type": "plugin",
       "category": "stack",
+      "provides": ["stacks"],
+      "depends": ["aionima-node-runtime"],
       "version": "0.1.0",
       "description": "React framework with SSR, file-based routing, and Tailwind CSS"
     },
@@ -179,6 +208,8 @@
       "source": "./plugins/plugin-stack-hono",
       "type": "plugin",
       "category": "stack",
+      "provides": ["stacks"],
+      "depends": ["aionima-node-runtime"],
       "version": "0.1.0",
       "description": "Lightweight Node.js API with Drizzle ORM and Lucia auth"
     },
@@ -187,6 +218,7 @@
       "source": "./plugins/plugin-xrdp",
       "type": "plugin",
       "category": "system",
+      "provides": ["system-services", "ux"],
       "version": "0.1.0",
       "description": "xrdp remote desktop server management"
     },
@@ -195,6 +227,7 @@
       "source": "./plugins/plugin-provider-anthropic",
       "type": "plugin",
       "category": "integration",
+      "provides": ["ux"],
       "version": "0.1.0",
       "description": "Claude models — Anthropic API provider"
     },
@@ -203,6 +236,7 @@
       "source": "./plugins/plugin-provider-openai",
       "type": "plugin",
       "category": "integration",
+      "provides": ["ux"],
       "version": "0.1.0",
       "description": "GPT models — OpenAI API provider"
     },
@@ -211,6 +245,7 @@
       "source": "./plugins/plugin-provider-ollama",
       "type": "plugin",
       "category": "integration",
+      "provides": ["ux"],
       "version": "0.1.0",
       "description": "Local models — Ollama provider"
     }

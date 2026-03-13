@@ -9,6 +9,8 @@
     "name": "TALL Stack",
     "description": "Laravel full-stack with Livewire, Tailwind CSS, and Vite asset bundling",
     "category": "stack",
+    "provides": ["stacks"],
+    "depends": ["aionima-php-runtime"],
     "permissions": [],
     "entry": "./src/index.ts",
     "aionimaVersion": ">=0.1.0"

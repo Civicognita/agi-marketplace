@@ -9,6 +9,7 @@
     "name": "Literature Projects",
     "description": "Writing/Literature project type — non-hostable projects for manuscripts, articles, and documentation",
     "category": "project",
+    "provides": ["project-types"],
     "bakedIn": true,
     "disableable": false,
     "permissions": [],

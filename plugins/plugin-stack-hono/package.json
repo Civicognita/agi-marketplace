@@ -9,6 +9,8 @@
     "name": "Hono API Stack",
     "description": "Lightweight Node.js API with Drizzle ORM and Lucia auth",
     "category": "stack",
+    "provides": ["stacks"],
+    "depends": ["aionima-node-runtime"],
     "permissions": [],
     "entry": "./src/index.ts",
     "aionimaVersion": ">=0.1.0"

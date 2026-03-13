@@ -9,6 +9,8 @@
     "name": "Next.js Stack",
     "description": "React framework with SSR, file-based routing, and Tailwind CSS",
     "category": "stack",
+    "provides": ["stacks"],
+    "depends": ["aionima-node-runtime"],
     "permissions": [],
     "entry": "./src/index.ts",
     "aionimaVersion": ">=0.1.0"

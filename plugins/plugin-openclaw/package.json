@@ -9,6 +9,7 @@
     "name": "OpenClaw Bridge",
     "description": "Bridge OpenClaw agents into the AGI dashboard",
     "category": "integration",
+    "provides": ["ux"],
     "bakedIn": true,
     "disableable": true,
     "permissions": [

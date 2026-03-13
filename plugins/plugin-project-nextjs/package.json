@@ -9,6 +9,8 @@
     "name": "Next.js Projects",
     "description": "Next.js project type with Node container hosting",
     "category": "project",
+    "provides": ["project-types"],
+    "depends": ["aionima-node-runtime"],
     "permissions": [],
     "entry": "./src/index.ts",
     "aionimaVersion": ">=0.1.0"

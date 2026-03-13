@@ -12,6 +12,7 @@
     "description": "RustDesk remote desktop server management — system service, knowledge, and agent tools",
     "aionimaVersion": ">=0.1.0",
     "category": "system",
+    "provides": ["system-services", "ux"],
     "permissions": ["shell.exec", "filesystem.read"],
     "entry": "./src/index.ts"
   },

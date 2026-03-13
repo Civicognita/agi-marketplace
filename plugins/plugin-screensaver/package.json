@@ -9,6 +9,7 @@
     "name": "Screensaver",
     "description": "Drifting-panel screensaver with system stats, gateway status, and sparkle effects",
     "category": "system",
+    "provides": ["ux"],
     "bakedIn": true,
     "disableable": true,
     "permissions": ["shell.exec", "config.read", "config.write"],

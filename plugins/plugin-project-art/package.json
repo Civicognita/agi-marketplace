@@ -9,6 +9,7 @@
     "name": "Media Projects",
     "description": "Art/Media project type for creative assets and multimedia content",
     "category": "project",
+    "provides": ["project-types"],
     "permissions": [],
     "entry": "./src/index.ts",
     "aionimaVersion": ">=0.1.0"
