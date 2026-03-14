@@ -7,7 +7,7 @@
 
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-import type { AionimaPluginAPI } from "@aionima/plugins";
+import { createPlugin } from "@aionima/sdk";
 
 const execFileAsync = promisify(execFile);
 
@@ -19,7 +19,8 @@ const VERSIONS = [
   { id: "postgres-15", name: "PostgreSQL 15", image: "postgres:15-alpine", description: "PostgreSQL 15 — maintenance" },
 ] as const;
 
-export async function activate(api: AionimaPluginAPI): Promise<void> {
+export default createPlugin({
+  async activate(api) {
   const log = api.getLogger();
 
   for (const v of VERSIONS) {
@@ -216,4 +217,5 @@ export async function activate(api: AionimaPluginAPI): Promise<void> {
   }
 
   log.info("PostgreSQL services registered: 17, 16, 15");
-}
+  },
+});

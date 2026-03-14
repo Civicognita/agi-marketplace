@@ -1,7 +1,7 @@
-import type { AionimaPlugin, AionimaPluginAPI } from "@aionima/plugins";
+import { createPlugin } from "@aionima/sdk";
 
-const plugin: AionimaPlugin = {
-  async activate(api: AionimaPluginAPI) {
+export default createPlugin({
+  async activate(api) {
     api.registerStack({
       id: "stack-node-app",
       label: "Node.js App",
@@ -45,6 +45,4 @@ const plugin: AionimaPlugin = {
       icon: "box",
     });
   },
-};
-
-export default plugin;
+});

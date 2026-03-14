@@ -4,10 +4,10 @@
  * Registers a settings page for configuring the Anthropic API key and default model.
  */
 
-import type { AionimaPlugin, AionimaPluginAPI } from "@aionima/plugins";
+import { createPlugin } from "@aionima/sdk";
 
-const plugin: AionimaPlugin = {
-  async activate(api: AionimaPluginAPI): Promise<void> {
+export default createPlugin({
+  async activate(api) {
     const log = api.getLogger();
 
     api.registerSettingsPage({
@@ -44,6 +44,4 @@ const plugin: AionimaPlugin = {
 
     log.info("provider-anthropic activated");
   },
-};
-
-export default plugin;
+});

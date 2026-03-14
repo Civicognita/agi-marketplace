@@ -4,10 +4,10 @@
  * Registers a settings page for configuring Ollama connection and default model.
  */
 
-import type { AionimaPlugin, AionimaPluginAPI } from "@aionima/plugins";
+import { createPlugin } from "@aionima/sdk";
 
-const plugin: AionimaPlugin = {
-  async activate(api: AionimaPluginAPI): Promise<void> {
+export default createPlugin({
+  async activate(api) {
     const log = api.getLogger();
 
     api.registerSettingsPage({
@@ -45,6 +45,4 @@ const plugin: AionimaPlugin = {
 
     log.info("provider-ollama activated");
   },
-};
-
-export default plugin;
+});

@@ -17,7 +17,7 @@
     "aionimaVersion": ">=0.1.0"
   },
   "dependencies": {
-    "@aionima/plugins": "workspace:*"
+    "@aionima/sdk": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.0.0"

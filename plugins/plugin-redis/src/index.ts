@@ -7,7 +7,7 @@
 
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-import type { AionimaPluginAPI } from "@aionima/plugins";
+import { createPlugin } from "@aionima/sdk";
 
 const execFileAsync = promisify(execFile);
 
@@ -19,7 +19,8 @@ const VERSIONS = [
   { id: "redis-6.2", name: "Redis 6.2", image: "redis:6.2-alpine", description: "Redis 6.2 LTS — long-term support" },
 ] as const;
 
-export async function activate(api: AionimaPluginAPI): Promise<void> {
+export default createPlugin({
+  async activate(api) {
   const log = api.getLogger();
 
   for (const v of VERSIONS) {
@@ -171,4 +172,5 @@ export async function activate(api: AionimaPluginAPI): Promise<void> {
   }
 
   log.info("Redis services registered: 7.4, 7.2, 6.2");
-}
+  },
+});

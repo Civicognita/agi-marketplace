@@ -1,7 +1,7 @@
-import type { AionimaPlugin, AionimaPluginAPI } from "@aionima/plugins";
+import { createPlugin } from "@aionima/sdk";
 
-const plugin: AionimaPlugin = {
-  async activate(api: AionimaPluginAPI) {
+export default createPlugin({
+  async activate(api) {
     api.registerProjectType({
       id: "art",
       label: "Art Project",
@@ -27,6 +27,4 @@ const plugin: AionimaPlugin = {
       sections: [],
     });
   },
-};
-
-export default plugin;
+});

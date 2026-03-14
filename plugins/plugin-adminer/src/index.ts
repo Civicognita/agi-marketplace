@@ -5,11 +5,12 @@
  * and registers Adminer as a tool in the system DB portal.
  */
 
-import type { AionimaPluginAPI } from "@aionima/plugins";
+import { createPlugin } from "@aionima/sdk";
 
 const ADMINER_PORT = 5050;
 
-export async function activate(api: AionimaPluginAPI): Promise<void> {
+export default createPlugin({
+  async activate(api) {
   const log = api.getLogger();
 
   // Register Adminer as a container service
@@ -91,4 +92,5 @@ export async function activate(api: AionimaPluginAPI): Promise<void> {
   });
 
   log.info("Adminer plugin activated");
-}
+  },
+});

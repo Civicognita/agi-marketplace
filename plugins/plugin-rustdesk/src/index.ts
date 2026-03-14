@@ -8,14 +8,14 @@
  * - Knowledge namespace, agent tool, skill, actions
  */
 
-import type { AionimaPlugin, AionimaPluginAPI } from "@aionima/plugins";
+import { createPlugin } from "@aionima/sdk";
 
 const PUBLIC_KEY = "MMmP0fzH5Rtn0dG6cgDI4Tu9gDduHLwdP9wNEOJmbF8=";
 const SERVER_IP = "192.168.0.144";
 const CLIENT_ID = "87478693";
 
-const plugin: AionimaPlugin = {
-  async activate(api: AionimaPluginAPI): Promise<void> {
+export default createPlugin({
+  async activate(api) {
     const log = api.getLogger();
 
     // -----------------------------------------------------------------------
@@ -316,6 +316,4 @@ const plugin: AionimaPlugin = {
 
     log.info("plugin-rustdesk activated");
   },
-};
-
-export default plugin;
+});

@@ -1,7 +1,7 @@
-import type { AionimaPlugin, AionimaPluginAPI } from "@aionima/plugins";
+import { createPlugin } from "@aionima/sdk";
 
-const plugin: AionimaPlugin = {
-  async activate(api: AionimaPluginAPI) {
+export default createPlugin({
+  async activate(api) {
     api.registerStack({
       id: "stack-static-hosting",
       label: "Static Hosting",
@@ -30,6 +30,4 @@ const plugin: AionimaPlugin = {
       icon: "globe",
     });
   },
-};
-
-export default plugin;
+});

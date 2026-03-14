@@ -1,7 +1,7 @@
-import type { AionimaPlugin, AionimaPluginAPI } from "@aionima/plugins";
+import { createPlugin } from "@aionima/sdk";
 
-const plugin: AionimaPlugin = {
-  async activate(api: AionimaPluginAPI) {
+export default createPlugin({
+  async activate(api) {
     api.registerStack({
       id: "stack-php-app",
       label: "PHP App",
@@ -37,6 +37,4 @@ const plugin: AionimaPlugin = {
       icon: "box",
     });
   },
-};
-
-export default plugin;
+});

@@ -17,6 +17,6 @@
     "entry": "./src/index.ts"
   },
   "dependencies": {
-    "@aionima/plugins": "workspace:*"
+    "@aionima/sdk": "workspace:*"
   }
 }

@@ -8,7 +8,7 @@
  * - Gateway shutdown hook to clean up xss-lock
  */
 
-import type { AionimaPlugin, AionimaPluginAPI } from "@aionima/plugins";
+import { createPlugin, type AionimaPluginAPI } from "@aionima/sdk";
 import { join } from "node:path";
 import { execFile as execFileCb } from "node:child_process";
 
@@ -119,8 +119,8 @@ function getScreensaverConfig(api: AionimaPluginAPI): ScreensaverConfig {
   };
 }
 
-const plugin: AionimaPlugin = {
-  async activate(api: AionimaPluginAPI): Promise<void> {
+export default createPlugin({
+  async activate(api) {
     const log = api.getLogger();
     const workspaceRoot = api.getWorkspaceRoot();
 
@@ -443,6 +443,4 @@ const plugin: AionimaPlugin = {
   async deactivate() {
     // xss-lock cleanup is handled by the gateway:shutdown hook
   },
-};
-
-export default plugin;
+});

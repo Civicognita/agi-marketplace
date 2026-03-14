@@ -8,7 +8,7 @@
  * - Knowledge namespace, agent tool, skill, actions
  */
 
-import type { AionimaPlugin, AionimaPluginAPI } from "@aionima/plugins";
+import { createPlugin } from "@aionima/sdk";
 
 const SERVER_IP = "192.168.0.144";
 const RDP_PORT = 3389;
@@ -87,8 +87,8 @@ async function getActiveSessions(): Promise<XrdpSession[]> {
   return sessions;
 }
 
-const plugin: AionimaPlugin = {
-  async activate(api: AionimaPluginAPI): Promise<void> {
+export default createPlugin({
+  async activate(api) {
     const log = api.getLogger();
 
     // -----------------------------------------------------------------------
@@ -358,6 +358,4 @@ const plugin: AionimaPlugin = {
 
     log.info("plugin-xrdp activated");
   },
-};
-
-export default plugin;
+});

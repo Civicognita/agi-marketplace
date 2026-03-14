@@ -5,11 +5,12 @@
 
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-import type { AionimaPluginAPI } from "@aionima/plugins";
+import { createPlugin } from "@aionima/sdk";
 
 const execFileAsync = promisify(execFile);
 
-export async function activate(api: AionimaPluginAPI): Promise<void> {
+export default createPlugin({
+  async activate(api) {
   const log = api.getLogger();
 
   // Node.js 24 LTS (bundled npm 11)
@@ -220,4 +221,5 @@ export async function activate(api: AionimaPluginAPI): Promise<void> {
   });
 
   log.info("Node.js runtimes registered: 24 (npm 11), 22 (npm 10.9), 20 (npm 10.8)");
-}
+  },
+});

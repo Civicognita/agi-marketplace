@@ -3,7 +3,7 @@
  * Provides settings + comms page with chat logs and accomplishments.
  */
 
-import type { AionimaPlugin, AionimaPluginAPI } from "@aionima/plugins";
+import { createPlugin } from "@aionima/sdk";
 import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
@@ -104,8 +104,8 @@ function appendChatLine(line: string): void {
 // Plugin
 // ---------------------------------------------------------------------------
 
-const plugin: AionimaPlugin = {
-  async activate(api: AionimaPluginAPI): Promise<void> {
+export default createPlugin({
+  async activate(api) {
     const logger = api.getLogger();
 
     // Settings page
@@ -269,6 +269,4 @@ const plugin: AionimaPlugin = {
 
     logger.info("OpenClaw bridge plugin ready");
   },
-};
-
-export default plugin;
+});

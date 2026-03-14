@@ -16,6 +16,6 @@
     "provides": ["ux", "services"]
   },
   "dependencies": {
-    "@aionima/plugins": "workspace:*"
+    "@aionima/sdk": "workspace:*"
   }
 }

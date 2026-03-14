@@ -1,7 +1,7 @@
-import type { AionimaPlugin, AionimaPluginAPI } from "@aionima/plugins";
+import { createPlugin } from "@aionima/sdk";
 
-const plugin: AionimaPlugin = {
-  async activate(api: AionimaPluginAPI) {
+export default createPlugin({
+  async activate(api) {
     api.registerProjectType({
       id: "static-site",
       label: "Static Site",
@@ -16,6 +16,4 @@ const plugin: AionimaPlugin = {
       tools: [],
     });
   },
-};
-
-export default plugin;
+});

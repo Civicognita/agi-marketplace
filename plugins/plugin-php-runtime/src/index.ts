@@ -5,11 +5,12 @@
 
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-import type { AionimaPluginAPI } from "@aionima/plugins";
+import { createPlugin } from "@aionima/sdk";
 
 const execFileAsync = promisify(execFile);
 
-export async function activate(api: AionimaPluginAPI): Promise<void> {
+export default createPlugin({
+  async activate(api) {
   const log = api.getLogger();
 
   // PHP 8.5 (latest)
@@ -215,4 +216,5 @@ export async function activate(api: AionimaPluginAPI): Promise<void> {
   }
 
   log.info("PHP runtimes registered: 8.5, 8.4, 8.3, 8.2");
-}
+  },
+});

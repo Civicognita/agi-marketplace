@@ -7,7 +7,7 @@
 
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-import type { AionimaPluginAPI } from "@aionima/plugins";
+import { createPlugin } from "@aionima/sdk";
 
 const execFileAsync = promisify(execFile);
 
@@ -19,7 +19,8 @@ const VERSIONS = [
   { id: "mariadb-10.6", name: "MariaDB 10.6", image: "mariadb:10.6", description: "MariaDB 10.6 LTS — maintenance" },
 ] as const;
 
-export async function activate(api: AionimaPluginAPI): Promise<void> {
+export default createPlugin({
+  async activate(api) {
   const log = api.getLogger();
 
   for (const v of VERSIONS) {
@@ -216,4 +217,5 @@ export async function activate(api: AionimaPluginAPI): Promise<void> {
   }
 
   log.info("MariaDB services registered: 11.4, 10.11, 10.6");
-}
+  },
+});
