@@ -25,7 +25,6 @@ aionima-marketplace/
 │   ├── plugin-project-ops/       # Project type: Ops
 │   ├── plugin-project-writing/   # Project type: Writing
 │   ├── plugin-project-art/       # Project type: Art
-│   ├── plugin-project-production/# Project type: Production
 │   ├── plugin-stack-laravel/     # Stack: Laravel
 │   ├── plugin-stack-nextjs/      # Stack: Next.js
 │   ├── plugin-stack-nuxt/        # Stack: Nuxt

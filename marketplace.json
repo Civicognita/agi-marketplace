@@ -97,15 +97,6 @@
       "description": "Operations project type — infrastructure and DevOps projects"
     },
     {
-      "name": "project-production",
-      "source": "./plugins/plugin-project-production",
-      "type": "plugin",
-      "category": "project",
-      "provides": ["project-types"],
-      "version": "0.1.0",
-      "description": "General production/administration project type for task management and operations"
-    },
-    {
       "name": "project-staticsite",
       "source": "./plugins/plugin-project-staticsite",
       "type": "plugin",
