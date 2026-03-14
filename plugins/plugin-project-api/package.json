@@ -1,0 +1,23 @@
+{
+  "name": "@aionima/plugin-project-api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "project-api",
+    "name": "API Service",
+    "description": "API service project type — hostable backend services composed with runtime and framework stacks",
+    "category": "project",
+    "provides": ["project-types"],
+    "bakedIn": true,
+    "disableable": false,
+    "permissions": [],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0"
+  },
+  "dependencies": {
+    "@aionima/plugins": "workspace:*",
+    "@aionima/gateway-core": "workspace:*"
+  }
+}

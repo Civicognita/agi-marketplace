@@ -1,0 +1,23 @@
+{
+  "name": "@aionima/plugin-project-ops",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "project-ops",
+    "name": "Ops",
+    "description": "Operations project type — infrastructure, DevOps, and system administration projects",
+    "category": "project",
+    "provides": ["project-types"],
+    "bakedIn": true,
+    "disableable": false,
+    "permissions": [],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0"
+  },
+  "dependencies": {
+    "@aionima/plugins": "workspace:*",
+    "@aionima/gateway-core": "workspace:*"
+  }
+}

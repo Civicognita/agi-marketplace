@@ -1,0 +1,21 @@
+{
+  "name": "@aionima/plugin-stack-laravel",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "stack-laravel",
+    "name": "Laravel Stack",
+    "description": "Laravel PHP framework stack with Apache container hosting",
+    "category": "stack",
+    "provides": ["stacks"],
+    "depends": ["aionima-php-runtime"],
+    "permissions": [],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0"
+  },
+  "dependencies": {
+    "@aionima/plugins": "workspace:*"
+  }
+}

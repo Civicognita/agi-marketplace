@@ -1,0 +1,21 @@
+{
+  "name": "@aionima/plugin-stack-php-app",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "stack-php-app",
+    "name": "PHP App Stack",
+    "description": "Generic PHP application hosting with Apache",
+    "category": "stack",
+    "provides": ["stacks"],
+    "depends": ["aionima-php-runtime"],
+    "permissions": [],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0"
+  },
+  "dependencies": {
+    "@aionima/plugins": "workspace:*"
+  }
+}

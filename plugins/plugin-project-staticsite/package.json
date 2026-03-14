@@ -1,0 +1,23 @@
+{
+  "name": "@aionima/plugin-project-staticsite",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "project-staticsite",
+    "name": "Static Site",
+    "description": "Static site project type — hostable static websites served via nginx",
+    "category": "project",
+    "provides": ["project-types"],
+    "bakedIn": true,
+    "disableable": false,
+    "permissions": [],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0"
+  },
+  "dependencies": {
+    "@aionima/plugins": "workspace:*",
+    "@aionima/gateway-core": "workspace:*"
+  }
+}

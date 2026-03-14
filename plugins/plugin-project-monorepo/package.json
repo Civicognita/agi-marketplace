@@ -1,0 +1,23 @@
+{
+  "name": "@aionima/plugin-project-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "project-monorepo",
+    "name": "Monorepo",
+    "description": "Monorepo project type — multi-package repositories with shared tooling",
+    "category": "project",
+    "provides": ["project-types"],
+    "bakedIn": true,
+    "disableable": false,
+    "permissions": [],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0"
+  },
+  "dependencies": {
+    "@aionima/plugins": "workspace:*",
+    "@aionima/gateway-core": "workspace:*"
+  }
+}

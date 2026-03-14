@@ -1,7 +1,7 @@
 /**
  * Next.js Stack Plugin — Next.js + React + Tailwind CSS
  *
- * Registers the Next.js framework stack definition.
+ * Registers the Next.js framework stack definition with container hosting support.
  */
 
 import type { AionimaPluginAPI } from "@aionima/plugins";
@@ -20,6 +20,28 @@ export async function activate(api: AionimaPluginAPI): Promise<void> {
       { id: "react", label: "React", type: "provided" },
       { id: "tailwind", label: "Tailwind CSS", type: "provided" },
     ],
+    containerConfig: {
+      image: "node:22-alpine",
+      internalPort: 3000,
+      shared: false,
+      volumeMounts: (ctx) => [
+        `${ctx.projectPath}:/app:Z`,
+      ],
+      env: (ctx) => ({
+        PORT: String(ctx.allocatedPort || 3000),
+        NODE_ENV: ctx.mode,
+      }),
+      command: () => ["npm", "start"],
+    },
+    installActions: [
+      { id: "npm.install", label: "Install Dependencies", command: "npm install" },
+    ],
+    devCommands: {
+      dev: "npm run dev",
+      build: "npm run build",
+      start: "npm start",
+      lint: "npm run lint",
+    },
     guides: [
       {
         title: "Development",

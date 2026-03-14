@@ -61,6 +61,15 @@
       "description": "PostgreSQL database service for projects"
     },
     {
+      "name": "project-api",
+      "source": "./plugins/plugin-project-api",
+      "type": "plugin",
+      "category": "project",
+      "provides": ["project-types"],
+      "version": "0.1.0",
+      "description": "API service project type — hostable backend services"
+    },
+    {
       "name": "project-art",
       "source": "./plugins/plugin-project-art",
       "type": "plugin",
@@ -70,54 +79,22 @@
       "description": "Art/Media project type for creative assets and multimedia content"
     },
     {
-      "name": "project-laravel",
-      "source": "./plugins/plugin-project-laravel",
+      "name": "project-monorepo",
+      "source": "./plugins/plugin-project-monorepo",
       "type": "plugin",
       "category": "project",
       "provides": ["project-types"],
-      "depends": ["aionima-php-runtime"],
       "version": "0.1.0",
-      "description": "Laravel project type with Apache container hosting"
+      "description": "Monorepo project type — multi-package repositories"
     },
     {
-      "name": "project-nextjs",
-      "source": "./plugins/plugin-project-nextjs",
+      "name": "project-ops",
+      "source": "./plugins/plugin-project-ops",
       "type": "plugin",
       "category": "project",
       "provides": ["project-types"],
-      "depends": ["aionima-node-runtime"],
       "version": "0.1.0",
-      "description": "Next.js project type with Node container hosting"
-    },
-    {
-      "name": "project-node",
-      "source": "./plugins/plugin-project-node",
-      "type": "plugin",
-      "category": "project",
-      "provides": ["project-types"],
-      "depends": ["aionima-node-runtime"],
-      "version": "0.1.0",
-      "description": "Node.js project type with container hosting support"
-    },
-    {
-      "name": "project-nuxt",
-      "source": "./plugins/plugin-project-nuxt",
-      "type": "plugin",
-      "category": "project",
-      "provides": ["project-types"],
-      "depends": ["aionima-node-runtime"],
-      "version": "0.1.0",
-      "description": "Nuxt project type with Node container hosting"
-    },
-    {
-      "name": "project-php",
-      "source": "./plugins/plugin-project-php",
-      "type": "plugin",
-      "category": "project",
-      "provides": ["project-types"],
-      "depends": ["aionima-php-runtime"],
-      "version": "0.1.0",
-      "description": "PHP project type with Apache container hosting"
+      "description": "Operations project type — infrastructure and DevOps projects"
     },
     {
       "name": "project-production",
@@ -129,23 +106,22 @@
       "description": "General production/administration project type for task management and operations"
     },
     {
-      "name": "project-react-vite",
-      "source": "./plugins/plugin-project-react-vite",
+      "name": "project-staticsite",
+      "source": "./plugins/plugin-project-staticsite",
       "type": "plugin",
       "category": "project",
       "provides": ["project-types"],
-      "depends": ["aionima-node-runtime"],
       "version": "0.1.0",
-      "description": "React (Vite) project type with nginx container hosting"
+      "description": "Static site project type — hostable static websites"
     },
     {
-      "name": "project-static",
-      "source": "./plugins/plugin-project-static",
+      "name": "project-webapp",
+      "source": "./plugins/plugin-project-webapp",
       "type": "plugin",
       "category": "project",
       "provides": ["project-types"],
       "version": "0.1.0",
-      "description": "Static site project type with nginx container hosting"
+      "description": "Web application project type — hostable web projects"
     },
     {
       "name": "project-writing",
@@ -184,14 +160,24 @@
       "description": "Drifting-panel screensaver with system stats and gateway status"
     },
     {
-      "name": "stack-tall",
-      "source": "./plugins/plugin-stack-tall",
+      "name": "stack-hono",
+      "source": "./plugins/plugin-stack-hono",
+      "type": "plugin",
+      "category": "stack",
+      "provides": ["stacks"],
+      "depends": ["aionima-node-runtime"],
+      "version": "0.1.0",
+      "description": "Lightweight Node.js API with Drizzle ORM and Lucia auth"
+    },
+    {
+      "name": "stack-laravel",
+      "source": "./plugins/plugin-stack-laravel",
       "type": "plugin",
       "category": "stack",
       "provides": ["stacks"],
       "depends": ["aionima-php-runtime"],
       "version": "0.1.0",
-      "description": "Laravel full-stack with Livewire, Tailwind CSS, and Vite asset bundling"
+      "description": "Laravel PHP framework stack with Apache container hosting"
     },
     {
       "name": "stack-nextjs",
@@ -204,14 +190,63 @@
       "description": "React framework with SSR, file-based routing, and Tailwind CSS"
     },
     {
-      "name": "stack-hono",
-      "source": "./plugins/plugin-stack-hono",
+      "name": "stack-node-app",
+      "source": "./plugins/plugin-stack-node-app",
       "type": "plugin",
       "category": "stack",
       "provides": ["stacks"],
       "depends": ["aionima-node-runtime"],
       "version": "0.1.0",
-      "description": "Lightweight Node.js API with Drizzle ORM and Lucia auth"
+      "description": "Generic Node.js application hosting with npm start"
+    },
+    {
+      "name": "stack-nuxt",
+      "source": "./plugins/plugin-stack-nuxt",
+      "type": "plugin",
+      "category": "stack",
+      "provides": ["stacks"],
+      "depends": ["aionima-node-runtime"],
+      "version": "0.1.0",
+      "description": "Vue.js framework with SSR, file-based routing, and auto-imports"
+    },
+    {
+      "name": "stack-php-app",
+      "source": "./plugins/plugin-stack-php-app",
+      "type": "plugin",
+      "category": "stack",
+      "provides": ["stacks"],
+      "depends": ["aionima-php-runtime"],
+      "version": "0.1.0",
+      "description": "Generic PHP application hosting with Apache"
+    },
+    {
+      "name": "stack-react-vite",
+      "source": "./plugins/plugin-stack-react-vite",
+      "type": "plugin",
+      "category": "stack",
+      "provides": ["stacks"],
+      "depends": ["aionima-node-runtime"],
+      "version": "0.1.0",
+      "description": "React SPA built with Vite, served via nginx in production"
+    },
+    {
+      "name": "stack-static-hosting",
+      "source": "./plugins/plugin-stack-static-hosting",
+      "type": "plugin",
+      "category": "stack",
+      "provides": ["stacks"],
+      "version": "0.1.0",
+      "description": "Nginx-based static file hosting for built websites"
+    },
+    {
+      "name": "stack-tall",
+      "source": "./plugins/plugin-stack-tall",
+      "type": "plugin",
+      "category": "stack",
+      "provides": ["stacks"],
+      "depends": ["aionima-php-runtime"],
+      "version": "0.1.0",
+      "description": "Laravel full-stack with Livewire, Tailwind CSS, and Vite asset bundling"
     },
     {
       "name": "aionima-xrdp",

@@ -1,0 +1,23 @@
+{
+  "name": "@aionima/plugin-project-webapp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "project-webapp",
+    "name": "Web App",
+    "description": "Web application project type — hostable web projects composed with framework and runtime stacks",
+    "category": "project",
+    "provides": ["project-types"],
+    "bakedIn": true,
+    "disableable": false,
+    "permissions": [],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0"
+  },
+  "dependencies": {
+    "@aionima/plugins": "workspace:*",
+    "@aionima/gateway-core": "workspace:*"
+  }
+}

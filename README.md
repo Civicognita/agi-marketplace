@@ -8,7 +8,6 @@ Official plugin catalog for the [Aionima](https://github.com/Civicognita/agi) au
 aionima-marketplace/
 ├── marketplace.json              # Catalog listing all plugins
 ├── plugins/
-│   ├── plugin-stacks/            # Framework stacks (TALL, Next.js, Hono)
 │   ├── plugin-node-runtime/      # Node.js runtime versions
 │   ├── plugin-php-runtime/       # PHP runtime versions
 │   ├── plugin-postgres/          # PostgreSQL service
@@ -19,16 +18,23 @@ aionima-marketplace/
 │   ├── plugin-screensaver/       # Screensaver
 │   ├── plugin-xrdp/              # xrdp remote desktop
 │   ├── plugin-openclaw/          # OpenClaw agent bridge
-│   ├── plugin-project-node/      # Project type: Node.js
-│   ├── plugin-project-nextjs/    # Project type: Next.js
-│   ├── plugin-project-nuxt/      # Project type: Nuxt
-│   ├── plugin-project-react-vite/# Project type: React+Vite
-│   ├── plugin-project-php/       # Project type: PHP
-│   ├── plugin-project-laravel/   # Project type: Laravel
-│   ├── plugin-project-static/    # Project type: Static
+│   ├── plugin-project-webapp/     # Project type: Web App
+│   ├── plugin-project-api/       # Project type: API Service
+│   ├── plugin-project-staticsite/# Project type: Static Site
+│   ├── plugin-project-monorepo/  # Project type: Monorepo
+│   ├── plugin-project-ops/       # Project type: Ops
 │   ├── plugin-project-writing/   # Project type: Writing
 │   ├── plugin-project-art/       # Project type: Art
-│   └── plugin-project-production/# Project type: Production
+│   ├── plugin-project-production/# Project type: Production
+│   ├── plugin-stack-laravel/     # Stack: Laravel
+│   ├── plugin-stack-nextjs/      # Stack: Next.js
+│   ├── plugin-stack-nuxt/        # Stack: Nuxt
+│   ├── plugin-stack-node-app/    # Stack: Node.js App
+│   ├── plugin-stack-php-app/     # Stack: PHP App
+│   ├── plugin-stack-react-vite/  # Stack: React (Vite)
+│   ├── plugin-stack-static-hosting/ # Stack: Static Hosting
+│   ├── plugin-stack-hono/        # Stack: Hono
+│   └── plugin-stack-tall/        # Stack: TALL
 ├── package.json
 ├── pnpm-workspace.yaml
 └── README.md

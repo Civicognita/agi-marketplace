@@ -1,0 +1,21 @@
+{
+  "name": "@aionima/plugin-stack-react-vite",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "stack-react-vite",
+    "name": "React (Vite) Stack",
+    "description": "React SPA built with Vite, served via nginx in production",
+    "category": "stack",
+    "provides": ["stacks"],
+    "depends": ["aionima-node-runtime"],
+    "permissions": [],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0"
+  },
+  "dependencies": {
+    "@aionima/plugins": "workspace:*"
+  }
+}
