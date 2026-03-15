@@ -232,8 +232,8 @@ export default createPlugin({
     // HTTP Routes
     // -------------------------------------------------------------------
 
-    // GET /api/screensaver/config — current screensaver settings
-    api.registerHttpRoute("GET", "/api/screensaver/config", async (_req, reply) => {
+    // GET /config — current screensaver settings
+    api.registerHttpRoute("GET", "/config", async (_req, reply) => {
       const config = getScreensaverConfig(api);
       reply.send({
         ...config,
@@ -244,8 +244,8 @@ export default createPlugin({
       });
     });
 
-    // POST /api/screensaver/start — activate xss-lock
-    api.registerHttpRoute("POST", "/api/screensaver/start", async (_req, reply) => {
+    // POST /start — activate xss-lock
+    api.registerHttpRoute("POST", "/start", async (_req, reply) => {
       const result = await startXssLock();
       if ("error" in result) {
         reply.code(400).send(result);
@@ -254,14 +254,14 @@ export default createPlugin({
       }
     });
 
-    // POST /api/screensaver/stop — deactivate xss-lock
-    api.registerHttpRoute("POST", "/api/screensaver/stop", async (_req, reply) => {
+    // POST /stop — deactivate xss-lock
+    api.registerHttpRoute("POST", "/stop", async (_req, reply) => {
       await stopXssLock();
       reply.send({ ok: true });
     });
 
-    // POST /api/screensaver/preview — launch screensaver immediately for testing
-    api.registerHttpRoute("POST", "/api/screensaver/preview", async (_req, reply) => {
+    // POST /preview — launch screensaver immediately for testing
+    api.registerHttpRoute("POST", "/preview", async (_req, reply) => {
       const config = getScreensaverConfig(api);
       const cmd = resolveScreensaverCommand(config);
       if (!cmd) {
@@ -384,7 +384,7 @@ export default createPlugin({
       label: "Preview Screensaver",
       description: "Launch the screensaver immediately for testing",
       scope: { type: "global" },
-      handler: { kind: "api", method: "POST", endpoint: "/api/screensaver/preview" },
+      handler: { kind: "api", method: "POST", endpoint: "/preview" },
       group: "Screensaver",
     });
 
@@ -393,7 +393,7 @@ export default createPlugin({
       label: "Restart xss-lock",
       description: "Stop and restart the idle detection daemon",
       scope: { type: "global" },
-      handler: { kind: "api", method: "POST", endpoint: "/api/screensaver/start" },
+      handler: { kind: "api", method: "POST", endpoint: "/start" },
       group: "Screensaver",
     });
 

@@ -126,7 +126,7 @@ export default createPlugin({
   });
 
   // Connection info endpoint
-  api.registerHttpRoute("GET", "/api/db/postgresql/connection-info", async (_req, reply) => {
+  api.registerHttpRoute("GET", "/connection-info", async (_req, reply) => {
     const config = api.getConfig();
     const pgConfig = (config["plugins"] as Record<string, unknown> | undefined)?.["postgres"] as Record<string, unknown> | undefined;
     const password = (pgConfig?.["defaultPassword"] as string) || "aionima";

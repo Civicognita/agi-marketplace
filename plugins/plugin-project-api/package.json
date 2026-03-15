@@ -10,8 +10,6 @@
     "description": "API service project type — hostable backend services composed with runtime and framework stacks",
     "category": "project",
     "provides": ["project-types"],
-    "bakedIn": true,
-    "disableable": false,
     "permissions": [],
     "entry": "./src/index.ts",
     "aionimaVersion": ">=0.1.0"

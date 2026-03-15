@@ -53,8 +53,8 @@ export default createPlugin({
     // HTTP Routes — RustDesk-specific operations
     // -----------------------------------------------------------------------
 
-    // GET /api/rustdesk/status — detailed per-service status
-    api.registerHttpRoute("GET", "/api/rustdesk/status", async (_req, reply) => {
+    // GET /status — detailed per-service status
+    api.registerHttpRoute("GET", "/status", async (_req, reply) => {
       const { execFile } = await import("node:child_process");
       const getStatus = (unit: string): Promise<Record<string, string>> =>
         new Promise((resolve) => {
@@ -86,8 +86,8 @@ export default createPlugin({
       reply.send({ signal, relay, client });
     });
 
-    // GET /api/rustdesk/logs/:service — tail logs
-    api.registerHttpRoute("GET", "/api/rustdesk/logs/:service", async (req, reply) => {
+    // GET /logs/:service — tail logs
+    api.registerHttpRoute("GET", "/logs/:service", async (req, reply) => {
       const { service } = req.params;
       const lines = Number(req.query.lines) || 100;
 
@@ -123,8 +123,8 @@ export default createPlugin({
       }
     });
 
-    // GET /api/rustdesk/connection-info — server connection details
-    api.registerHttpRoute("GET", "/api/rustdesk/connection-info", async (_req, reply) => {
+    // GET /connection-info — server connection details
+    api.registerHttpRoute("GET", "/connection-info", async (_req, reply) => {
       const { readFile } = await import("node:fs/promises");
       const { execFile } = await import("node:child_process");
 
@@ -154,8 +154,8 @@ export default createPlugin({
       });
     });
 
-    // POST /api/rustdesk/password — set permanent password
-    api.registerHttpRoute("POST", "/api/rustdesk/password", async (req, reply) => {
+    // POST /password — set permanent password
+    api.registerHttpRoute("POST", "/password", async (req, reply) => {
       const body = req.body as { password?: string };
       if (!body.password || typeof body.password !== "string" || body.password.length < 1) {
         reply.code(400).send({ error: "Password is required" });

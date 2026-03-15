@@ -10,8 +10,6 @@
     "description": "Static site project type — hostable static websites served via nginx",
     "category": "project",
     "provides": ["project-types"],
-    "bakedIn": true,
-    "disableable": false,
     "permissions": [],
     "entry": "./src/index.ts",
     "aionimaVersion": ">=0.1.0"

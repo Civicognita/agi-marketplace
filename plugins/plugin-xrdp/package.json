@@ -11,7 +11,6 @@
     "aionimaVersion": ">=0.1.0",
     "category": "system",
     "provides": ["system-services", "ux"],
-    "bakedIn": true,
     "permissions": ["shell.exec", "filesystem.read"],
     "entry": "./src/index.ts"
   },

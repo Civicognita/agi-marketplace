@@ -139,14 +139,14 @@ export default createPlugin({
       domain: "comms",
       routePath: "openclaw",
       widgets: [
-        { type: "status-display", title: "Connection Status", statusEndpoint: "/api/openclaw/status" },
-        { type: "table", dataEndpoint: "/api/openclaw/agents", columns: [
+        { type: "status-display", title: "Connection Status", statusEndpoint: "/status" },
+        { type: "table", dataEndpoint: "/agents", columns: [
           { key: "id", label: "Agent" },
           { key: "name", label: "Name" },
           { key: "status", label: "Status" },
         ] },
-        { type: "log-stream", title: "Chat Logs", logSource: "/api/openclaw/communications/logs", lines: 200 },
-        { type: "table", dataEndpoint: "/api/openclaw/accomplishments", columns: [
+        { type: "log-stream", title: "Chat Logs", logSource: "/communications/logs", lines: 200 },
+        { type: "table", dataEndpoint: "/accomplishments", columns: [
           { key: "timestamp", label: "When", width: "180px" },
           { key: "title", label: "Accomplishment" },
           { key: "details", label: "Details" },
@@ -163,7 +163,7 @@ export default createPlugin({
     // API routes
     // -------------------------------------------------------------------
 
-    api.registerHttpRoute("get", "/api/openclaw/status", async (request, reply) => {
+    api.registerHttpRoute("get", "/status", async (request, reply) => {
       const err = guardPrivate(request.clientIp);
       if (err) return reply.code(403).send({ error: err });
 
@@ -178,7 +178,7 @@ export default createPlugin({
       });
     });
 
-    api.registerHttpRoute("post", "/api/openclaw/status", async (request, reply) => {
+    api.registerHttpRoute("post", "/status", async (request, reply) => {
       const err = guardPrivate(request.clientIp);
       if (err) return reply.code(403).send({ error: err });
       const authErr = guardApiKey({ headers: request.headers, query: request.query }, getOpenclawConfig());
@@ -192,7 +192,7 @@ export default createPlugin({
       return reply.send({ ok: true });
     });
 
-    api.registerHttpRoute("get", "/api/openclaw/agents", async (request, reply) => {
+    api.registerHttpRoute("get", "/agents", async (request, reply) => {
       const err = guardPrivate(request.clientIp);
       if (err) return reply.code(403).send({ error: err });
       const agents = readJson<Array<Record<string, unknown>>>(AGENTS_FILE, []);
@@ -204,7 +204,7 @@ export default createPlugin({
       return reply.send({ agents, rows });
     });
 
-    api.registerHttpRoute("post", "/api/openclaw/agents", async (request, reply) => {
+    api.registerHttpRoute("post", "/agents", async (request, reply) => {
       const err = guardPrivate(request.clientIp);
       if (err) return reply.code(403).send({ error: err });
       const authErr = guardApiKey({ headers: request.headers, query: request.query }, getOpenclawConfig());
@@ -219,14 +219,14 @@ export default createPlugin({
       return reply.send({ ok: true, count: (body.agents ?? []).length });
     });
 
-    api.registerHttpRoute("get", "/api/openclaw/accomplishments", async (request, reply) => {
+    api.registerHttpRoute("get", "/accomplishments", async (request, reply) => {
       const err = guardPrivate(request.clientIp);
       if (err) return reply.code(403).send({ error: err });
       const rows = readJson<Array<{ timestamp: string; title: string; details?: string }>>(ACCOMPLISHMENTS_FILE, []);
       return reply.send({ rows });
     });
 
-    api.registerHttpRoute("post", "/api/openclaw/accomplishments", async (request, reply) => {
+    api.registerHttpRoute("post", "/accomplishments", async (request, reply) => {
       const err = guardPrivate(request.clientIp);
       if (err) return reply.code(403).send({ error: err });
       const authErr = guardApiKey({ headers: request.headers, query: request.query }, getOpenclawConfig());
@@ -242,7 +242,7 @@ export default createPlugin({
       return reply.send({ ok: true });
     });
 
-    api.registerHttpRoute("get", "/api/openclaw/communications/logs", async (request, reply) => {
+    api.registerHttpRoute("get", "/communications/logs", async (request, reply) => {
       const err = guardPrivate(request.clientIp);
       if (err) return reply.code(403).send(err);
       try {
@@ -253,7 +253,7 @@ export default createPlugin({
       }
     });
 
-    api.registerHttpRoute("post", "/api/openclaw/communications/logs", async (request, reply) => {
+    api.registerHttpRoute("post", "/communications/logs", async (request, reply) => {
       const err = guardPrivate(request.clientIp);
       if (err) return reply.code(403).send({ error: err });
       const authErr = guardApiKey({ headers: request.headers, query: request.query }, getOpenclawConfig());

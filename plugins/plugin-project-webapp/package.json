@@ -10,8 +10,6 @@
     "description": "Web application project type — hostable web projects composed with framework and runtime stacks",
     "category": "project",
     "provides": ["project-types"],
-    "bakedIn": true,
-    "disableable": false,
     "permissions": [],
     "entry": "./src/index.ts",
     "aionimaVersion": ">=0.1.0"

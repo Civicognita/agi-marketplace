@@ -120,8 +120,8 @@ export default createPlugin({
     // HTTP Routes
     // -----------------------------------------------------------------------
 
-    // GET /api/xrdp/status — per-service status
-    api.registerHttpRoute("GET", "/api/xrdp/status", async (_req, reply) => {
+    // GET /status — per-service status
+    api.registerHttpRoute("GET", "/status", async (_req, reply) => {
       const [xrdp, sesman] = await Promise.all([
         getServiceStatus("xrdp.service"),
         getServiceStatus("xrdp-sesman.service"),
@@ -133,14 +133,14 @@ export default createPlugin({
       reply.send({ xrdp, sesman, installed: !!installed });
     });
 
-    // GET /api/xrdp/sessions — active RDP sessions
-    api.registerHttpRoute("GET", "/api/xrdp/sessions", async (_req, reply) => {
+    // GET /sessions — active RDP sessions
+    api.registerHttpRoute("GET", "/sessions", async (_req, reply) => {
       const sessions = await getActiveSessions();
       reply.send({ sessions });
     });
 
-    // GET /api/xrdp/connection-info — how to connect
-    api.registerHttpRoute("GET", "/api/xrdp/connection-info", async (_req, reply) => {
+    // GET /connection-info — how to connect
+    api.registerHttpRoute("GET", "/connection-info", async (_req, reply) => {
       // Read port from xrdp.ini
       let port = RDP_PORT;
       try {
@@ -179,8 +179,8 @@ export default createPlugin({
       });
     });
 
-    // GET /api/xrdp/logs/:service — tail logs
-    api.registerHttpRoute("GET", "/api/xrdp/logs/:service", async (req, reply) => {
+    // GET /logs/:service — tail logs
+    api.registerHttpRoute("GET", "/logs/:service", async (req, reply) => {
       const { service } = req.params;
       const lines = Number(req.query.lines) || 100;
 
@@ -199,8 +199,8 @@ export default createPlugin({
       }
     });
 
-    // POST /api/xrdp/disconnect/:pid — kill a specific session
-    api.registerHttpRoute("POST", "/api/xrdp/disconnect/:pid", async (req, reply) => {
+    // POST /disconnect/:pid — kill a specific session
+    api.registerHttpRoute("POST", "/disconnect/:pid", async (req, reply) => {
       const pid = req.params.pid ?? "";
       if (!/^\d+$/.test(pid)) {
         reply.code(400).send({ error: "Invalid PID" });

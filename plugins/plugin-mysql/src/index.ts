@@ -126,7 +126,7 @@ export default createPlugin({
   });
 
   // Connection info endpoint
-  api.registerHttpRoute("GET", "/api/db/mariadb/connection-info", async (_req, reply) => {
+  api.registerHttpRoute("GET", "/connection-info", async (_req, reply) => {
     const config = api.getConfig();
     const myConfig = (config["plugins"] as Record<string, unknown> | undefined)?.["mysql"] as Record<string, unknown> | undefined;
     const password = (myConfig?.["defaultPassword"] as string) || "aionima";

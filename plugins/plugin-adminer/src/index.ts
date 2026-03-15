@@ -28,7 +28,7 @@ export default createPlugin({
     healthCheck: "wget -q --spider http://localhost:8080 || exit 1",
   });
 
-  // Reverse proxy to Adminer container
+  // Reverse proxy to Adminer container (raw route — bypasses plugin prefix)
   api.registerHttpRoute("GET", "/adminer/*", async (req, reply) => {
     const path = req.params["*"] || "";
     try {
@@ -45,10 +45,10 @@ export default createPlugin({
     } catch {
       reply.code(502).send({ error: "Adminer service not reachable" });
     }
-  });
+  }, { raw: true });
 
   // Register Adminer as a tool in the system DB portal
-  api.registerHttpRoute("POST", "/api/internal/adminer-register", async (_req, reply) => {
+  api.registerHttpRoute("POST", "/adminer-register", async (_req, reply) => {
     reply.send({ ok: true });
   });
 

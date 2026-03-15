@@ -10,8 +10,6 @@
     "description": "Monorepo project type — multi-package repositories with shared tooling",
     "category": "project",
     "provides": ["project-types"],
-    "bakedIn": true,
-    "disableable": false,
     "permissions": [],
     "entry": "./src/index.ts",
     "aionimaVersion": ">=0.1.0"

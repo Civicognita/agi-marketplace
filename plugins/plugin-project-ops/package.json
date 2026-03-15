@@ -10,8 +10,6 @@
     "description": "Operations project type — infrastructure, DevOps, and system administration projects",
     "category": "project",
     "provides": ["project-types"],
-    "bakedIn": true,
-    "disableable": false,
     "permissions": [],
     "entry": "./src/index.ts",
     "aionimaVersion": ">=0.1.0"
