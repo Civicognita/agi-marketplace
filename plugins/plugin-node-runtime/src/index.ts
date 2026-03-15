@@ -5,7 +5,7 @@
 
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-import { createPlugin } from "@aionima/sdk";
+import { createPlugin, defineSettingsPage } from "@aionima/sdk";
 
 const execFileAsync = promisify(execFile);
 
@@ -144,23 +144,21 @@ export default createPlugin({
   });
 
   // Register settings page for runtime management
-  api.registerSettingsPage({
-    id: "node-runtime",
-    label: "Node.js",
-    description: "Manage Node.js runtime versions installed on the host machine.",
-    icon: "server",
-    position: 80,
-    sections: [
-      {
+  api.registerSettingsPage(
+    defineSettingsPage("node-runtime", "Node.js")
+      .description("Manage Node.js runtime versions installed on the host machine.")
+      .icon("server")
+      .position(80)
+      .section({
         id: "node-runtime-manager",
         label: "Node.js Versions",
         type: "runtime-manager",
         language: "node",
         configPath: "plugins.node-runtime",
         fields: [],
-      },
-    ],
-  });
+      })
+      .build()
+  );
 
   // ---------------------------------------------------------------------------
   // Stack registrations

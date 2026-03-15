@@ -7,7 +7,7 @@
 
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-import { createPlugin } from "@aionima/sdk";
+import { createPlugin, defineSettingsPage } from "@aionima/sdk";
 
 const execFileAsync = promisify(execFile);
 
@@ -144,22 +144,20 @@ export default createPlugin({
   });
 
   // Settings page — version selection, credentials, and container images
-  api.registerSettingsPage({
-    id: "mysql",
-    label: "MySQL / MariaDB",
-    description: "Configure MariaDB database versions and credentials.",
-    icon: "database",
-    position: 71,
-    sections: [
-      {
+  api.registerSettingsPage(
+    defineSettingsPage("mysql", "MySQL / MariaDB")
+      .description("Configure MariaDB database versions and credentials.")
+      .icon("database")
+      .position(71)
+      .section({
         id: "mysql-images",
         label: "Container Images",
         type: "runtime-manager",
         language: "mariadb",
         configPath: "plugins.mysql",
         fields: [],
-      },
-      {
+      })
+      .section({
         id: "mysql-defaults",
         label: "Default Credentials",
         description: "Default credentials for new MariaDB instances.",
@@ -169,9 +167,9 @@ export default createPlugin({
           { id: "defaultDatabase", label: "Default Database", type: "text", configKey: "defaultDatabase", placeholder: "aionima" },
           { id: "defaultPort", label: "Default Port", type: "number", configKey: "defaultPort", defaultValue: 3306 },
         ],
-      },
-    ],
-  });
+      })
+      .build()
+  );
 
   // ---------------------------------------------------------------------------
   // Stack registrations (shared DB containers)

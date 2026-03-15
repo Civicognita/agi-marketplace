@@ -4,20 +4,18 @@
  * Registers a settings page for configuring Ollama connection and default model.
  */
 
-import { createPlugin } from "@aionima/sdk";
+import { createPlugin, defineSettingsPage } from "@aionima/sdk";
 
 export default createPlugin({
   async activate(api) {
     const log = api.getLogger();
 
-    api.registerSettingsPage({
-      id: "provider-ollama",
-      label: "Ollama",
-      description: "Local models — Ollama provider",
-      icon: "hard-drive",
-      position: 12,
-      sections: [
-        {
+    api.registerSettingsPage(
+      defineSettingsPage("provider-ollama", "Ollama")
+        .description("Local models — Ollama provider")
+        .icon("hard-drive")
+        .position(12)
+        .section({
           id: "ollama-connection",
           label: "Connection",
           configPath: "bots.providers.ollama",
@@ -39,9 +37,9 @@ export default createPlugin({
               description: "Default model for new conversations",
             },
           ],
-        },
-      ],
-    });
+        })
+        .build()
+    );
 
     log.info("provider-ollama activated");
   },

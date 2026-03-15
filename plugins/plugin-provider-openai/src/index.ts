@@ -4,20 +4,18 @@
  * Registers a settings page for configuring the OpenAI API key, base URL, and default model.
  */
 
-import { createPlugin } from "@aionima/sdk";
+import { createPlugin, defineSettingsPage } from "@aionima/sdk";
 
 export default createPlugin({
   async activate(api) {
     const log = api.getLogger();
 
-    api.registerSettingsPage({
-      id: "provider-openai",
-      label: "OpenAI",
-      description: "GPT models — OpenAI API provider",
-      icon: "sparkles",
-      position: 11,
-      sections: [
-        {
+    api.registerSettingsPage(
+      defineSettingsPage("provider-openai", "OpenAI")
+        .description("GPT models — OpenAI API provider")
+        .icon("sparkles")
+        .position(11)
+        .section({
           id: "openai-credentials",
           label: "Credentials",
           configPath: "bots.providers.openai",
@@ -45,9 +43,9 @@ export default createPlugin({
               description: "Default model for new conversations",
             },
           ],
-        },
-      ],
-    });
+        })
+        .build()
+    );
 
     log.info("provider-openai activated");
   },

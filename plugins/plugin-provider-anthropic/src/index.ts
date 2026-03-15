@@ -4,20 +4,18 @@
  * Registers a settings page for configuring the Anthropic API key and default model.
  */
 
-import { createPlugin } from "@aionima/sdk";
+import { createPlugin, defineSettingsPage } from "@aionima/sdk";
 
 export default createPlugin({
   async activate(api) {
     const log = api.getLogger();
 
-    api.registerSettingsPage({
-      id: "provider-anthropic",
-      label: "Anthropic",
-      description: "Claude models — Anthropic API provider",
-      icon: "brain",
-      position: 10,
-      sections: [
-        {
+    api.registerSettingsPage(
+      defineSettingsPage("provider-anthropic", "Anthropic")
+        .description("Claude models — Anthropic API provider")
+        .icon("brain")
+        .position(10)
+        .section({
           id: "anthropic-credentials",
           label: "Credentials",
           configPath: "bots.providers.anthropic",
@@ -38,9 +36,9 @@ export default createPlugin({
               description: "Default model for new conversations",
             },
           ],
-        },
-      ],
-    });
+        })
+        .build()
+    );
 
     log.info("provider-anthropic activated");
   },

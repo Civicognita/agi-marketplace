@@ -3,7 +3,7 @@
  * Provides settings + comms page with chat logs and accomplishments.
  */
 
-import { createPlugin } from "@aionima/sdk";
+import { createPlugin, defineDashboardPage, defineSettingsPage } from "@aionima/sdk";
 import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
@@ -109,14 +109,12 @@ export default createPlugin({
     const logger = api.getLogger();
 
     // Settings page
-    api.registerSettingsPage({
-      id: "openclaw",
-      label: "OpenClaw",
-      description: "Connect OpenClaw agents to the AGI dashboard.",
-      icon: "link",
-      position: 60,
-      sections: [
-        {
+    api.registerSettingsPage(
+      defineSettingsPage("openclaw", "OpenClaw")
+        .description("Connect OpenClaw agents to the AGI dashboard.")
+        .icon("link")
+        .position(60)
+        .section({
           id: "openclaw-connection",
           label: "Connection",
           description: "OpenClaw endpoint and credentials.",
@@ -127,32 +125,30 @@ export default createPlugin({
             { id: "apiKey", label: "API Key", type: "password", configKey: "apiKey" },
             { id: "allowInsecureTls", label: "Allow Insecure TLS", type: "toggle", configKey: "allowInsecureTls" },
           ],
-        },
-      ],
-    });
+        })
+        .build()
+    );
 
     // Communications page under Comms domain
-    api.registerDashboardPage({
-      id: "openclaw-comms",
-      label: "OpenClaw",
-      description: "Chat logs and shared accomplishments with OpenClaw agents.",
-      domain: "comms",
-      routePath: "openclaw",
-      widgets: [
-        { type: "status-display", title: "Connection Status", statusEndpoint: "/status" },
-        { type: "table", dataEndpoint: "/agents", columns: [
+    api.registerDashboardPage(
+      defineDashboardPage("openclaw-comms", "OpenClaw")
+        .description("Chat logs and shared accomplishments with OpenClaw agents.")
+        .domain("comms")
+        .routePath("openclaw")
+        .widget({ type: "status-display", title: "Connection Status", statusEndpoint: "/status" })
+        .widget({ type: "table", dataEndpoint: "/agents", columns: [
           { key: "id", label: "Agent" },
           { key: "name", label: "Name" },
           { key: "status", label: "Status" },
-        ] },
-        { type: "log-stream", title: "Chat Logs", logSource: "/communications/logs", lines: 200 },
-        { type: "table", dataEndpoint: "/accomplishments", columns: [
+        ] })
+        .widget({ type: "log-stream", title: "Chat Logs", logSource: "/communications/logs", lines: 200 })
+        .widget({ type: "table", dataEndpoint: "/accomplishments", columns: [
           { key: "timestamp", label: "When", width: "180px" },
           { key: "title", label: "Accomplishment" },
           { key: "details", label: "Details" },
-        ] },
-      ],
-    });
+        ] })
+        .build()
+    );
 
     const getOpenclawConfig = (): Record<string, unknown> => {
       const cfg = api.getConfig() as { plugins?: Record<string, unknown> };

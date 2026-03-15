@@ -7,7 +7,7 @@
 
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-import { createPlugin } from "@aionima/sdk";
+import { createPlugin, defineSettingsPage } from "@aionima/sdk";
 
 const execFileAsync = promisify(execFile);
 
@@ -144,22 +144,20 @@ export default createPlugin({
   });
 
   // Settings page — version selection, credentials, and container images
-  api.registerSettingsPage({
-    id: "postgres",
-    label: "PostgreSQL",
-    description: "Configure PostgreSQL database versions and credentials.",
-    icon: "database",
-    position: 70,
-    sections: [
-      {
+  api.registerSettingsPage(
+    defineSettingsPage("postgres", "PostgreSQL")
+      .description("Configure PostgreSQL database versions and credentials.")
+      .icon("database")
+      .position(70)
+      .section({
         id: "postgres-images",
         label: "Container Images",
         type: "runtime-manager",
         language: "postgresql",
         configPath: "plugins.postgres",
         fields: [],
-      },
-      {
+      })
+      .section({
         id: "postgres-defaults",
         label: "Default Credentials",
         description: "Default credentials for new PostgreSQL instances.",
@@ -169,9 +167,9 @@ export default createPlugin({
           { id: "defaultDatabase", label: "Default Database", type: "text", configKey: "defaultDatabase", placeholder: "aionima" },
           { id: "defaultPort", label: "Default Port", type: "number", configKey: "defaultPort", defaultValue: 5432 },
         ],
-      },
-    ],
-  });
+      })
+      .build()
+  );
 
   // ---------------------------------------------------------------------------
   // Stack registrations (shared DB containers)
