@@ -1,0 +1,28 @@
+{
+  "name": "@aionima/channel-whatsapp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "aionima": {
+    "id": "channel-whatsapp",
+    "name": "WhatsApp Channel",
+    "description": "WhatsApp Business API messaging channel adapter",
+    "category": "integration",
+    "entry": "./src/index.ts",
+    "permissions": [
+      "network",
+      "config.read"
+    ],
+    "provides": [
+      "channels"
+    ],
+    "aionimaVersion": ">=0.3.0"
+  },
+  "dependencies": {
+    "@aionima/channel-sdk": "workspace:*",
+    "@aionima/plugins": "workspace:*"
+  }
+}

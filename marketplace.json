@@ -249,6 +249,51 @@
       "description": "xrdp remote desktop server management"
     },
     {
+      "name": "channel-telegram",
+      "source": "./plugins/plugin-channel-telegram",
+      "type": "channel",
+      "category": "integration",
+      "provides": ["channels"],
+      "version": "0.1.0",
+      "description": "Telegram messaging channel adapter (grammy)"
+    },
+    {
+      "name": "channel-discord",
+      "source": "./plugins/plugin-channel-discord",
+      "type": "channel",
+      "category": "integration",
+      "provides": ["channels"],
+      "version": "0.1.0",
+      "description": "Discord messaging channel adapter (discord.js)"
+    },
+    {
+      "name": "channel-gmail",
+      "source": "./plugins/plugin-channel-gmail",
+      "type": "channel",
+      "category": "integration",
+      "provides": ["channels"],
+      "version": "0.1.0",
+      "description": "Gmail email channel adapter (OAuth2)"
+    },
+    {
+      "name": "channel-signal",
+      "source": "./plugins/plugin-channel-signal",
+      "type": "channel",
+      "category": "integration",
+      "provides": ["channels"],
+      "version": "0.1.0",
+      "description": "Signal messaging channel adapter (signal-cli REST)"
+    },
+    {
+      "name": "channel-whatsapp",
+      "source": "./plugins/plugin-channel-whatsapp",
+      "type": "channel",
+      "category": "integration",
+      "provides": ["channels"],
+      "version": "0.1.0",
+      "description": "WhatsApp Business API channel adapter"
+    },
+    {
       "name": "provider-anthropic",
       "source": "./plugins/plugin-provider-anthropic",
       "type": "plugin",
