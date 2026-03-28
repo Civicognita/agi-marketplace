@@ -192,29 +192,6 @@ export default createPlugin({
     ],
   });
 
-  // ---------------------------------------------------------------------------
-  // Stack registrations
-  // ---------------------------------------------------------------------------
-
-  for (const ver of ["8.5", "8.4", "8.3", "8.2"]) {
-    api.registerStack({
-      id: `stack-php-${ver}`,
-      label: `PHP ${ver}`,
-      description: `PHP ${ver} runtime with Apache. Sets the container image for PHP-based projects.`,
-      category: "runtime",
-      projectCategories: ["app", "web"],
-      requirements: [
-        { id: "php", label: `PHP ${ver}`, type: "provided" },
-        { id: "composer", label: "Composer 2.x", type: "provided" },
-      ],
-      guides: [{ title: "Getting Started", content: `PHP ${ver} with Apache. Container image: \`php:${ver}-apache\`. Composer is managed separately.` }],
-      tools: [
-        { id: "composer-install", label: "composer install", description: "Install dependencies", action: "shell", command: "composer install" },
-      ],
-      icon: "server",
-    });
-  }
-
   log.info("PHP runtimes registered: 8.5, 8.4, 8.3, 8.2");
   },
 });

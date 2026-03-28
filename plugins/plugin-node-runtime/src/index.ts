@@ -160,64 +160,6 @@ export default createPlugin({
       .build()
   );
 
-  // ---------------------------------------------------------------------------
-  // Stack registrations
-  // ---------------------------------------------------------------------------
-
-  api.registerStack({
-    id: "stack-node-24",
-    label: "Node.js 24 LTS",
-    description: "Node.js 24 LTS runtime with npm 11. Sets the container image for Node-based projects.",
-    category: "runtime",
-    projectCategories: ["app", "web"],
-    requirements: [
-      { id: "node", label: "Node.js 24", type: "provided" },
-      { id: "npm", label: "npm 11", type: "provided" },
-    ],
-    guides: [{ title: "Getting Started", content: "This runtime stack sets the Node.js version for your project container. The container image `node:24-alpine` provides Node.js 24 and npm 11." }],
-    tools: [
-      { id: "npm-install", label: "npm install", description: "Install dependencies", action: "shell", command: "npm install" },
-      { id: "npm-dev", label: "npm run dev", description: "Start dev server", action: "shell", command: "npm run dev" },
-    ],
-    icon: "server",
-  });
-
-  api.registerStack({
-    id: "stack-node-22",
-    label: "Node.js 22 LTS",
-    description: "Node.js 22 LTS runtime with npm 10.9.",
-    category: "runtime",
-    projectCategories: ["app", "web"],
-    requirements: [
-      { id: "node", label: "Node.js 22", type: "provided" },
-      { id: "npm", label: "npm 10.9", type: "provided" },
-    ],
-    guides: [{ title: "Getting Started", content: "Node.js 22 LTS with npm 10.9. Container image: `node:22-alpine`." }],
-    tools: [
-      { id: "npm-install", label: "npm install", description: "Install dependencies", action: "shell", command: "npm install" },
-      { id: "npm-dev", label: "npm run dev", description: "Start dev server", action: "shell", command: "npm run dev" },
-    ],
-    icon: "server",
-  });
-
-  api.registerStack({
-    id: "stack-node-20",
-    label: "Node.js 20 LTS",
-    description: "Node.js 20 LTS runtime with npm 10.8.",
-    category: "runtime",
-    projectCategories: ["app", "web"],
-    requirements: [
-      { id: "node", label: "Node.js 20", type: "provided" },
-      { id: "npm", label: "npm 10.8", type: "provided" },
-    ],
-    guides: [{ title: "Getting Started", content: "Node.js 20 LTS with npm 10.8. Container image: `node:20-alpine`." }],
-    tools: [
-      { id: "npm-install", label: "npm install", description: "Install dependencies", action: "shell", command: "npm install" },
-      { id: "npm-dev", label: "npm run dev", description: "Start dev server", action: "shell", command: "npm run dev" },
-    ],
-    icon: "server",
-  });
-
   log.info("Node.js runtimes registered: 24 (npm 11), 22 (npm 10.9), 20 (npm 10.8)");
   },
 });
