@@ -29,7 +29,7 @@ export default createPlugin({
           `${ctx.projectPath}:/app:Z`,
         ],
         env: (ctx) => ({
-          PORT: String(ctx.allocatedPort || 3000),
+          PORT: "3000",
           NODE_ENV: ctx.mode,
         }),
         command: () => ["npm", "start"],
