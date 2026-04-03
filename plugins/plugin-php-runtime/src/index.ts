@@ -173,25 +173,6 @@ export default createPlugin({
     },
   });
 
-  // Register settings page for runtime management
-  api.registerSettingsPage({
-    id: "php-runtime",
-    label: "PHP",
-    description: "Manage PHP runtime versions installed on the host machine.",
-    icon: "server",
-    position: 81,
-    sections: [
-      {
-        id: "php-runtime-manager",
-        label: "PHP Versions",
-        type: "runtime-manager",
-        language: "php",
-        configPath: "plugins.php-runtime",
-        fields: [],
-      },
-    ],
-  });
-
   log.info("PHP runtimes registered: 8.5, 8.4, 8.3, 8.2");
   },
 });

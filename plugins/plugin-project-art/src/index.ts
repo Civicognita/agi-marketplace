@@ -17,14 +17,5 @@ export default createPlugin({
         { id: "export", label: "Export", description: "Export assets for production", action: "ui" },
       ],
     });
-
-    api.registerSettingsPage({
-      id: "project-art",
-      label: "Media Projects",
-      description: "Art/media project type for creative assets and multimedia content.",
-      icon: "palette",
-      position: 99,
-      sections: [],
-    });
   },
 });

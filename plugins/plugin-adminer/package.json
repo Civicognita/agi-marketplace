@@ -13,7 +13,9 @@
     "permissions": ["network", "shell.exec"],
     "entry": "./src/index.ts",
     "category": "service",
-    "provides": ["ux", "services"]
+    "provides": ["ux", "services"],
+    "bakedIn": false,
+    "disableable": true
   },
   "dependencies": {
     "@aionima/sdk": "workspace:*"

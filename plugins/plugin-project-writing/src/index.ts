@@ -18,14 +18,5 @@ export default createPlugin({
         { id: "outline", label: "Outline", description: "View document outline", action: "ui" },
       ],
     });
-
-    api.registerSettingsPage({
-      id: "project-writing",
-      label: "Literature Projects",
-      description: "Writing/literature project type for manuscripts, articles, and documentation.",
-      icon: "book",
-      position: 97,
-      sections: [],
-    });
   },
 });

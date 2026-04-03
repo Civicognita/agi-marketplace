@@ -12,7 +12,8 @@
     "provides": ["project-types"],
     "permissions": [],
     "entry": "./src/index.ts",
-    "aionimaVersion": ">=0.1.0"
+    "aionimaVersion": ">=0.1.0",
+    "bakedIn": true
   },
   "dependencies": {
     "@aionima/sdk": "workspace:*"

@@ -17,7 +17,9 @@
       "config.read"
     ],
     "entry": "./src/index.ts",
-    "aionimaVersion": ">=0.1.0"
+    "aionimaVersion": ">=0.1.0",
+    "bakedIn": false,
+    "disableable": true
   },
   "dependencies": {
     "@aionima/sdk": "workspace:*"

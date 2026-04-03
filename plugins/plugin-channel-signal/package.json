@@ -19,7 +19,9 @@
     "provides": [
       "channels"
     ],
-    "aionimaVersion": ">=0.3.0"
+    "aionimaVersion": ">=0.3.0",
+    "bakedIn": false,
+    "disableable": true
   },
   "dependencies": {
     "@aionima/channel-sdk": "workspace:*",

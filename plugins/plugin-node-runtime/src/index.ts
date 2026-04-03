@@ -5,7 +5,7 @@
 
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-import { createPlugin, defineSettingsPage } from "@aionima/sdk";
+import { createPlugin } from "@aionima/sdk";
 
 const execFileAsync = promisify(execFile);
 
@@ -142,23 +142,6 @@ export default createPlugin({
       log.info(`Node.js ${version} uninstalled successfully`);
     },
   });
-
-  // Register settings page for runtime management
-  api.registerSettingsPage(
-    defineSettingsPage("node-runtime", "Node.js")
-      .description("Manage Node.js runtime versions installed on the host machine.")
-      .icon("server")
-      .position(80)
-      .section({
-        id: "node-runtime-manager",
-        label: "Node.js Versions",
-        type: "runtime-manager",
-        language: "node",
-        configPath: "plugins.node-runtime",
-        fields: [],
-      })
-      .build()
-  );
 
   log.info("Node.js runtimes registered: 24 (npm 11), 22 (npm 10.9), 20 (npm 10.8)");
   },

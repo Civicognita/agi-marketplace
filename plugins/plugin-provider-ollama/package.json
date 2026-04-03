@@ -13,7 +13,9 @@
     "aionimaVersion": ">=0.1.0",
     "category": "integration",
     "provides": ["ux"],
-    "entry": "./src/index.ts"
+    "entry": "./src/index.ts",
+    "bakedIn": true,
+    "disableable": true
   },
   "dependencies": {
     "@aionima/sdk": "workspace:*"
