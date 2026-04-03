@@ -1,0 +1,22 @@
+{
+  "name": "@aionima/plugin-worker-data",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "worker-data",
+    "name": "Data Workers",
+    "description": "Data domain workers — modeler, migrator",
+    "category": "system",
+    "provides": ["workers"],
+    "permissions": ["filesystem.read", "filesystem.write"],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0",
+    "bakedIn": true,
+    "disableable": true
+  },
+  "dependencies": {
+    "@aionima/sdk": "workspace:*"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "@aionima/plugin-worker-ux",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "worker-ux",
+    "name": "UX Workers",
+    "description": "UX domain workers — designer.web, designer.cli",
+    "category": "system",
+    "provides": ["workers"],
+    "permissions": ["filesystem.read", "filesystem.write"],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0",
+    "bakedIn": true,
+    "disableable": true
+  },
+  "dependencies": {
+    "@aionima/sdk": "workspace:*"
+  }
+}

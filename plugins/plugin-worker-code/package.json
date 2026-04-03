@@ -1,0 +1,22 @@
+{
+  "name": "@aionima/plugin-worker-code",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "worker-code",
+    "name": "Code Workers",
+    "description": "Code domain workers — engineer, hacker, reviewer, tester",
+    "category": "system",
+    "provides": ["workers"],
+    "permissions": ["filesystem.read", "filesystem.write", "shell.exec"],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0",
+    "bakedIn": true,
+    "disableable": false
+  },
+  "dependencies": {
+    "@aionima/sdk": "workspace:*"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "@aionima/plugin-worker-ops",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "worker-ops",
+    "name": "Operations Workers",
+    "description": "Operations domain workers — deployer, custodian, syncer",
+    "category": "system",
+    "provides": ["workers"],
+    "permissions": ["filesystem.read", "filesystem.write", "shell.exec", "network"],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0",
+    "bakedIn": true,
+    "disableable": true
+  },
+  "dependencies": {
+    "@aionima/sdk": "workspace:*"
+  }
+}

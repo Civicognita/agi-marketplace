@@ -1,0 +1,22 @@
+{
+  "name": "@aionima/plugin-worker-strat",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "worker-strat",
+    "name": "Strategy Workers",
+    "description": "Strategy domain workers — planner, prioritizer",
+    "category": "system",
+    "provides": ["workers"],
+    "permissions": ["filesystem.read"],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0",
+    "bakedIn": true,
+    "disableable": false
+  },
+  "dependencies": {
+    "@aionima/sdk": "workspace:*"
+  }
+}

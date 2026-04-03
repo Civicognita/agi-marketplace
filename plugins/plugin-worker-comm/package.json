@@ -1,0 +1,22 @@
+{
+  "name": "@aionima/plugin-worker-comm",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "worker-comm",
+    "name": "Communication Workers",
+    "description": "Communication domain workers — writer.tech, writer.policy, editor",
+    "category": "system",
+    "provides": ["workers"],
+    "permissions": ["filesystem.read", "filesystem.write"],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0",
+    "bakedIn": true,
+    "disableable": true
+  },
+  "dependencies": {
+    "@aionima/sdk": "workspace:*"
+  }
+}

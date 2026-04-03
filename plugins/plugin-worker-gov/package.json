@@ -1,0 +1,22 @@
+{
+  "name": "@aionima/plugin-worker-gov",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "worker-gov",
+    "name": "Governance Workers",
+    "description": "Governance domain workers — auditor, archivist",
+    "category": "system",
+    "provides": ["workers"],
+    "permissions": ["filesystem.read"],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0",
+    "bakedIn": true,
+    "disableable": true
+  },
+  "dependencies": {
+    "@aionima/sdk": "workspace:*"
+  }
+}

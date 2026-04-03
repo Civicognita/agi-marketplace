@@ -319,6 +319,78 @@
       "provides": ["ux"],
       "version": "0.1.0",
       "description": "Local models — Ollama provider"
+    },
+    {
+      "name": "worker-code",
+      "source": "plugins/plugin-worker-code",
+      "type": "plugin",
+      "description": "Code domain workers — engineer, hacker, reviewer, tester",
+      "provides": ["workers"],
+      "trustTier": "official",
+      "category": "system"
+    },
+    {
+      "name": "worker-k",
+      "source": "plugins/plugin-worker-k",
+      "type": "plugin",
+      "description": "Knowledge domain workers — analyst, cryptologist, librarian, linguist",
+      "provides": ["workers"],
+      "trustTier": "official",
+      "category": "system"
+    },
+    {
+      "name": "worker-ux",
+      "source": "plugins/plugin-worker-ux",
+      "type": "plugin",
+      "description": "UX domain workers — designer.web, designer.cli",
+      "provides": ["workers"],
+      "trustTier": "official",
+      "category": "system"
+    },
+    {
+      "name": "worker-strat",
+      "source": "plugins/plugin-worker-strat",
+      "type": "plugin",
+      "description": "Strategy domain workers — planner, prioritizer",
+      "provides": ["workers"],
+      "trustTier": "official",
+      "category": "system"
+    },
+    {
+      "name": "worker-comm",
+      "source": "plugins/plugin-worker-comm",
+      "type": "plugin",
+      "description": "Communication domain workers — writer.tech, writer.policy, editor",
+      "provides": ["workers"],
+      "trustTier": "official",
+      "category": "system"
+    },
+    {
+      "name": "worker-ops",
+      "source": "plugins/plugin-worker-ops",
+      "type": "plugin",
+      "description": "Operations domain workers — deployer, custodian, syncer",
+      "provides": ["workers"],
+      "trustTier": "official",
+      "category": "system"
+    },
+    {
+      "name": "worker-gov",
+      "source": "plugins/plugin-worker-gov",
+      "type": "plugin",
+      "description": "Governance domain workers — auditor, archivist",
+      "provides": ["workers"],
+      "trustTier": "official",
+      "category": "system"
+    },
+    {
+      "name": "worker-data",
+      "source": "plugins/plugin-worker-data",
+      "type": "plugin",
+      "description": "Data domain workers — modeler, migrator",
+      "provides": ["workers"],
+      "trustTier": "official",
+      "category": "system"
     }
   ]
 }
