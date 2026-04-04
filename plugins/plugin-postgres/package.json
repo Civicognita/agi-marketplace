@@ -7,14 +7,14 @@
   "aionima": {
     "id": "aionima-postgres",
     "name": "PostgreSQL",
-    "description": "PostgreSQL database service for projects",
+    "description": "PostgreSQL database service — required by the ID service for identity and credential storage",
     "category": "service",
     "provides": ["services", "runtimes", "stacks"],
-    "permissions": [],
+    "permissions": ["shell.exec", "network"],
     "entry": "./src/index.ts",
     "aionimaVersion": ">=0.1.0",
-    "bakedIn": false,
-    "disableable": true
+    "bakedIn": true,
+    "disableable": false
   },
   "dependencies": {
     "@aionima/sdk": "workspace:*"
