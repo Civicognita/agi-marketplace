@@ -1,0 +1,23 @@
+{
+  "name": "@aionima/plugin-reader-media",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "aionima": {
+    "id": "reader-media",
+    "name": "Media Gallery",
+    "description": "Gallery viewer for media/art projects — responsive grid with lightbox",
+    "category": "reader",
+    "provides": ["stacks"],
+    "depends": [],
+    "permissions": [],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0"
+  },
+  "dependencies": {
+    "@aionima/sdk": "workspace:*"
+  }
+}

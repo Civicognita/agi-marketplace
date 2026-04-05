@@ -6,7 +6,7 @@ export default createPlugin({
       id: "art",
       label: "Art Project",
       category: "media",
-      hostable: false,
+      hostable: true,
       defaultMeta: {
         type: "art",
         mode: "production",

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reader</title>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    :root {
+      --bg: #faf8f0; --text: #2c2c2c; --muted: #8a8680; --accent: #6b5c4d;
+      --sidebar-bg: #f0ede4; --link: #4a6fa5; --border: #e0dcd4;
+      --max-w: 65ch; --font: Georgia, "Times New Roman", serif;
+    }
+    .dark {
+      --bg: #1e1e2e; --text: #cdd6f4; --muted: #6c7086; --accent: #89b4fa;
+      --sidebar-bg: #181825; --link: #89b4fa; --border: #313244;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; display: flex; }
+    #sidebar {
+      width: 260px; min-width: 260px; background: var(--sidebar-bg); border-right: 1px solid var(--border);
+      padding: 1.5rem 1rem; overflow-y: auto; height: 100vh; position: sticky; top: 0;
+    }
+    #sidebar h2 { font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem; color: var(--accent); letter-spacing: 0.05em; text-transform: uppercase; }
+    #sidebar ul { list-style: none; }
+    #sidebar li { margin-bottom: 0.35rem; }
+    #sidebar a {
+      color: var(--text); text-decoration: none; font-size: 0.85rem; display: block;
+      padding: 0.3rem 0.5rem; border-radius: 4px; transition: background 0.15s;
+    }
+    #sidebar a:hover, #sidebar a.active { background: var(--border); color: var(--accent); }
+    #main { flex: 1; padding: 3rem 2rem; display: flex; justify-content: center; }
+    #content {
+      max-width: var(--max-w); width: 100%; line-height: 1.8; font-size: 1.05rem;
+    }
+    #content h1 { font-size: 1.8rem; margin: 2rem 0 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+    #content h2 { font-size: 1.4rem; margin: 1.8rem 0 0.8rem; color: var(--accent); }
+    #content h3 { font-size: 1.15rem; margin: 1.5rem 0 0.6rem; }
+    #content p { margin-bottom: 1rem; }
+    #content a { color: var(--link); }
+    #content pre { background: var(--sidebar-bg); padding: 1rem; border-radius: 6px; overflow-x: auto; margin: 1rem 0; font-size: 0.9rem; }
+    #content code { font-family: "SF Mono", Menlo, monospace; font-size: 0.9em; }
+    #content blockquote { border-left: 3px solid var(--accent); padding-left: 1rem; color: var(--muted); margin: 1rem 0; font-style: italic; }
+    #content img { max-width: 100%; border-radius: 6px; margin: 1rem 0; }
+    #controls {
+      position: fixed; top: 1rem; right: 1rem; display: flex; gap: 0.5rem; z-index: 10;
+    }
+    #controls button {
+      background: var(--sidebar-bg); border: 1px solid var(--border); color: var(--text);
+      padding: 0.35rem 0.7rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem;
+    }
+    #controls button:hover { background: var(--border); }
+    .empty { text-align: center; color: var(--muted); padding: 4rem 1rem; }
+    @media (max-width: 768px) {
+      #sidebar { display: none; }
+      #main { padding: 1.5rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div id="sidebar">
+    <h2>Contents</h2>
+    <ul id="toc"></ul>
+  </div>
+  <div id="main">
+    <div id="content"><div class="empty">Loading...</div></div>
+  </div>
+  <div id="controls">
+    <button onclick="toggleDark()">Dark</button>
+  </div>
+  <script>
+    function toggleDark() {
+      document.documentElement.classList.toggle("dark");
+      localStorage.setItem("reader-dark", document.documentElement.classList.contains("dark") ? "1" : "0");
+    }
+    if (localStorage.getItem("reader-dark") === "1") document.documentElement.classList.add("dark");
+
+    async function loadContent() {
+      const toc = document.getElementById("toc");
+      const content = document.getElementById("content");
+      try {
+        const res = await fetch("/content/");
+        if (!res.ok) throw new Error("Failed to list content");
+        const files = await res.json();
+        const docs = files
+          .filter(f => !f.type && /\.(md|txt|rst|adoc)$/i.test(f.name))
+          .sort((a, b) => a.name.localeCompare(b.name));
+
+        if (docs.length === 0) {
+          content.innerHTML = '<div class="empty">No documents found.<br>Add .md or .txt files to the project directory.</div>';
+          return;
+        }
+
+        // Build TOC
+        toc.innerHTML = docs.map((f, i) =>
+          `<li><a href="#" data-idx="${i}" class="${i === 0 ? 'active' : ''}">${f.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ')}</a></li>`
+        ).join("");
+
+        // Load first document
+        await renderDoc(docs[0].name);
+
+        // TOC click handler
+        toc.addEventListener("click", async (e) => {
+          const a = e.target.closest("a[data-idx]");
+          if (!a) return;
+          e.preventDefault();
+          toc.querySelectorAll("a").forEach(el => el.classList.remove("active"));
+          a.classList.add("active");
+          await renderDoc(docs[parseInt(a.dataset.idx)].name);
+          window.scrollTo(0, 0);
+        });
+      } catch (err) {
+        content.innerHTML = `<div class="empty">Error loading content: ${err.message}</div>`;
+      }
+    }
+
+    async function renderDoc(filename) {
+      const content = document.getElementById("content");
+      try {
+        const res = await fetch(`/content/${encodeURIComponent(filename)}`);
+        const text = await res.text();
+        if (/\.md$/i.test(filename)) {
+          content.innerHTML = marked.parse(text);
+        } else {
+          content.innerHTML = `<pre>${text.replace(/&/g,'&amp;').replace(/</g,'&lt;')}</pre>`;
+        }
+      } catch (err) {
+        content.innerHTML = `<div class="empty">Error: ${err.message}</div>`;
+      }
+    }
+
+    loadContent();
+  </script>
+</body>
+</html>

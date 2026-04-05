@@ -1,0 +1,23 @@
+{
+  "name": "@aionima/plugin-reader-literature",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "aionima": {
+    "id": "reader-literature",
+    "name": "Literature Reader",
+    "description": "E-reader viewer for literature/writing projects — serves markdown and text with a book-style layout",
+    "category": "reader",
+    "provides": ["stacks"],
+    "depends": [],
+    "permissions": [],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0"
+  },
+  "dependencies": {
+    "@aionima/sdk": "workspace:*"
+  }
+}

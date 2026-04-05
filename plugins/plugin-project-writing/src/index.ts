@@ -6,7 +6,7 @@ export default createPlugin({
       id: "writing",
       label: "Writing Project",
       category: "literature",
-      hostable: false,
+      hostable: true,
       defaultMeta: {
         type: "writing",
         mode: "production",

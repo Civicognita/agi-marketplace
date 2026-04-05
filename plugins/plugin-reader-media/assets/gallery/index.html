@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gallery</title>
+  <style>
+    :root {
+      --bg: #1e1e2e; --text: #cdd6f4; --muted: #6c7086; --accent: #89b4fa;
+      --card-bg: #181825; --border: #313244; --overlay: rgba(0,0,0,0.9);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+    header { padding: 1.5rem 2rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
+    header h1 { font-size: 1.2rem; font-weight: 700; }
+    #filters { display: flex; gap: 0.5rem; }
+    #filters button {
+      background: var(--card-bg); border: 1px solid var(--border); color: var(--text);
+      padding: 0.3rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem;
+    }
+    #filters button:hover, #filters button.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+    #grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.75rem; padding: 1.5rem 2rem;
+    }
+    .card {
+      background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px;
+      overflow: hidden; cursor: pointer; transition: border-color 0.15s, transform 0.1s;
+    }
+    .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .card img, .card video { width: 100%; height: 180px; object-fit: cover; display: block; }
+    .card .label { padding: 0.5rem 0.6rem; font-size: 0.75rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .empty { text-align: center; color: var(--muted); padding: 4rem 1rem; grid-column: 1 / -1; }
+
+    /* Lightbox */
+    #lightbox {
+      display: none; position: fixed; inset: 0; background: var(--overlay); z-index: 100;
+      justify-content: center; align-items: center; flex-direction: column;
+    }
+    #lightbox.open { display: flex; }
+    #lightbox img, #lightbox video { max-width: 90vw; max-height: 85vh; border-radius: 8px; }
+    #lightbox .caption { color: var(--muted); font-size: 0.85rem; margin-top: 0.75rem; }
+    #lightbox .close {
+      position: absolute; top: 1rem; right: 1.5rem; color: var(--text);
+      font-size: 1.5rem; cursor: pointer; background: none; border: none;
+    }
+    #lightbox .nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      color: var(--text); font-size: 2rem; cursor: pointer; background: none; border: none; padding: 1rem;
+    }
+    #lightbox .nav.prev { left: 0.5rem; }
+    #lightbox .nav.next { right: 0.5rem; }
+
+    @media (max-width: 600px) {
+      #grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); padding: 1rem; gap: 0.5rem; }
+      .card img, .card video { height: 120px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Gallery</h1>
+    <div id="filters">
+      <button class="active" data-filter="all">All</button>
+      <button data-filter="image">Images</button>
+      <button data-filter="video">Videos</button>
+    </div>
+  </header>
+  <div id="grid"><div class="empty">Loading...</div></div>
+  <div id="lightbox">
+    <button class="close" onclick="closeLightbox()">&times;</button>
+    <button class="nav prev" onclick="navLightbox(-1)">&lsaquo;</button>
+    <button class="nav next" onclick="navLightbox(1)">&rsaquo;</button>
+    <div id="lb-content"></div>
+    <div class="caption" id="lb-caption"></div>
+  </div>
+  <script>
+    const IMG_EXT = new Set(["jpg","jpeg","png","gif","svg","webp","bmp","tiff"]);
+    const VID_EXT = new Set(["mp4","webm","mov","avi"]);
+    let items = [];
+    let lbIdx = -1;
+    let currentFilter = "all";
+
+    function ext(name) { const d = name.lastIndexOf("."); return d >= 0 ? name.slice(d+1).toLowerCase() : ""; }
+    function mediaType(name) { const e = ext(name); if (IMG_EXT.has(e)) return "image"; if (VID_EXT.has(e)) return "video"; return null; }
+
+    async function loadGallery() {
+      const grid = document.getElementById("grid");
+      try {
+        const res = await fetch("/media/");
+        if (!res.ok) throw new Error("Failed to list media");
+        const files = await res.json();
+        items = files.filter(f => !f.type && mediaType(f.name)).sort((a,b) => a.name.localeCompare(b.name));
+
+        if (items.length === 0) {
+          grid.innerHTML = '<div class="empty">No media files found.<br>Add images or videos to the project directory.</div>';
+          return;
+        }
+        renderGrid();
+      } catch (err) {
+        grid.innerHTML = `<div class="empty">Error: ${err.message}</div>`;
+      }
+    }
+
+    function renderGrid() {
+      const grid = document.getElementById("grid");
+      const filtered = currentFilter === "all" ? items : items.filter(f => mediaType(f.name) === currentFilter);
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div class="empty">No ${currentFilter} files found.</div>`;
+        return;
+      }
+      grid.innerHTML = filtered.map((f, i) => {
+        const mt = mediaType(f.name);
+        const src = `/media/${encodeURIComponent(f.name)}`;
+        const thumb = mt === "video"
+          ? `<video src="${src}" muted preload="metadata"></video>`
+          : `<img src="${src}" loading="lazy" alt="${f.name}" />`;
+        return `<div class="card" onclick="openLightbox(${i})" data-type="${mt}">${thumb}<div class="label">${f.name}</div></div>`;
+      }).join("");
+    }
+
+    function openLightbox(idx) {
+      const filtered = currentFilter === "all" ? items : items.filter(f => mediaType(f.name) === currentFilter);
+      lbIdx = idx;
+      showLbItem(filtered[idx]);
+      document.getElementById("lightbox").classList.add("open");
+    }
+
+    function closeLightbox() {
+      document.getElementById("lightbox").classList.remove("open");
+      const v = document.querySelector("#lb-content video");
+      if (v) v.pause();
+    }
+
+    function navLightbox(dir) {
+      const filtered = currentFilter === "all" ? items : items.filter(f => mediaType(f.name) === currentFilter);
+      lbIdx = (lbIdx + dir + filtered.length) % filtered.length;
+      showLbItem(filtered[lbIdx]);
+    }
+
+    function showLbItem(item) {
+      const c = document.getElementById("lb-content");
+      const cap = document.getElementById("lb-caption");
+      const src = `/media/${encodeURIComponent(item.name)}`;
+      const mt = mediaType(item.name);
+      if (mt === "video") {
+        c.innerHTML = `<video src="${src}" controls autoplay style="max-width:90vw;max-height:85vh;border-radius:8px;"></video>`;
+      } else {
+        c.innerHTML = `<img src="${src}" style="max-width:90vw;max-height:85vh;border-radius:8px;" />`;
+      }
+      cap.textContent = item.name;
+    }
+
+    // Filter buttons
+    document.getElementById("filters").addEventListener("click", (e) => {
+      const btn = e.target.closest("button[data-filter]");
+      if (!btn) return;
+      currentFilter = btn.dataset.filter;
+      document.querySelectorAll("#filters button").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      renderGrid();
+    });
+
+    // Close lightbox on Escape or click outside
+    document.addEventListener("keydown", (e) => {
+      if (!document.getElementById("lightbox").classList.contains("open")) return;
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") navLightbox(-1);
+      if (e.key === "ArrowRight") navLightbox(1);
+    });
+
+    loadGallery();
+  </script>
+</body>
+</html>
