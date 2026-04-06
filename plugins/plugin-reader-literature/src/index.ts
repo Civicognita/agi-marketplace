@@ -8,6 +8,7 @@ const assetsDir = resolve(__dirname, "../assets/reader");
 
 export default createPlugin({
   async activate(api) {
+    // Stack: nginx container serving the e-reader SPA with project content
     api.registerStack({
       id: "stack-literature-reader",
       label: "Literature Reader",
@@ -38,6 +39,54 @@ export default createPlugin({
       ],
       tools: [],
       icon: "book-open",
+    });
+
+    // Dashboard panel: "Reader" tab for writing projects
+    api.registerProjectPanel({
+      id: "literature-reader",
+      label: "Reader",
+      projectTypes: ["writing"],
+      widgets: [
+        {
+          type: "status-display" as const,
+          statusEndpoint: "/status?path={projectPath}",
+          title: "Reader Status",
+        },
+        {
+          type: "iframe" as const,
+          src: "/reader-frame?path={projectPath}",
+          title: "Reader Preview",
+          height: "600px",
+        },
+      ],
+    });
+
+    // HTTP route: status endpoint for the reader panel
+    api.registerHttpRoute("get", "/status", async (req) => {
+      const path = (req.query as Record<string, string>).path ?? "";
+      const config = api.getProjectConfig(path);
+      const hosting = config?.hosting as Record<string, unknown> | undefined;
+      return {
+        status: 200,
+        body: {
+          status: hosting ? "active" : "not configured",
+          hostname: hosting?.hostname ?? "unknown",
+          type: hosting?.type ?? "writing",
+          url: hosting?.hostname ? `https://${String(hosting.hostname)}.ai.on` : null,
+        },
+      };
+    });
+
+    // HTTP route: redirect iframe to the reader's *.ai.on URL
+    api.registerHttpRoute("get", "/reader-frame", async (req, reply) => {
+      const path = (req.query as Record<string, string>).path ?? "";
+      const config = api.getProjectConfig(path);
+      const hosting = config?.hosting as Record<string, unknown> | undefined;
+      const hostname = hosting?.hostname as string | undefined;
+      if (hostname) {
+        return reply.redirect(`https://${hostname}.ai.on`);
+      }
+      return { status: 404, body: { error: "Project hosting not configured" } };
     });
   },
 });
