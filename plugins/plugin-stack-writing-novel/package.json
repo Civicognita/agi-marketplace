@@ -1,0 +1,21 @@
+{
+  "name": "@aionima/plugin-stack-writing-novel",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "stack-writing-novel",
+    "name": "Novel Stack",
+    "description": "Directory structure and tools for novel writing projects",
+    "category": "writing",
+    "provides": ["stacks"],
+    "depends": ["project-writing"],
+    "permissions": [],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0"
+  },
+  "dependencies": {
+    "@aionima/sdk": "workspace:*"
+  }
+}

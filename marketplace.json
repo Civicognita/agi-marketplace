@@ -524,6 +524,39 @@
       ],
       "trustTier": "official",
       "category": "reader"
+    },
+    {
+      "name": "stack-writing-novel",
+      "source": "plugins/plugin-stack-writing-novel",
+      "type": "plugin",
+      "description": "Novel writing stack \u2014 chapters, character profiles, worldbuilding",
+      "provides": [
+        "stacks"
+      ],
+      "trustTier": "official",
+      "category": "writing"
+    },
+    {
+      "name": "stack-writing-screenplay",
+      "source": "plugins/plugin-stack-writing-screenplay",
+      "type": "plugin",
+      "description": "Screenplay writing stack \u2014 scenes, act structure",
+      "provides": [
+        "stacks"
+      ],
+      "trustTier": "official",
+      "category": "writing"
+    },
+    {
+      "name": "stack-writing-research",
+      "source": "plugins/plugin-stack-writing-research",
+      "type": "plugin",
+      "description": "Research paper stack \u2014 academic sections, citations",
+      "provides": [
+        "stacks"
+      ],
+      "trustTier": "official",
+      "category": "writing"
     }
   ]
 }
