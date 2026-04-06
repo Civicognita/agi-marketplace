@@ -8,56 +8,53 @@ const assetsDir = resolve(__dirname, "../assets/reader");
 
 export default createPlugin({
   async activate(api) {
-    // Stack: nginx container serving the e-reader SPA with project content
-    api.registerStack({
-      id: "stack-literature-reader",
-      label: "Literature Reader",
-      description: "E-reader style viewer for markdown/text projects — book layout with dark mode",
-      category: "workflow",
+    // Register the Reader MagicApp — provides container serving + dashboard panel
+    api.registerMagicApp({
+      id: "reader",
+      name: "Reader",
+      description: "E-reader for literature projects — book-style layout with markdown rendering",
+      version: "1.0.0",
+      icon: "book-open",
+      category: "reader",
+      projectTypes: ["writing"],
       projectCategories: ["literature"],
-      requirements: [],
       containerConfig: {
         image: "nginx:alpine",
         internalPort: 80,
-        shared: false,
         volumeMounts: (ctx) => [
           `${ctx.projectPath}:/usr/share/nginx/html/content:ro,Z`,
           `${assetsDir}:/usr/share/nginx/html:ro,Z`,
         ],
         env: () => ({}),
       },
-      installActions: [],
-      devCommands: {},
-      guides: [
+      panel: {
+        label: "Reader",
+        widgets: [
+          {
+            type: "status-display" as const,
+            statusEndpoint: "/status?path={projectPath}",
+            title: "Reader Status",
+          },
+          {
+            type: "iframe" as const,
+            src: "/reader-frame?path={projectPath}",
+            title: "Reader Preview",
+            height: "600px",
+          },
+        ],
+      },
+      agentPrompts: [
         {
-          title: "Literature Reader",
-          content:
-            "Place `.md`, `.txt`, or `.rst` files in your project directory.\n" +
-            "The reader serves them in a book-style layout at your project's `*.ai.on` URL.\n\n" +
-            "Organize chapters with directories or numbered filenames.",
+          id: "reader.writing-assistant",
+          label: "Writing Assistant",
+          description: "AI assistance for writing and editing prose",
+          systemPrompt:
+            "This is a literature project. Help the user with writing, editing, and organizing their manuscripts. " +
+            "The project contains text files (.md, .txt) that are served as a book via the Reader app.",
         },
       ],
-      tools: [],
-      icon: "book-open",
-    });
-
-    // Dashboard panel: "Reader" tab for writing projects
-    api.registerProjectPanel({
-      id: "literature-reader",
-      label: "Reader",
-      projectTypes: ["writing"],
-      widgets: [
-        {
-          type: "status-display" as const,
-          statusEndpoint: "/status?path={projectPath}",
-          title: "Reader Status",
-        },
-        {
-          type: "iframe" as const,
-          src: "/reader-frame?path={projectPath}",
-          title: "Reader Preview",
-          height: "600px",
-        },
+      tools: [
+        { id: "word-count", label: "Word Count", description: "Count words across all documents", action: "shell" as const, command: "find . -name '*.md' -o -name '*.txt' | xargs wc -w 2>/dev/null || echo '0 total'" },
       ],
     });
 

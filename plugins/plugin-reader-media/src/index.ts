@@ -8,56 +8,53 @@ const assetsDir = resolve(__dirname, "../assets/gallery");
 
 export default createPlugin({
   async activate(api) {
-    // Stack: nginx container serving the gallery SPA with project media
-    api.registerStack({
-      id: "stack-media-gallery",
-      label: "Media Gallery",
-      description: "Responsive gallery viewer for image and video projects",
-      category: "workflow",
+    // Register the Gallery MagicApp — provides container serving + dashboard panel
+    api.registerMagicApp({
+      id: "gallery",
+      name: "Gallery",
+      description: "Media gallery for art projects — responsive grid with lightbox viewer",
+      version: "1.0.0",
+      icon: "image",
+      category: "gallery",
+      projectTypes: ["art"],
       projectCategories: ["media"],
-      requirements: [],
       containerConfig: {
         image: "nginx:alpine",
         internalPort: 80,
-        shared: false,
         volumeMounts: (ctx) => [
           `${ctx.projectPath}:/usr/share/nginx/html/media:ro,Z`,
           `${assetsDir}:/usr/share/nginx/html:ro,Z`,
         ],
         env: () => ({}),
       },
-      installActions: [],
-      devCommands: {},
-      guides: [
+      panel: {
+        label: "Gallery",
+        widgets: [
+          {
+            type: "status-display" as const,
+            statusEndpoint: "/status?path={projectPath}",
+            title: "Gallery Status",
+          },
+          {
+            type: "iframe" as const,
+            src: "/gallery-frame?path={projectPath}",
+            title: "Gallery Preview",
+            height: "600px",
+          },
+        ],
+      },
+      agentPrompts: [
         {
-          title: "Media Gallery",
-          content:
-            "Place images (`.jpg`, `.png`, `.gif`, `.svg`, `.webp`) and videos (`.mp4`, `.webm`) in your project directory.\n" +
-            "The gallery serves them in a responsive grid at your project's `*.ai.on` URL.\n\n" +
-            "Subdirectories are shown as album sections.",
+          id: "gallery.art-assistant",
+          label: "Art Assistant",
+          description: "AI assistance for organizing and managing media assets",
+          systemPrompt:
+            "This is a media/art project. Help the user organize their images and videos. " +
+            "The project contains media files served via the Gallery app.",
         },
       ],
-      tools: [],
-      icon: "image",
-    });
-
-    // Dashboard panel: "Gallery" tab for art projects
-    api.registerProjectPanel({
-      id: "media-gallery",
-      label: "Gallery",
-      projectTypes: ["art"],
-      widgets: [
-        {
-          type: "status-display" as const,
-          statusEndpoint: "/status?path={projectPath}",
-          title: "Gallery Status",
-        },
-        {
-          type: "iframe" as const,
-          src: "/gallery-frame?path={projectPath}",
-          title: "Gallery Preview",
-          height: "600px",
-        },
+      tools: [
+        { id: "asset-count", label: "Asset Count", description: "Count media files", action: "shell" as const, command: "find . -type f \\( -name '*.jpg' -o -name '*.png' -o -name '*.gif' -o -name '*.mp4' -o -name '*.webm' \\) | wc -l" },
       ],
     });
 
