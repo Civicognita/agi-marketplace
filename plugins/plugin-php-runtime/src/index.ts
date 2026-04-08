@@ -5,7 +5,7 @@
 
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-import { createPlugin } from "@aionima/sdk";
+import { createPlugin, defineSettings, defineSettingsPage } from "@aionima/sdk";
 
 const execFileAsync = promisify(execFile);
 
@@ -172,6 +172,61 @@ export default createPlugin({
       log.info(`PHP ${version} uninstalled successfully`);
     },
   });
+
+  // Settings page — version manager + config
+  const runtimeSection = defineSettings("php-versions", "Installed Versions")
+    .description("Manage PHP versions installed on this machine")
+    .configPath("runtimes.php")
+    .type("runtime-manager")
+    .language("php")
+    .build();
+
+  const configSection = defineSettings("php-config", "Configuration")
+    .description("Default PHP settings for new projects")
+    .configPath("runtimes.php")
+    .field({
+      id: "defaultVersion",
+      label: "Default Version",
+      type: "select",
+      description: "Version used when creating new projects",
+      options: [
+        { value: "8.5", label: "PHP 8.5" },
+        { value: "8.4", label: "PHP 8.4" },
+        { value: "8.3", label: "PHP 8.3" },
+        { value: "8.2", label: "PHP 8.2" },
+      ],
+      defaultValue: "8.4",
+    })
+    .field({
+      id: "memoryLimit",
+      label: "Memory Limit",
+      type: "select",
+      description: "PHP memory_limit for development",
+      options: [
+        { value: "128M", label: "128 MB" },
+        { value: "256M", label: "256 MB" },
+        { value: "512M", label: "512 MB" },
+        { value: "1G", label: "1 GB" },
+      ],
+      defaultValue: "256M",
+    })
+    .field({
+      id: "displayErrors",
+      label: "Display Errors",
+      type: "toggle",
+      description: "Show PHP errors in browser (development only)",
+      defaultValue: true,
+    })
+    .build();
+
+  api.registerSettingsPage(
+    defineSettingsPage("php-settings", "PHP")
+      .description("PHP runtime versions and configuration")
+      .icon("php")
+      .section(runtimeSection)
+      .section(configSection)
+      .build(),
+  );
 
   log.info("PHP runtimes registered: 8.5, 8.4, 8.3, 8.2");
   },

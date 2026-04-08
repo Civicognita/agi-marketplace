@@ -5,7 +5,7 @@
 
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-import { createPlugin } from "@aionima/sdk";
+import { createPlugin, defineSettings, defineSettingsPage } from "@aionima/sdk";
 
 const execFileAsync = promisify(execFile);
 
@@ -142,6 +142,53 @@ export default createPlugin({
       log.info(`Node.js ${version} uninstalled successfully`);
     },
   });
+
+  // Settings page — version manager + config
+  const runtimeSection = defineSettings("node-versions", "Installed Versions")
+    .description("Manage Node.js versions installed on this machine")
+    .configPath("runtimes.node")
+    .type("runtime-manager")
+    .language("node")
+    .build();
+
+  const configSection = defineSettings("node-config", "Configuration")
+    .description("Default Node.js settings for new projects")
+    .configPath("runtimes.node")
+    .field({
+      id: "defaultVersion",
+      label: "Default Version",
+      type: "select",
+      description: "Version used when creating new projects",
+      options: [
+        { value: "24", label: "Node.js 24 LTS" },
+        { value: "22", label: "Node.js 22 LTS" },
+        { value: "20", label: "Node.js 20 LTS" },
+      ],
+      defaultValue: "22",
+    })
+    .field({
+      id: "packageManager",
+      label: "Package Manager",
+      type: "select",
+      description: "Default package manager for new projects",
+      options: [
+        { value: "npm", label: "npm" },
+        { value: "pnpm", label: "pnpm" },
+        { value: "yarn", label: "Yarn" },
+        { value: "bun", label: "Bun" },
+      ],
+      defaultValue: "pnpm",
+    })
+    .build();
+
+  api.registerSettingsPage(
+    defineSettingsPage("node-settings", "Node.js")
+      .description("Node.js runtime versions and configuration")
+      .icon("node")
+      .section(runtimeSection)
+      .section(configSection)
+      .build(),
+  );
 
   log.info("Node.js runtimes registered: 24 (npm 11), 22 (npm 10.9), 20 (npm 10.8)");
   },
