@@ -23,6 +23,7 @@ export default createPlugin({
         env: (ctx) => ({
           PORT: "3000",
           NODE_ENV: ctx.mode,
+          HOSTNAME: "0.0.0.0",
         }),
         command: (ctx) => {
           if (ctx.mode === "development") {

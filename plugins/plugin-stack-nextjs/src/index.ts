@@ -6,6 +6,18 @@
 
 import { createPlugin } from "@aionima/sdk";
 
+/**
+ * Shell command that patches next.config to read ALLOWED_DEV_ORIGINS from env.
+ * Finds the config file, checks if already patched, then inserts a line after
+ * the first `{` to add allowedDevOrigins. Idempotent and no-op if no config found.
+ */
+const PATCH_DEV_ORIGINS = [
+  `f=$(ls next.config.ts next.config.js next.config.mjs 2>/dev/null | head -1)`,
+  `[ -n "$f" ]`,
+  `! grep -q allowedDevOrigins "$f"`,
+  `sed -i '0,/{/s/{/{\\n  allowedDevOrigins: process.env.ALLOWED_DEV_ORIGINS?.split(","),/' "$f"`,
+].join(" && ") + " || true";
+
 export default createPlugin({
   async activate(api) {
     api.registerStack({
@@ -31,6 +43,7 @@ export default createPlugin({
         env: (ctx) => ({
           PORT: "3000",
           NODE_ENV: ctx.mode,
+          HOSTNAME: "0.0.0.0",
         }),
         command: (ctx) => {
           if (ctx.mode === "development") {
@@ -41,6 +54,7 @@ export default createPlugin({
       },
       installActions: [
         { id: "npm.install", label: "Install Dependencies", command: "npm install" },
+        { id: "patch.dev-origins", label: "Configure tunnel dev origins", command: PATCH_DEV_ORIGINS, optional: true },
       ],
       devCommands: {
         dev: "npm run dev",
