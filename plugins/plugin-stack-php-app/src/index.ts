@@ -19,10 +19,15 @@ export default createPlugin({
           `${ctx.projectPath}:/var/www/html:Z`,
         ],
         env: () => ({}),
-        command: () => [
-          "bash", "-c",
-          "a2enmod rewrite && docker-php-entrypoint apache2-foreground",
-        ],
+        command: (ctx) => {
+          if (ctx.mode === "development") {
+            return ["php", "-S", "0.0.0.0:80", "-t", "/var/www/html"];
+          }
+          return [
+            "bash", "-c",
+            "a2enmod rewrite && docker-php-entrypoint apache2-foreground",
+          ];
+        },
       },
       installActions: [
         { id: "composer.install", label: "Install Dependencies", command: "composer install" },

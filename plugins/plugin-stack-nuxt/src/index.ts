@@ -24,7 +24,12 @@ export default createPlugin({
           PORT: "3000",
           NODE_ENV: ctx.mode,
         }),
-        command: () => ["npm", "start"],
+        command: (ctx) => {
+          if (ctx.mode === "development") {
+            return ["npm", "run", "dev"];
+          }
+          return ["sh", "-c", "npm run build && npm start"];
+        },
       },
       installActions: [
         { id: "npm.install", label: "Install Dependencies", command: "npm install" },

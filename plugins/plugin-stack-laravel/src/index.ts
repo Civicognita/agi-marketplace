@@ -16,14 +16,20 @@ export default createPlugin({
         image: "php:8.3-apache",
         internalPort: 80,
         shared: false,
+        docRoot: "public",
         volumeMounts: (ctx) => [
           `${ctx.projectPath}:/var/www/html:Z`,
         ],
         env: () => ({}),
-        command: () => [
-          "bash", "-c",
-          "sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf /etc/apache2/apache2.conf && a2enmod rewrite && docker-php-entrypoint apache2-foreground",
-        ],
+        command: (ctx) => {
+          if (ctx.mode === "development") {
+            return ["php", "artisan", "serve", "--host=0.0.0.0", "--port=80"];
+          }
+          return [
+            "bash", "-c",
+            "sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf /etc/apache2/apache2.conf && a2enmod rewrite && docker-php-entrypoint apache2-foreground",
+          ];
+        },
         healthCheck: "curl -sf http://localhost/ || exit 1",
       },
       installActions: [
