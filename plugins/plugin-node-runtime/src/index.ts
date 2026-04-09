@@ -1,6 +1,6 @@
 /**
  * Node.js Runtime Plugin — registers Node.js runtime versions, hosting extensions,
- * and a native Node.js installer for the host machine.
+ * and container image management for project hosting.
  */
 
 import { execFile } from "node:child_process";
@@ -80,7 +80,8 @@ export default createPlugin({
     ],
   });
 
-  // Register runtime installer for native Node.js on the machine
+  // Runtime installer — manages container images for project hosting.
+  // Does NOT touch the host machine's Node.js (that's managed by install.sh/upgrade.sh).
   api.registerRuntimeInstaller({
     language: "node",
 
@@ -90,14 +91,13 @@ export default createPlugin({
 
     async listInstalled(): Promise<string[]> {
       const installed: string[] = [];
-      try {
-        const { stdout } = await execFileAsync("node", ["-v"], { timeout: 5000 });
-        const match = stdout.trim().match(/^v(\d+)/);
-        if (match?.[1]) {
-          installed.push(match[1]);
+      for (const ver of ["24", "22", "20"]) {
+        try {
+          await execFileAsync("podman", ["image", "exists", `node:${ver}-alpine`], { timeout: 10_000 });
+          installed.push(ver);
+        } catch {
+          // Image not pulled yet
         }
-      } catch {
-        // Node not installed
       }
       return installed;
     },
@@ -106,46 +106,34 @@ export default createPlugin({
       const valid = ["24", "22", "20"];
       if (!valid.includes(version)) throw new Error(`Invalid Node.js version: ${version}`);
 
-      log.info(`installing Node.js ${version}: adding NodeSource repository`);
+      log.info(`pulling container image node:${version}-alpine`);
       try {
-        await execFileAsync("sudo", [
-          "bash", "-c",
-          `curl -fsSL https://deb.nodesource.com/setup_${version}.x | sudo -E bash -`,
-        ], { timeout: 120_000 });
+        await execFileAsync("podman", ["pull", `node:${version}-alpine`], { timeout: 300_000 });
       } catch (err: unknown) {
         const stderr = (err as { stderr?: string })?.stderr ?? "";
-        throw new Error(`NodeSource setup failed for Node.js ${version}: ${stderr || (err instanceof Error ? err.message : String(err))}`);
+        throw new Error(`Failed to pull node:${version}-alpine: ${stderr || (err instanceof Error ? err.message : String(err))}`);
       }
-
-      log.info(`installing Node.js ${version}: apt-get install nodejs`);
-      try {
-        await execFileAsync("sudo", ["apt-get", "install", "-y", "nodejs"], { timeout: 120_000 });
-      } catch (err: unknown) {
-        const stderr = (err as { stderr?: string })?.stderr ?? "";
-        throw new Error(`apt-get install failed for Node.js ${version}: ${stderr || (err instanceof Error ? err.message : String(err))}`);
-      }
-      log.info(`Node.js ${version} installed successfully`);
+      log.info(`node:${version}-alpine pulled successfully`);
     },
 
     async uninstall(version: string): Promise<void> {
       const valid = ["24", "22", "20"];
       if (!valid.includes(version)) throw new Error(`Invalid Node.js version: ${version}`);
 
-      log.info(`uninstalling Node.js ${version}`);
+      log.info(`removing container image node:${version}-alpine`);
       try {
-        await execFileAsync("sudo", ["apt-get", "purge", "-y", "nodejs"], { timeout: 60_000 });
-        await execFileAsync("sudo", ["apt-get", "autoremove", "-y"], { timeout: 60_000 });
+        await execFileAsync("podman", ["rmi", `node:${version}-alpine`], { timeout: 60_000 });
       } catch (err: unknown) {
         const stderr = (err as { stderr?: string })?.stderr ?? "";
-        throw new Error(`uninstall failed for Node.js ${version}: ${stderr || (err instanceof Error ? err.message : String(err))}`);
+        throw new Error(`Failed to remove node:${version}-alpine: ${stderr || (err instanceof Error ? err.message : String(err))}`);
       }
-      log.info(`Node.js ${version} uninstalled successfully`);
+      log.info(`node:${version}-alpine removed`);
     },
   });
 
   // Settings page — version manager + config
   const runtimeSection = defineSettings("node-versions", "Installed Versions")
-    .description("Manage Node.js versions installed on this machine")
+    .description("Manage Node.js container images for project hosting")
     .configPath("runtimes.node")
     .type("runtime-manager")
     .language("node")

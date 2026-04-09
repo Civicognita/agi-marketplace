@@ -1,6 +1,6 @@
 /**
  * PHP Runtime Plugin — registers PHP runtime versions, hosting extensions,
- * and a native PHP installer for the host machine.
+ * and container image management for project hosting.
  */
 
 import { execFile } from "node:child_process";
@@ -93,7 +93,8 @@ export default createPlugin({
     ],
   });
 
-  // Register runtime installer for native PHP on the machine
+  // Runtime installer — manages container images for project hosting.
+  // Does NOT touch the host machine's PHP (projects run in containers).
   api.registerRuntimeInstaller({
     language: "php",
 
@@ -105,10 +106,10 @@ export default createPlugin({
       const installed: string[] = [];
       for (const ver of ["8.5", "8.4", "8.3", "8.2"]) {
         try {
-          await execFileAsync(`php${ver}`, ["-v"], { timeout: 5000 });
+          await execFileAsync("podman", ["image", "exists", `php:${ver}-apache`], { timeout: 10_000 });
           installed.push(ver);
         } catch {
-          // Not installed
+          // Image not pulled yet
         }
       }
       return installed;
@@ -118,64 +119,34 @@ export default createPlugin({
       const valid = ["8.5", "8.4", "8.3", "8.2"];
       if (!valid.includes(version)) throw new Error(`Invalid PHP version: ${version}`);
 
-      // Ensure ondrej/php PPA is present (required for php8.x packages on Ubuntu)
+      log.info(`pulling container image php:${version}-apache`);
       try {
-        await execFileAsync("sudo", ["apt-get", "install", "-y", "software-properties-common"], { timeout: 120_000 });
-        await execFileAsync("sudo", ["add-apt-repository", "-y", "ppa:ondrej/php"], { timeout: 120_000 });
+        await execFileAsync("podman", ["pull", `php:${version}-apache`], { timeout: 300_000 });
       } catch (err: unknown) {
         const stderr = (err as { stderr?: string })?.stderr ?? "";
-        throw new Error(`failed to add PHP PPA: ${stderr || (err instanceof Error ? err.message : String(err))}`);
+        throw new Error(`Failed to pull php:${version}-apache: ${stderr || (err instanceof Error ? err.message : String(err))}`);
       }
-
-      const packages = [
-        `php${version}`,
-        `php${version}-common`,
-        `php${version}-cli`,
-        `php${version}-fpm`,
-        `php${version}-mysql`,
-        `php${version}-xml`,
-        `php${version}-curl`,
-        `php${version}-mbstring`,
-        `php${version}-zip`,
-      ];
-
-      log.info(`installing PHP ${version}: apt-get update`);
-      try {
-        await execFileAsync("sudo", ["apt-get", "update"], { timeout: 120_000 });
-      } catch (err: unknown) {
-        const stderr = (err as { stderr?: string })?.stderr ?? "";
-        throw new Error(`apt-get update failed: ${stderr || (err instanceof Error ? err.message : String(err))}`);
-      }
-
-      log.info(`installing PHP ${version}: apt-get install ${packages.join(" ")}`);
-      try {
-        await execFileAsync("sudo", ["apt-get", "install", "-y", ...packages], { timeout: 300_000 });
-      } catch (err: unknown) {
-        const stderr = (err as { stderr?: string })?.stderr ?? "";
-        throw new Error(`apt-get install failed for PHP ${version}: ${stderr || (err instanceof Error ? err.message : String(err))}`);
-      }
-      log.info(`PHP ${version} installed successfully`);
+      log.info(`php:${version}-apache pulled successfully`);
     },
 
     async uninstall(version: string): Promise<void> {
       const valid = ["8.5", "8.4", "8.3", "8.2"];
       if (!valid.includes(version)) throw new Error(`Invalid PHP version: ${version}`);
 
-      log.info(`uninstalling PHP ${version}`);
+      log.info(`removing container image php:${version}-apache`);
       try {
-        await execFileAsync("sudo", ["apt-get", "purge", "-y", `php${version}*`], { timeout: 120_000 });
-        await execFileAsync("sudo", ["apt-get", "autoremove", "-y"], { timeout: 60_000 });
+        await execFileAsync("podman", ["rmi", `php:${version}-apache`], { timeout: 60_000 });
       } catch (err: unknown) {
         const stderr = (err as { stderr?: string })?.stderr ?? "";
-        throw new Error(`uninstall failed for PHP ${version}: ${stderr || (err instanceof Error ? err.message : String(err))}`);
+        throw new Error(`Failed to remove php:${version}-apache: ${stderr || (err instanceof Error ? err.message : String(err))}`);
       }
-      log.info(`PHP ${version} uninstalled successfully`);
+      log.info(`php:${version}-apache removed`);
     },
   });
 
   // Settings page — version manager + config
   const runtimeSection = defineSettings("php-versions", "Installed Versions")
-    .description("Manage PHP versions installed on this machine")
+    .description("Manage PHP container images for project hosting")
     .configPath("runtimes.php")
     .type("runtime-manager")
     .language("php")
