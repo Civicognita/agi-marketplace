@@ -23,8 +23,15 @@ export default createPlugin({
         ],
         env: () => ({}),
         command: (ctx) => {
-          // Fix storage permissions — Apache runs as www-data but mounted files are host-owned
-          const fixPerms = "chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache 2>/dev/null; chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache 2>/dev/null";
+          // Fix storage permissions — mounted files are owned by the host user's GID.
+          // Add www-data to that group so Apache can write to storage/ and bootstrap/cache/.
+          // Then ensure group-write bits are set on the directories Laravel needs.
+          const fixPerms = [
+            "HOST_GID=$(stat -c %g /var/www/html)",
+            "groupadd -g $HOST_GID hostgroup 2>/dev/null || true",
+            "usermod -aG $HOST_GID www-data 2>/dev/null || usermod -aG hostgroup www-data 2>/dev/null || true",
+            "chmod -R g+w /var/www/html/storage /var/www/html/bootstrap/cache 2>/dev/null || true",
+          ].join(" && ");
           if (ctx.mode === "development") {
             return ["bash", "-c", `${fixPerms} && php artisan serve --host=0.0.0.0 --port=80`];
           }
