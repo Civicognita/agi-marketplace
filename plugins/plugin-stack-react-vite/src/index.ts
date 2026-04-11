@@ -8,6 +8,7 @@ export default createPlugin({
       description: "React SPA built with Vite, served via nginx in production",
       category: "framework",
       projectCategories: ["web"],
+      compatibleLanguages: ["node"],
       requirements: [
         { id: "node", label: "Node.js Runtime", type: "expected" },
         { id: "react", label: "React", type: "provided" },

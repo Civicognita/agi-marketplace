@@ -291,6 +291,20 @@
       "description": "React SPA built with Vite, served via nginx in production"
     },
     {
+      "name": "stack-react",
+      "source": "./plugins/plugin-stack-react",
+      "type": "plugin",
+      "category": "stack",
+      "provides": [
+        "stacks"
+      ],
+      "depends": [
+        "aionima-node-runtime"
+      ],
+      "version": "0.1.0",
+      "description": "React package within a monorepo — component library or standalone app with its own dev server"
+    },
+    {
       "name": "stack-static-hosting",
       "source": "./plugins/plugin-stack-static-hosting",
       "type": "plugin",

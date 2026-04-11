@@ -15,6 +15,7 @@ export default createPlugin({
         "Laravel full-stack with Livewire for reactive components, Tailwind CSS for styling, and Vite for asset bundling. The standard Aionima pattern for PHP web applications.",
       category: "framework",
       projectCategories: ["app", "web"],
+      compatibleLanguages: ["php"],
       requirements: [
         { id: "php", label: "PHP Runtime", type: "expected" },
         { id: "composer", label: "Composer", type: "expected" },

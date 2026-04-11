@@ -8,6 +8,7 @@ export default createPlugin({
       description: "Generic PHP application hosting with Apache",
       category: "framework",
       projectCategories: ["web"],
+      compatibleLanguages: ["php"],
       requirements: [
         { id: "php-runtime", label: "PHP Runtime", type: "expected" },
       ],

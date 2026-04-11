@@ -8,6 +8,7 @@ export default createPlugin({
       description: "Laravel PHP framework — routing, Eloquent ORM, Blade templates",
       category: "framework",
       projectCategories: ["web"],
+      compatibleLanguages: ["php"],
       requirements: [
         { id: "php-runtime", label: "PHP Runtime", type: "expected" },
         { id: "laravel", label: "Laravel Framework", type: "provided" },

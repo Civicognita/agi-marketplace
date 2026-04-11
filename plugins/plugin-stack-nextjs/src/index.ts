@@ -27,6 +27,7 @@ export default createPlugin({
         "React framework with server-side rendering, file-based routing, and Tailwind CSS. Used for marketing sites, dashboards, and full-stack web apps.",
       category: "framework",
       projectCategories: ["app", "web"],
+      compatibleLanguages: ["node"],
       requirements: [
         { id: "node", label: "Node.js Runtime", type: "expected" },
         { id: "nextjs", label: "Next.js", type: "provided" },

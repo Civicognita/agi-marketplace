@@ -8,6 +8,7 @@ export default createPlugin({
       description: "Vue.js framework with SSR, file-based routing, and auto-imports",
       category: "framework",
       projectCategories: ["web"],
+      compatibleLanguages: ["node"],
       requirements: [
         { id: "node", label: "Node.js Runtime", type: "expected" },
         { id: "nuxt", label: "Nuxt", type: "provided" },

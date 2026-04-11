@@ -8,6 +8,7 @@ export default createPlugin({
       description: "Generic Node.js application hosting with npm start",
       category: "framework",
       projectCategories: ["app", "web"],
+      compatibleLanguages: ["node"],
       requirements: [
         { id: "node", label: "Node.js Runtime", type: "expected" },
       ],
