@@ -217,7 +217,7 @@
       "depends": [
         "aionima-php-runtime"
       ],
-      "version": "0.1.0",
+      "version": "0.2.0",
       "description": "Laravel PHP framework stack with Apache container hosting"
     },
     {
@@ -259,7 +259,7 @@
       "depends": [
         "aionima-node-runtime"
       ],
-      "version": "0.1.0",
+      "version": "0.2.0",
       "description": "Vue.js framework with SSR, file-based routing, and auto-imports"
     },
     {
@@ -273,7 +273,7 @@
       "depends": [
         "aionima-php-runtime"
       ],
-      "version": "0.1.0",
+      "version": "0.2.0",
       "description": "Generic PHP application hosting with Apache"
     },
     {
@@ -287,7 +287,7 @@
       "depends": [
         "aionima-node-runtime"
       ],
-      "version": "0.1.0",
+      "version": "0.2.0",
       "description": "React SPA built with Vite, served via nginx in production"
     },
     {
@@ -326,7 +326,7 @@
       "depends": [
         "aionima-php-runtime"
       ],
-      "version": "0.1.0",
+      "version": "0.2.0",
       "description": "Laravel full-stack with Livewire, Tailwind CSS, and Vite asset bundling"
     },
     {
