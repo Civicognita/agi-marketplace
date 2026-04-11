@@ -14,9 +14,9 @@ const execFileAsync = promisify(execFile);
 const VERSION_TAGS = ["7.4", "7.2", "6.2"] as const;
 
 const VERSIONS = [
-  { id: "redis-7.4", name: "Redis 7.4", image: "redis:7.4-alpine", description: "Redis 7.4 — latest stable" },
-  { id: "redis-7.2", name: "Redis 7.2", image: "redis:7.2-alpine", description: "Redis 7.2 — previous stable" },
-  { id: "redis-6.2", name: "Redis 6.2", image: "redis:6.2-alpine", description: "Redis 6.2 LTS — long-term support" },
+  { id: "redis-7.4", name: "Redis 7.4", image: "ghcr.io/civicognita/redis:7.4", description: "Redis 7.4 — latest stable" },
+  { id: "redis-7.2", name: "Redis 7.2", image: "ghcr.io/civicognita/redis:7.2", description: "Redis 7.2 — previous stable" },
+  { id: "redis-6.2", name: "Redis 6.2", image: "ghcr.io/civicognita/redis:6.2", description: "Redis 6.2 LTS — long-term support" },
 ] as const;
 
 export default createPlugin({
@@ -67,7 +67,7 @@ export default createPlugin({
         for (const img of images) {
           for (const name of img.Names ?? []) {
             for (const tag of VERSION_TAGS) {
-              if (name.includes(`redis:${tag}-alpine`)) {
+              if (name.includes(`civicognita/redis:${tag}`)) {
                 installed.push(tag);
               }
             }
@@ -83,22 +83,22 @@ export default createPlugin({
       if (!(VERSION_TAGS as readonly string[]).includes(version)) {
         throw new Error(`Invalid Redis version: ${version}`);
       }
-      log.info(`pulling redis:${version}-alpine`);
+      log.info(`pulling ghcr.io/civicognita/redis:${version}`);
       await execFileAsync("podman", [
-        "pull", `docker.io/library/redis:${version}-alpine`,
+        "pull", `ghcr.io/civicognita/redis:${version}`,
       ], { timeout: 300_000 });
-      log.info(`redis:${version}-alpine pulled successfully`);
+      log.info(`ghcr.io/civicognita/redis:${version} pulled successfully`);
     },
 
     async uninstall(version: string): Promise<void> {
       if (!(VERSION_TAGS as readonly string[]).includes(version)) {
         throw new Error(`Invalid Redis version: ${version}`);
       }
-      log.info(`removing redis:${version}-alpine`);
+      log.info(`removing ghcr.io/civicognita/redis:${version}`);
       await execFileAsync("podman", [
-        "rmi", `redis:${version}-alpine`,
+        "rmi", `ghcr.io/civicognita/redis:${version}`,
       ], { timeout: 60_000 });
-      log.info(`redis:${version}-alpine removed`);
+      log.info(`ghcr.io/civicognita/redis:${version} removed`);
     },
   });
 

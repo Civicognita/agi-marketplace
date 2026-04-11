@@ -35,7 +35,7 @@ export default createPlugin({
         { id: "tailwind", label: "Tailwind CSS", type: "provided" },
       ],
       containerConfig: {
-        image: "node:22-alpine",
+        image: "ghcr.io/civicognita/node:22",
         internalPort: 3000,
         shared: false,
         volumeMounts: (ctx) => [

@@ -17,12 +17,16 @@ export default createPlugin({
       projectCategories: ["app", "web"],
       compatibleLanguages: ["php"],
       requirements: [
-        { id: "php", label: "PHP Runtime", type: "expected" },
-        { id: "composer", label: "Composer", type: "expected" },
-        { id: "laravel", label: "Laravel", type: "provided" },
+        { id: "laravel", label: "Laravel", type: "expected" },
         { id: "livewire", label: "Livewire", type: "provided" },
+        { id: "alpine-js", label: "Alpine.js", type: "provided" },
         { id: "tailwind", label: "Tailwind CSS", type: "provided" },
         { id: "vite", label: "Vite", type: "provided" },
+      ],
+      installActions: [
+        { id: "composer.require.livewire", label: "Install Livewire", command: "composer require livewire/livewire" },
+        { id: "npm.install.tailwind", label: "Install Tailwind & Vite", command: "npm install -D tailwindcss @tailwindcss/vite" },
+        { id: "npm.install.alpinejs", label: "Install Alpine.js", command: "npm install alpinejs" },
       ],
       guides: [
         {

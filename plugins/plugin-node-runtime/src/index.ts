@@ -19,7 +19,7 @@ export default createPlugin({
     label: "Node.js 24 LTS",
     language: "node",
     version: "24",
-    containerImage: "node:24-alpine",
+    containerImage: "ghcr.io/civicognita/node:24",
     internalPort: 3000,
     projectTypes: ["node", "nextjs", "nuxt"],
     installable: true,
@@ -35,7 +35,7 @@ export default createPlugin({
     label: "Node.js 22 LTS",
     language: "node",
     version: "22",
-    containerImage: "node:22-alpine",
+    containerImage: "ghcr.io/civicognita/node:22",
     internalPort: 3000,
     projectTypes: ["node", "nextjs", "nuxt"],
     installable: true,
@@ -51,7 +51,7 @@ export default createPlugin({
     label: "Node.js 20 LTS",
     language: "node",
     version: "20",
-    containerImage: "node:20-alpine",
+    containerImage: "ghcr.io/civicognita/node:20",
     internalPort: 3000,
     projectTypes: ["node", "nextjs", "nuxt"],
     installable: true,
@@ -93,7 +93,7 @@ export default createPlugin({
       const installed: string[] = [];
       for (const ver of ["24", "22", "20"]) {
         try {
-          await execFileAsync("podman", ["image", "exists", `node:${ver}-alpine`], { timeout: 10_000 });
+          await execFileAsync("podman", ["image", "exists", `ghcr.io/civicognita/node:${ver}`], { timeout: 10_000 });
           installed.push(ver);
         } catch {
           // Image not pulled yet
@@ -106,28 +106,28 @@ export default createPlugin({
       const valid = ["24", "22", "20"];
       if (!valid.includes(version)) throw new Error(`Invalid Node.js version: ${version}`);
 
-      log.info(`pulling container image node:${version}-alpine`);
+      log.info(`pulling container image ghcr.io/civicognita/node:${version}`);
       try {
-        await execFileAsync("podman", ["pull", `node:${version}-alpine`], { timeout: 300_000 });
+        await execFileAsync("podman", ["pull", `ghcr.io/civicognita/node:${version}`], { timeout: 300_000 });
       } catch (err: unknown) {
         const stderr = (err as { stderr?: string })?.stderr ?? "";
-        throw new Error(`Failed to pull node:${version}-alpine: ${stderr || (err instanceof Error ? err.message : String(err))}`);
+        throw new Error(`Failed to pull ghcr.io/civicognita/node:${version}: ${stderr || (err instanceof Error ? err.message : String(err))}`);
       }
-      log.info(`node:${version}-alpine pulled successfully`);
+      log.info(`ghcr.io/civicognita/node:${version} pulled successfully`);
     },
 
     async uninstall(version: string): Promise<void> {
       const valid = ["24", "22", "20"];
       if (!valid.includes(version)) throw new Error(`Invalid Node.js version: ${version}`);
 
-      log.info(`removing container image node:${version}-alpine`);
+      log.info(`removing container image ghcr.io/civicognita/node:${version}`);
       try {
-        await execFileAsync("podman", ["rmi", `node:${version}-alpine`], { timeout: 60_000 });
+        await execFileAsync("podman", ["rmi", `ghcr.io/civicognita/node:${version}`], { timeout: 60_000 });
       } catch (err: unknown) {
         const stderr = (err as { stderr?: string })?.stderr ?? "";
-        throw new Error(`Failed to remove node:${version}-alpine: ${stderr || (err instanceof Error ? err.message : String(err))}`);
+        throw new Error(`Failed to remove ghcr.io/civicognita/node:${version}: ${stderr || (err instanceof Error ? err.message : String(err))}`);
       }
-      log.info(`node:${version}-alpine removed`);
+      log.info(`ghcr.io/civicognita/node:${version} removed`);
     },
   });
 

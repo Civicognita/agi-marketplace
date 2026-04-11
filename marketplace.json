@@ -324,7 +324,7 @@
         "stacks"
       ],
       "depends": [
-        "aionima-php-runtime"
+        "stack-laravel"
       ],
       "version": "0.2.0",
       "description": "Laravel full-stack with Livewire, Tailwind CSS, and Vite asset bundling"

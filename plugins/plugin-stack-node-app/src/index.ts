@@ -13,7 +13,7 @@ export default createPlugin({
         { id: "node", label: "Node.js Runtime", type: "expected" },
       ],
       containerConfig: {
-        image: "node:22-alpine",
+        image: "ghcr.io/civicognita/node:22",
         internalPort: 3000,
         shared: false,
         volumeMounts: (ctx) => [
