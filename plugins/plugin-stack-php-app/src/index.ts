@@ -13,7 +13,7 @@ export default createPlugin({
         { id: "php-runtime", label: "PHP Runtime", type: "expected" },
       ],
       containerConfig: {
-        image: "php:8.3-apache",
+        image: "php:8.4-apache",
         internalPort: 80,
         shared: false,
         volumeMounts: (ctx) => [

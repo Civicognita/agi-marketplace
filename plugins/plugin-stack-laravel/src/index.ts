@@ -14,7 +14,7 @@ export default createPlugin({
         { id: "laravel", label: "Laravel Framework", type: "provided" },
       ],
       containerConfig: {
-        image: "php:8.3-apache",
+        image: "php:8.4-apache",
         internalPort: 80,
         shared: false,
         docRoot: "public",
@@ -28,6 +28,8 @@ export default createPlugin({
           const setup = [
             "export APACHE_RUN_USER=root",
             "export APACHE_RUN_GROUP=root",
+            // Install common PHP extensions needed by Laravel projects
+            "docker-php-ext-install -j$(nproc) bcmath pdo_mysql pcntl 2>/dev/null || true",
             // Install Composer if not present
             "command -v composer >/dev/null || (curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer)",
             // Install PHP deps if vendor/ is missing
