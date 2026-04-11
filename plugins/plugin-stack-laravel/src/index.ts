@@ -23,12 +23,14 @@ export default createPlugin({
         ],
         env: () => ({}),
         command: (ctx) => {
+          // Fix storage permissions — Apache runs as www-data but mounted files are host-owned
+          const fixPerms = "chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache 2>/dev/null; chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache 2>/dev/null";
           if (ctx.mode === "development") {
-            return ["php", "artisan", "serve", "--host=0.0.0.0", "--port=80"];
+            return ["bash", "-c", `${fixPerms} && php artisan serve --host=0.0.0.0 --port=80`];
           }
           return [
             "bash", "-c",
-            "sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf /etc/apache2/apache2.conf && a2enmod rewrite && docker-php-entrypoint apache2-foreground",
+            `${fixPerms} && sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf /etc/apache2/apache2.conf && a2enmod rewrite && docker-php-entrypoint apache2-foreground`,
           ];
         },
         healthCheck: "curl -sf http://localhost/ || exit 1",
@@ -46,6 +48,7 @@ export default createPlugin({
       },
       guides: [
         { title: "Getting Started", content: "Run `php artisan serve` to start the development server.\n\nDatabase: configure `.env` with your DB connection, then `php artisan migrate`." },
+        { title: "Log Files", content: "**Laravel logs:** `storage/logs/laravel.log`\n\n**Apache logs:** Available in the container at `/var/log/apache2/error.log` and `/var/log/apache2/access.log`. View them with the Terminal tool or `podman logs`." },
       ],
       tools: [
         { id: "composer-install", label: "composer install", description: "Install PHP dependencies", action: "shell", command: "composer install" },
