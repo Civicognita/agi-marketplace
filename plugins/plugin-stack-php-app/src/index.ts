@@ -33,12 +33,17 @@ export default createPlugin({
       installActions: [
         { id: "composer.install", label: "Install Dependencies", command: "composer install" },
       ],
+      logSources: [
+        { id: "apache-error", label: "Apache Error Log", type: "container-file" as const, containerPath: "/var/log/apache2/error.log" },
+      ],
       devCommands: {},
       guides: [
         { title: "Getting Started", content: "Place PHP files in the project root. Apache serves from the configured document root." },
       ],
       tools: [
         { id: "composer-install", label: "composer install", description: "Install PHP dependencies", action: "shell", command: "composer install" },
+        { id: "composer-update", label: "composer update", description: "Update PHP dependencies", action: "shell", command: "composer update" },
+        { id: "composer-dump", label: "composer dump-autoload", description: "Regenerate autoloader", action: "shell", command: "composer dump-autoload" },
       ],
       icon: "box",
     });

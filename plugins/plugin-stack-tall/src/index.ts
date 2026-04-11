@@ -66,14 +66,35 @@ export default createPlugin({
           ].join("\n"),
         },
       ],
+      logSources: [
+        { id: "laravel-log", label: "Laravel Log", type: "container-file" as const, containerPath: "/var/www/html/storage/logs/laravel.log" },
+      ],
       tools: [
-        { id: "artisan-serve", label: "php artisan serve", description: "Start Laravel dev server", action: "shell", command: "php artisan serve" },
-        { id: "artisan-migrate", label: "php artisan migrate", description: "Run database migrations", action: "shell", command: "php artisan migrate" },
+        // Composer
         { id: "composer-install", label: "composer install", description: "Install PHP dependencies", action: "shell", command: "composer install" },
+        { id: "composer-update", label: "composer update", description: "Update PHP dependencies", action: "shell", command: "composer update" },
+        { id: "composer-dump", label: "composer dump-autoload", description: "Regenerate autoloader", action: "shell", command: "composer dump-autoload" },
+        // Artisan — setup
+        { id: "artisan-key-generate", label: "artisan key:generate", description: "Generate application key", action: "shell", command: "php artisan key:generate" },
+        { id: "artisan-storage-link", label: "artisan storage:link", description: "Create storage symlink", action: "shell", command: "php artisan storage:link" },
+        // Artisan — database
+        { id: "artisan-migrate", label: "artisan migrate", description: "Run database migrations", action: "shell", command: "php artisan migrate" },
+        { id: "artisan-migrate-status", label: "artisan migrate:status", description: "Show migration status", action: "shell", command: "php artisan migrate:status" },
+        { id: "artisan-db-seed", label: "artisan db:seed", description: "Seed the database", action: "shell", command: "php artisan db:seed" },
+        // Artisan — cache & optimization
+        { id: "artisan-optimize", label: "artisan optimize", description: "Cache config, routes, views", action: "shell", command: "php artisan optimize" },
+        { id: "artisan-optimize-clear", label: "artisan optimize:clear", description: "Clear all caches", action: "shell", command: "php artisan optimize:clear" },
+        { id: "artisan-cache-clear", label: "artisan cache:clear", description: "Clear application cache", action: "shell", command: "php artisan cache:clear" },
+        { id: "artisan-config-clear", label: "artisan config:clear", description: "Clear config cache", action: "shell", command: "php artisan config:clear" },
+        // Artisan — info
+        { id: "artisan-route-list", label: "artisan route:list", description: "List all routes", action: "shell", command: "php artisan route:list" },
+        // Dev server + Vite
+        { id: "artisan-serve", label: "artisan serve", description: "Start Laravel dev server", action: "shell", command: "php artisan serve" },
         { id: "npm-install", label: "npm install", description: "Install frontend dependencies", action: "shell", command: "npm install" },
         { id: "vite-dev", label: "npm run dev", description: "Start Vite HMR server", action: "shell", command: "npm run dev" },
-        { id: "artisan-tinker", label: "php artisan tinker", description: "Interactive REPL", action: "shell", command: "php artisan tinker" },
-        { id: "pest-test", label: "php artisan test", description: "Run PestPHP tests", action: "shell", command: "php artisan test" },
+        // Testing & REPL
+        { id: "pest-test", label: "artisan test", description: "Run PestPHP tests", action: "shell", command: "php artisan test" },
+        { id: "artisan-tinker", label: "artisan tinker", description: "Interactive REPL", action: "shell", command: "php artisan tinker" },
       ],
       icon: "layers",
     });

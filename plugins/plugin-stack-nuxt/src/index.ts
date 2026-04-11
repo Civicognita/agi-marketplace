@@ -37,18 +37,20 @@ export default createPlugin({
         { id: "npm.install", label: "Install Dependencies", command: "npm install" },
       ],
       devCommands: {
-        dev: "npm run dev",
-        build: "npm run build",
+        dev: "npx nuxi dev",
+        build: "npx nuxi build",
         start: "npm start",
+        preview: "npx nuxi preview",
       },
       guides: [
-        { title: "Getting Started", content: "Run `npm run dev` to start the development server.\n\nPages live in `pages/` with file-based routing." },
+        { title: "Getting Started", content: "Run `npx nuxi dev` to start the development server.\n\nPages live in `pages/` with file-based routing." },
       ],
       tools: [
         { id: "npm-install", label: "npm install", description: "Install dependencies", action: "shell", command: "npm install" },
-        { id: "npm-dev", label: "npm run dev", description: "Start dev server", action: "shell", command: "npm run dev" },
-        { id: "npm-build", label: "npm run build", description: "Build for production", action: "shell", command: "npm run build" },
-        { id: "npm-start", label: "npm start", description: "Start production server", action: "shell", command: "npm start" },
+        { id: "nuxi-dev", label: "nuxi dev", description: "Start Nuxt dev server", action: "shell", command: "npx nuxi dev" },
+        { id: "nuxi-build", label: "nuxi build", description: "Build for production", action: "shell", command: "npx nuxi build" },
+        { id: "nuxi-preview", label: "nuxi preview", description: "Preview production build", action: "shell", command: "npx nuxi preview" },
+        { id: "nuxi-generate", label: "nuxi generate", description: "Generate static site", action: "shell", command: "npx nuxi generate" },
       ],
       icon: "globe",
     });
