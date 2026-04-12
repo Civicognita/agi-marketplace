@@ -45,8 +45,9 @@ RUN docker-php-ext-configure gd \
       pdo_pgsql \
       pgsql \
       sockets \
-      sodium \
-      zip
+      zip \
+  # sodium is built-in since PHP 8.2 — enable it if not already loaded
+  && php -m | grep -qi sodium || docker-php-ext-enable sodium 2>/dev/null || true
 
 # PECL extensions
 RUN pecl install redis imagick \
