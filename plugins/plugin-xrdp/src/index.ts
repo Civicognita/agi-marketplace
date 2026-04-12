@@ -9,6 +9,8 @@
  */
 
 import { createPlugin } from "@aionima/sdk";
+import { fileURLToPath } from "node:url";
+import { dirname, resolve } from "node:path";
 
 const SERVER_IP = "192.168.0.144";
 const RDP_PORT = 3389;
@@ -323,15 +325,15 @@ export default createPlugin({
     // Knowledge Namespace
     // -----------------------------------------------------------------------
 
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
     api.registerKnowledge({
       id: "xrdp",
       label: "xrdp",
       description: "xrdp remote desktop server setup and configuration",
-      contentDir: "/etc/xrdp",
+      contentDir: resolve(__dirname, "../docs"),
       topics: [
-        { title: "Server Config", path: "xrdp.ini", description: "Main xrdp server configuration" },
-        { title: "Session Manager", path: "sesman.ini", description: "Session manager configuration" },
-        { title: "Window Manager", path: "startwm.sh", description: "Script that launches the desktop environment for RDP sessions" },
+        { title: "Setup Guide", path: "setup.md", description: "How to connect and manage xrdp" },
       ],
     });
 

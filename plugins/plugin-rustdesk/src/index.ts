@@ -9,6 +9,8 @@
  */
 
 import { createPlugin } from "@aionima/sdk";
+import { fileURLToPath } from "node:url";
+import { dirname, resolve } from "node:path";
 
 const PUBLIC_KEY = "MMmP0fzH5Rtn0dG6cgDI4Tu9gDduHLwdP9wNEOJmbF8=";
 const SERVER_IP = "192.168.0.144";
@@ -282,13 +284,15 @@ export default createPlugin({
     // Knowledge Namespace — RustDesk setup documentation
     // -----------------------------------------------------------------------
 
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
     api.registerKnowledge({
       id: "rustdesk",
       label: "RustDesk",
       description: "RustDesk self-hosted server setup and configuration",
-      contentDir: "/opt/rustdesk",
+      contentDir: resolve(__dirname, "../docs"),
       topics: [
-        { title: "Server Setup", path: "README.md", description: "How the RustDesk server is configured" },
+        { title: "Server Setup", path: "setup.md", description: "How to configure RustDesk server and clients" },
       ],
     });
 
