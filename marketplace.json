@@ -217,7 +217,7 @@
       "depends": [
         "aionima-php-runtime"
       ],
-      "version": "0.2.0",
+      "version": "0.3.0",
       "description": "Laravel PHP framework stack with Apache container hosting"
     },
     {
@@ -273,7 +273,7 @@
       "depends": [
         "aionima-php-runtime"
       ],
-      "version": "0.2.0",
+      "version": "0.3.0",
       "description": "Generic PHP application hosting with Apache"
     },
     {
