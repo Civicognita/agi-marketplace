@@ -24,10 +24,8 @@ export default createPlugin({
           if (ctx.mode === "development") {
             return ["php", "-S", "0.0.0.0:80", "-t", "/var/www/html"];
           }
-          return [
-            "bash", "-c",
-            "a2enmod rewrite && docker-php-entrypoint apache2-foreground",
-          ];
+          // Custom GHCR image has mod_rewrite pre-enabled
+          return ["apache2-foreground"];
         },
       },
       installActions: [

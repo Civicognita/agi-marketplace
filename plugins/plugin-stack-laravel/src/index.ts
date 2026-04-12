@@ -23,24 +23,15 @@ export default createPlugin({
         ],
         env: () => ({}),
         command: (ctx) => {
-          // Apache runs as root inside the container so it can read/write mounted files.
-          // This is safe — the container itself is isolated by Podman's rootless runtime.
-          const setup = [
-            "export APACHE_RUN_USER=root",
-            "export APACHE_RUN_GROUP=root",
-            // Install common PHP extensions needed by Laravel projects
-            "docker-php-ext-install -j$(nproc) bcmath pdo_mysql pcntl 2>/dev/null || true",
-            // Install Composer if not present
-            "command -v composer >/dev/null || (curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer)",
-            // Install PHP deps if vendor/ is missing
-            "[ -d /var/www/html/vendor ] || composer install --no-interaction --optimize-autoloader --working-dir=/var/www/html",
-          ].join(" && ");
+          // Custom GHCR image has all PHP extensions, Composer, and mod_rewrite
+          // pre-installed — no runtime compilation needed.
+          const autoInstall = "[ -d /var/www/html/vendor ] || composer install --no-interaction --optimize-autoloader --working-dir=/var/www/html";
           if (ctx.mode === "development") {
-            return ["bash", "-c", `${setup} && php artisan serve --host=0.0.0.0 --port=80`];
+            return ["bash", "-c", `${autoInstall} && php artisan serve --host=0.0.0.0 --port=80`];
           }
           return [
             "bash", "-c",
-            `${setup} && sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf /etc/apache2/apache2.conf && a2enmod rewrite && docker-php-entrypoint apache2-foreground`,
+            `${autoInstall} && sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf /etc/apache2/apache2.conf && apache2-foreground`,
           ];
         },
         healthCheck: "curl -sf http://localhost/ || exit 1",

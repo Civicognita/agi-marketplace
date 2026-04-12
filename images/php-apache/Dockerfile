@@ -56,7 +56,7 @@ RUN pecl install redis imagick \
 RUN a2enmod rewrite headers
 
 # Composer (latest stable)
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Production-ready PHP config
 COPY php.ini /usr/local/etc/php/conf.d/aionima.ini
