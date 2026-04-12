@@ -30,8 +30,8 @@
         "runtimes",
         "stacks"
       ],
-      "version": "0.1.0",
-      "description": "MariaDB database service for projects"
+      "version": "0.2.0",
+      "description": "MariaDB database service — custom GHCR images with dev-friendly defaults"
     },
     {
       "name": "aionima-node-runtime",
@@ -41,8 +41,8 @@
       "provides": [
         "runtimes"
       ],
-      "version": "0.1.0",
-      "description": "Node.js runtime versions for project hosting"
+      "version": "0.2.0",
+      "description": "Node.js runtime versions — custom GHCR images with build tools"
     },
     {
       "name": "aionima-openclaw",
@@ -63,8 +63,8 @@
       "provides": [
         "runtimes"
       ],
-      "version": "0.1.0",
-      "description": "PHP runtime versions for project hosting"
+      "version": "0.2.0",
+      "description": "PHP runtime versions — custom GHCR images with all extensions pre-installed"
     },
     {
       "name": "aionima-postgres",
@@ -76,8 +76,8 @@
         "runtimes",
         "stacks"
       ],
-      "version": "0.1.0",
-      "description": "PostgreSQL database service for projects"
+      "version": "0.2.0",
+      "description": "PostgreSQL database service — custom GHCR images with pgvector and PostGIS"
     },
     {
       "name": "project-api",
@@ -166,8 +166,8 @@
         "runtimes",
         "stacks"
       ],
-      "version": "0.1.0",
-      "description": "Redis in-memory cache and data store service"
+      "version": "0.2.0",
+      "description": "Redis in-memory cache — custom GHCR images with persistence defaults"
     },
     {
       "name": "plugin-rustdesk",
@@ -203,7 +203,7 @@
       "depends": [
         "aionima-node-runtime"
       ],
-      "version": "0.1.0",
+      "version": "0.2.0",
       "description": "Lightweight Node.js API with Drizzle ORM and Lucia auth"
     },
     {
@@ -231,7 +231,7 @@
       "depends": [
         "aionima-node-runtime"
       ],
-      "version": "0.1.0",
+      "version": "0.2.0",
       "description": "React framework with SSR, file-based routing, and Tailwind CSS"
     },
     {
@@ -245,7 +245,7 @@
       "depends": [
         "aionima-node-runtime"
       ],
-      "version": "0.1.0",
+      "version": "0.2.0",
       "description": "Generic Node.js application hosting with npm start"
     },
     {
