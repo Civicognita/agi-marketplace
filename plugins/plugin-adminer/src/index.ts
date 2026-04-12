@@ -28,24 +28,38 @@ export default createPlugin({
     healthCheck: "wget -q --spider http://localhost:8080 || exit 1",
   });
 
-  // Reverse proxy to Adminer container (raw route — bypasses plugin prefix)
-  api.registerHttpRoute("GET", "/adminer/*", async (req, reply) => {
-    const path = req.params["*"] || "";
-    try {
-      const upstream = `http://localhost:${ADMINER_PORT}/${path}`;
-      const headers: Record<string, string> = {};
-      if (req.headers?.["cookie"]) {
-        headers["cookie"] = Array.isArray(req.headers["cookie"])
-          ? req.headers["cookie"].join("; ")
-          : req.headers["cookie"];
+  // Reverse proxy to Adminer container — all HTTP methods (GET, POST for login/queries)
+  for (const method of ["GET", "POST"] as const) {
+    api.registerHttpRoute(method, "/adminer/*", async (req, reply) => {
+      const path = req.params["*"] || "";
+      try {
+        const upstream = `http://localhost:${ADMINER_PORT}/${path}`;
+        const headers: Record<string, string> = {
+          "content-type": req.headers?.["content-type"] as string ?? "text/html",
+        };
+        if (req.headers?.["cookie"]) {
+          headers["cookie"] = Array.isArray(req.headers["cookie"])
+            ? req.headers["cookie"].join("; ")
+            : req.headers["cookie"];
+        }
+        const init: RequestInit = { method, headers };
+        if (method === "POST" && req.body) {
+          // Forward the raw body for form submissions
+          init.body = typeof req.body === "string" ? req.body : JSON.stringify(req.body);
+        }
+        const res = await fetch(upstream, init);
+        // Forward response headers (especially Set-Cookie for Adminer sessions)
+        const setCookie = res.headers.get("set-cookie");
+        if (setCookie) reply.header("set-cookie", setCookie);
+        const ct = res.headers.get("content-type") ?? "text/html";
+        reply.header("content-type", ct);
+        const body = await res.text();
+        reply.code(res.status).send(body);
+      } catch {
+        reply.code(502).send({ error: "Adminer service not reachable. Start it from the Services page." });
       }
-      const res = await fetch(upstream, { headers });
-      const body = await res.text();
-      reply.code(res.status).send(body);
-    } catch {
-      reply.code(502).send({ error: "Adminer service not reachable" });
-    }
-  }, { raw: true });
+    }, { raw: true });
+  }
 
   // Register Adminer as a tool in the system DB portal
   api.registerHttpRoute("POST", "/adminer-register", async (_req, reply) => {
