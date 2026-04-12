@@ -24,14 +24,17 @@ export default createPlugin({
         env: () => ({}),
         command: (ctx) => {
           // Custom GHCR image has all PHP extensions, Composer, and mod_rewrite pre-installed.
-          // Use docker-php-entrypoint to properly initialize Apache (handles PID 1, user switching).
-          const autoInstall = "[ -d /var/www/html/vendor ] || composer install --no-interaction --optimize-autoloader --working-dir=/var/www/html";
+          // Fix permissions on writable dirs (storage, cache) — mounted volume is owned by host UID.
+          const setup = [
+            "chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache 2>/dev/null || chmod -R 777 /var/www/html/storage /var/www/html/bootstrap/cache 2>/dev/null || true",
+            "[ -d /var/www/html/vendor ] || composer install --no-interaction --optimize-autoloader --working-dir=/var/www/html",
+          ].join(" && ");
           if (ctx.mode === "development") {
-            return ["bash", "-c", `${autoInstall} && php artisan serve --host=0.0.0.0 --port=80`];
+            return ["bash", "-c", `${setup} && php artisan serve --host=0.0.0.0 --port=80`];
           }
           return [
             "bash", "-c",
-            `${autoInstall} && sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|g' /etc/apache2/sites-available/000-default.conf 2>/dev/null; docker-php-entrypoint apache2-foreground`,
+            `${setup} && sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|g' /etc/apache2/sites-available/000-default.conf 2>/dev/null; docker-php-entrypoint apache2-foreground`,
           ];
         },
         healthCheck: "curl -sf http://localhost/ || exit 1",
