@@ -6,12 +6,12 @@ ARG PG_VERSION=17
 FROM postgres:${PG_VERSION}-alpine
 
 # Install build dependencies for pgvector and PostGIS runtime packages
-# Determine the clang version available in Alpine for this PG release
+# Install clang to match PG's JIT build, then compile pgvector
 RUN apk add --no-cache --virtual .build-deps \
       git \
       build-base \
-      clang-dev \
-      llvm-dev \
+      clang19 \
+      llvm19-dev \
       postgresql-dev \
   # PostGIS — available as Alpine package for PG major versions
   && apk add --no-cache \
@@ -19,12 +19,12 @@ RUN apk add --no-cache --virtual .build-deps \
       proj \
       gdal \
       geos \
-  # pgvector — compile from source, disable LLVM bitcode (avoids clang version mismatch)
+  # pgvector — compile from source with matching clang version
   && cd /tmp \
   && git clone --branch v0.8.0 https://github.com/pgvector/pgvector.git \
   && cd pgvector \
-  && make OPTFLAGS="" PG_CONFIG=/usr/local/bin/pg_config USE_PGXS=1 LLVM_CONFIG="" \
-  && make install PG_CONFIG=/usr/local/bin/pg_config USE_PGXS=1 \
+  && make OPTFLAGS="" PG_CONFIG=/usr/local/bin/pg_config \
+  && make install PG_CONFIG=/usr/local/bin/pg_config \
   && cd / \
   && rm -rf /tmp/pgvector \
   # Cleanup build deps
