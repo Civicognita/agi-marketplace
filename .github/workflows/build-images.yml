@@ -42,7 +42,7 @@ jobs:
             # Manual dispatch for a specific image
             IMAGE="${{ inputs.image }}"
             case "$IMAGE" in
-              php-apache) VERSIONS='["8.2","8.3","8.4","8.5"]' ; ARG="PHP_VERSION" ;;
+              php-apache) VERSIONS='["8.3","8.4","8.5"]' ; ARG="PHP_VERSION" ;;
               node)       VERSIONS='["20","22","24"]'           ; ARG="NODE_VERSION" ;;
               postgres)   VERSIONS='["15","16","17"]'           ; ARG="PG_VERSION" ;;
               mariadb)    VERSIONS='["10.6","10.11","11.4"]'    ; ARG="MARIADB_VERSION" ;;
@@ -53,7 +53,7 @@ jobs:
           else
             # Build all images (push to images/** or manual 'all')
             echo 'matrix={"include":[
-              {"image":"php-apache","versions":["8.2","8.3","8.4","8.5"],"arg":"PHP_VERSION"},
+              {"image":"php-apache","versions":["8.3","8.4","8.5"],"arg":"PHP_VERSION"},
               {"image":"node","versions":["20","22","24"],"arg":"NODE_VERSION"},
               {"image":"postgres","versions":["15","16","17"],"arg":"PG_VERSION"},
               {"image":"mariadb","versions":["10.6","10.11","11.4"],"arg":"MARIADB_VERSION"},

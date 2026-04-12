@@ -58,21 +58,6 @@ export default createPlugin({
     ],
   });
 
-  // PHP 8.2
-  api.registerRuntime({
-    id: "php-8.2",
-    label: "PHP 8.2",
-    language: "php",
-    version: "8.2",
-    containerImage: "ghcr.io/civicognita/php-apache:8.2",
-    internalPort: 80,
-    projectTypes: ["php", "laravel"],
-    installable: true,
-    dependencies: [
-      { name: "composer", version: "2.x", type: "managed" },
-    ],
-  });
-
   // Register hosting extension field for PHP version selection
   api.registerHostingExtension({
     pluginId: "aionima-php-runtime",
@@ -85,7 +70,6 @@ export default createPlugin({
           { value: "php-8.5", label: "PHP 8.5 (latest)" },
           { value: "php-8.4", label: "PHP 8.4" },
           { value: "php-8.3", label: "PHP 8.3" },
-          { value: "php-8.2", label: "PHP 8.2" },
         ],
         defaultValue: "php-8.5",
         projectTypes: ["php", "laravel"],
@@ -99,12 +83,12 @@ export default createPlugin({
     language: "php",
 
     listAvailable(): string[] {
-      return ["8.5", "8.4", "8.3", "8.2"];
+      return ["8.5", "8.4", "8.3"];
     },
 
     async listInstalled(): Promise<string[]> {
       const installed: string[] = [];
-      for (const ver of ["8.5", "8.4", "8.3", "8.2"]) {
+      for (const ver of ["8.5", "8.4", "8.3"]) {
         try {
           await execFileAsync("podman", ["image", "exists", `ghcr.io/civicognita/php-apache:${ver}`], { timeout: 10_000 });
           installed.push(ver);
@@ -116,7 +100,7 @@ export default createPlugin({
     },
 
     async install(version: string): Promise<void> {
-      const valid = ["8.5", "8.4", "8.3", "8.2"];
+      const valid = ["8.5", "8.4", "8.3"];
       if (!valid.includes(version)) throw new Error(`Invalid PHP version: ${version}`);
 
       log.info(`pulling container image ghcr.io/civicognita/php-apache:${version}`);
@@ -130,7 +114,7 @@ export default createPlugin({
     },
 
     async uninstall(version: string): Promise<void> {
-      const valid = ["8.5", "8.4", "8.3", "8.2"];
+      const valid = ["8.5", "8.4", "8.3"];
       if (!valid.includes(version)) throw new Error(`Invalid PHP version: ${version}`);
 
       log.info(`removing container image ghcr.io/civicognita/php-apache:${version}`);
@@ -164,7 +148,6 @@ export default createPlugin({
         { value: "8.5", label: "PHP 8.5" },
         { value: "8.4", label: "PHP 8.4" },
         { value: "8.3", label: "PHP 8.3" },
-        { value: "8.2", label: "PHP 8.2" },
       ],
       defaultValue: "8.4",
     })

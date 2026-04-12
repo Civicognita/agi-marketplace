@@ -3,14 +3,13 @@ import { testActivate } from "@aionima/sdk/testing";
 import plugin from "./index.js";
 
 describe("PHP runtime plugin", () => {
-  it("registers 4 runtimes (8.5, 8.4, 8.3, 8.2)", async () => {
+  it("registers 3 runtimes (8.5, 8.4, 8.3)", async () => {
     const reg = await testActivate(plugin);
-    expect(reg.runtimes).toHaveLength(4);
+    expect(reg.runtimes).toHaveLength(3);
     const versions = reg.runtimes.map((r) => r.version);
     expect(versions).toContain("8.5");
     expect(versions).toContain("8.4");
     expect(versions).toContain("8.3");
-    expect(versions).toContain("8.2");
   });
 
   it("uses GHCR php-apache images", async () => {
