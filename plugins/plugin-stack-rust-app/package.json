@@ -1,0 +1,21 @@
+{
+  "name": "@aionima/plugin-stack-rust-app",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "stack-rust-app",
+    "name": "Rust App Stack",
+    "description": "Rust application hosting with cargo run / cargo build",
+    "category": "stack",
+    "provides": ["stacks"],
+    "depends": ["aionima-rust-runtime"],
+    "permissions": [],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0"
+  },
+  "dependencies": {
+    "@aionima/sdk": "workspace:*"
+  }
+}

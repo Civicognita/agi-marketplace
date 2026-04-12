@@ -67,6 +67,33 @@
       "description": "PHP runtime versions — custom GHCR images with all extensions pre-installed"
     },
     {
+      "name": "aionima-python-runtime",
+      "source": "./plugins/plugin-python-runtime",
+      "type": "plugin",
+      "category": "runtime",
+      "provides": ["runtimes"],
+      "version": "0.1.0",
+      "description": "Python runtime versions — custom GHCR images with build tools"
+    },
+    {
+      "name": "aionima-go-runtime",
+      "source": "./plugins/plugin-go-runtime",
+      "type": "plugin",
+      "category": "runtime",
+      "provides": ["runtimes"],
+      "version": "0.1.0",
+      "description": "Go runtime versions — custom GHCR images with CGO support"
+    },
+    {
+      "name": "aionima-rust-runtime",
+      "source": "./plugins/plugin-rust-runtime",
+      "type": "plugin",
+      "category": "runtime",
+      "provides": ["runtimes"],
+      "version": "0.1.0",
+      "description": "Rust runtime versions — custom GHCR images with build tools"
+    },
+    {
       "name": "aionima-postgres",
       "source": "./plugins/plugin-postgres",
       "type": "plugin",
@@ -314,6 +341,56 @@
       ],
       "version": "0.1.0",
       "description": "Nginx-based static file hosting for built websites"
+    },
+    {
+      "name": "stack-django",
+      "source": "./plugins/plugin-stack-django",
+      "type": "plugin",
+      "category": "stack",
+      "provides": ["stacks"],
+      "depends": ["aionima-python-runtime"],
+      "version": "0.1.0",
+      "description": "Python web framework with ORM, admin, and template engine"
+    },
+    {
+      "name": "stack-fastapi",
+      "source": "./plugins/plugin-stack-fastapi",
+      "type": "plugin",
+      "category": "stack",
+      "provides": ["stacks"],
+      "depends": ["aionima-python-runtime"],
+      "version": "0.1.0",
+      "description": "High-performance Python API with automatic OpenAPI docs"
+    },
+    {
+      "name": "stack-flask",
+      "source": "./plugins/plugin-stack-flask",
+      "type": "plugin",
+      "category": "stack",
+      "provides": ["stacks"],
+      "depends": ["aionima-python-runtime"],
+      "version": "0.1.0",
+      "description": "Lightweight Python web framework — minimal and extensible"
+    },
+    {
+      "name": "stack-go-app",
+      "source": "./plugins/plugin-stack-go-app",
+      "type": "plugin",
+      "category": "stack",
+      "provides": ["stacks"],
+      "depends": ["aionima-go-runtime"],
+      "version": "0.1.0",
+      "description": "Go application hosting with go run / go build"
+    },
+    {
+      "name": "stack-rust-app",
+      "source": "./plugins/plugin-stack-rust-app",
+      "type": "plugin",
+      "category": "stack",
+      "provides": ["stacks"],
+      "depends": ["aionima-rust-runtime"],
+      "version": "0.1.0",
+      "description": "Rust application hosting with cargo run / cargo build"
     },
     {
       "name": "stack-tall",

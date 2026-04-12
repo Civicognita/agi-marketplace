@@ -1,0 +1,21 @@
+{
+  "name": "@aionima/plugin-stack-fastapi",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "stack-fastapi",
+    "name": "FastAPI Stack",
+    "description": "High-performance Python API with automatic OpenAPI docs",
+    "category": "stack",
+    "provides": ["stacks"],
+    "depends": ["aionima-python-runtime"],
+    "permissions": [],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0"
+  },
+  "dependencies": {
+    "@aionima/sdk": "workspace:*"
+  }
+}

@@ -47,6 +47,9 @@ jobs:
               postgres)   VERSIONS='["15","16","17"]'           ; ARG="PG_VERSION" ;;
               mariadb)    VERSIONS='["10.6","10.11","11.4"]'    ; ARG="MARIADB_VERSION" ;;
               redis)      VERSIONS='["6.2","7.2","7.4"]'        ; ARG="REDIS_VERSION" ;;
+              python)     VERSIONS='["3.11","3.12","3.13"]'     ; ARG="PYTHON_VERSION" ;;
+              go)         VERSIONS='["1.22","1.23","1.24"]'     ; ARG="GO_VERSION" ;;
+              rust)       VERSIONS='["1.86","1.87"]'            ; ARG="RUST_VERSION" ;;
               *) echo "Unknown image: $IMAGE" && exit 1 ;;
             esac
             echo "matrix={\"include\":[{\"image\":\"$IMAGE\",\"versions\":$VERSIONS,\"arg\":\"$ARG\"}]}" >> "$GITHUB_OUTPUT"
@@ -57,7 +60,10 @@ jobs:
               {"image":"node","versions":["20","22","24"],"arg":"NODE_VERSION"},
               {"image":"postgres","versions":["15","16","17"],"arg":"PG_VERSION"},
               {"image":"mariadb","versions":["10.6","10.11","11.4"],"arg":"MARIADB_VERSION"},
-              {"image":"redis","versions":["6.2","7.2","7.4"],"arg":"REDIS_VERSION"}
+              {"image":"redis","versions":["6.2","7.2","7.4"],"arg":"REDIS_VERSION"},
+              {"image":"python","versions":["3.11","3.12","3.13"],"arg":"PYTHON_VERSION"},
+              {"image":"go","versions":["1.22","1.23","1.24"],"arg":"GO_VERSION"},
+              {"image":"rust","versions":["1.86","1.87"],"arg":"RUST_VERSION"}
             ]}' | tr -d '\n' >> "$GITHUB_OUTPUT"
           fi
 

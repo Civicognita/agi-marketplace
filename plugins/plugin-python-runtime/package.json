@@ -1,0 +1,21 @@
+{
+  "name": "@aionima/plugin-python-runtime",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "aionima-python-runtime",
+    "name": "Python Runtimes",
+    "description": "Python runtime versions for project hosting",
+    "category": "runtime",
+    "provides": ["runtimes"],
+    "permissions": [],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0",
+    "bakedIn": true
+  },
+  "dependencies": {
+    "@aionima/sdk": "workspace:*"
+  }
+}

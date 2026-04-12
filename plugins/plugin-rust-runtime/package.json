@@ -1,0 +1,21 @@
+{
+  "name": "@aionima/plugin-rust-runtime",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "aionima-rust-runtime",
+    "name": "Rust Runtimes",
+    "description": "Rust runtime versions for project hosting",
+    "category": "runtime",
+    "provides": ["runtimes"],
+    "permissions": [],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0",
+    "bakedIn": true
+  },
+  "dependencies": {
+    "@aionima/sdk": "workspace:*"
+  }
+}
