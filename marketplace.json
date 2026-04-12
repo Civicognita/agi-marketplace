@@ -9,18 +9,6 @@
   },
   "plugins": [
     {
-      "name": "whodb",
-      "source": "./plugins/plugin-whodb",
-      "type": "plugin",
-      "category": "service",
-      "provides": [
-        "ux",
-        "services"
-      ],
-      "version": "0.1.0",
-      "description": "Modern database explorer with AI-powered SQL, schema visualization, and spreadsheet editing"
-    },
-    {
       "name": "aionima-mysql",
       "source": "./plugins/plugin-mysql",
       "type": "plugin",
