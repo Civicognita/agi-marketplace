@@ -1,0 +1,21 @@
+{
+  "name": "@aionima/plugin-whodb",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "whodb",
+    "name": "WhoDB",
+    "description": "Modern database explorer with AI-powered SQL, schema visualization, and spreadsheet editing",
+    "category": "service",
+    "provides": ["ux", "services"],
+    "permissions": [],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0",
+    "bakedIn": true
+  },
+  "dependencies": {
+    "@aionima/sdk": "workspace:*"
+  }
+}
