@@ -393,6 +393,17 @@
       "description": "Rust application hosting with cargo run / cargo build"
     },
     {
+      "name": "stack-tailwind",
+      "source": "./plugins/plugin-stack-tailwind",
+      "type": "plugin",
+      "category": "stack",
+      "provides": [
+        "stacks"
+      ],
+      "version": "0.1.0",
+      "description": "Utility-first CSS framework with Vite integration"
+    },
+    {
       "name": "stack-tall",
       "source": "./plugins/plugin-stack-tall",
       "type": "plugin",
@@ -401,9 +412,10 @@
         "stacks"
       ],
       "depends": [
-        "stack-laravel"
+        "stack-laravel",
+        "stack-tailwind"
       ],
-      "version": "0.2.0",
+      "version": "0.3.0",
       "description": "Laravel full-stack with Livewire, Tailwind CSS, and Vite asset bundling"
     },
     {

@@ -18,14 +18,13 @@ export default createPlugin({
       compatibleLanguages: ["php"],
       requirements: [
         { id: "laravel", label: "Laravel", type: "expected" },
+        { id: "tailwind", label: "Tailwind CSS", type: "expected" },
         { id: "livewire", label: "Livewire", type: "provided" },
         { id: "alpine-js", label: "Alpine.js", type: "provided" },
-        { id: "tailwind", label: "Tailwind CSS", type: "provided" },
         { id: "vite", label: "Vite", type: "provided" },
       ],
       installActions: [
         { id: "composer.require.livewire", label: "Install Livewire", command: "composer require livewire/livewire" },
-        { id: "npm.install.tailwind", label: "Install Tailwind & Vite", command: "npm install -D tailwindcss @tailwindcss/vite" },
         { id: "npm.install.alpinejs", label: "Install Alpine.js", command: "npm install alpinejs" },
       ],
       guides: [
@@ -74,31 +73,23 @@ export default createPlugin({
         { id: "laravel-log", label: "Laravel Log", type: "container-file" as const, containerPath: "/var/www/html/storage/logs/laravel.log" },
       ],
       tools: [
-        // Composer
+        // Common actions
+        { id: "artisan-migrate", label: "Migrate", description: "Run database migrations", action: "shell", command: "php artisan migrate" },
+        { id: "artisan-db-seed", label: "Seed", description: "Seed the database", action: "shell", command: "php artisan db:seed" },
+        { id: "artisan-test", label: "Test", description: "Run PestPHP tests", action: "shell", command: "php artisan test" },
+        { id: "artisan-optimize", label: "Optimize", description: "Cache config, routes, views, events", action: "shell", command: "php artisan optimize" },
+        { id: "artisan-optimize-clear", label: "Clear Cache", description: "Clear all cached config, routes, views", action: "shell", command: "php artisan optimize:clear" },
+        { id: "artisan-fresh-seed", label: "Full Reset", description: "Drop all tables, re-migrate, and seed", action: "shell", command: "php artisan migrate:fresh --seed" },
+        // Livewire
+        { id: "artisan-make-livewire", label: "make:livewire", description: "Scaffold a Livewire component", action: "shell", command: "php artisan make:livewire" },
+        // Dependencies
         { id: "composer-install", label: "composer install", description: "Install PHP dependencies", action: "shell", command: "composer install" },
-        { id: "composer-update", label: "composer update", description: "Update PHP dependencies", action: "shell", command: "composer update" },
-        { id: "composer-dump", label: "composer dump-autoload", description: "Regenerate autoloader", action: "shell", command: "composer dump-autoload" },
-        // Artisan — setup
-        { id: "artisan-key-generate", label: "artisan key:generate", description: "Generate application key", action: "shell", command: "php artisan key:generate" },
-        { id: "artisan-storage-link", label: "artisan storage:link", description: "Create storage symlink", action: "shell", command: "php artisan storage:link" },
-        // Artisan — database
-        { id: "artisan-migrate", label: "artisan migrate", description: "Run database migrations", action: "shell", command: "php artisan migrate" },
-        { id: "artisan-migrate-status", label: "artisan migrate:status", description: "Show migration status", action: "shell", command: "php artisan migrate:status" },
-        { id: "artisan-db-seed", label: "artisan db:seed", description: "Seed the database", action: "shell", command: "php artisan db:seed" },
-        // Artisan — cache & optimization
-        { id: "artisan-optimize", label: "artisan optimize", description: "Cache config, routes, views", action: "shell", command: "php artisan optimize" },
-        { id: "artisan-optimize-clear", label: "artisan optimize:clear", description: "Clear all caches", action: "shell", command: "php artisan optimize:clear" },
-        { id: "artisan-cache-clear", label: "artisan cache:clear", description: "Clear application cache", action: "shell", command: "php artisan cache:clear" },
-        { id: "artisan-config-clear", label: "artisan config:clear", description: "Clear config cache", action: "shell", command: "php artisan config:clear" },
-        // Artisan — info
-        { id: "artisan-route-list", label: "artisan route:list", description: "List all routes", action: "shell", command: "php artisan route:list" },
-        // Dev server + Vite
-        { id: "artisan-serve", label: "artisan serve", description: "Start Laravel dev server", action: "shell", command: "php artisan serve" },
         { id: "npm-install", label: "npm install", description: "Install frontend dependencies", action: "shell", command: "npm install" },
+        // Dev servers
+        { id: "artisan-serve", label: "artisan serve", description: "Start Laravel dev server", action: "shell", command: "php artisan serve" },
         { id: "vite-dev", label: "npm run dev", description: "Start Vite HMR server", action: "shell", command: "npm run dev" },
-        // Testing & REPL
-        { id: "pest-test", label: "artisan test", description: "Run PestPHP tests", action: "shell", command: "php artisan test" },
-        { id: "artisan-tinker", label: "artisan tinker", description: "Interactive REPL", action: "shell", command: "php artisan tinker" },
+        // Setup
+        { id: "artisan-key-generate", label: "key:generate", description: "Generate application key", action: "shell", command: "php artisan key:generate" },
       ],
       icon: "layers",
     });
