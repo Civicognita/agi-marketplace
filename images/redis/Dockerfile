@@ -6,9 +6,8 @@ ARG REDIS_VERSION=7.4
 FROM redis:${REDIS_VERSION}-alpine
 
 # Dev-friendly config: higher memory limit, append-only for durability
-RUN echo "maxmemory 256mb\n\
-maxmemory-policy allkeys-lru\n\
-appendonly yes\n\
-" > /usr/local/etc/redis/aionima.conf
+RUN mkdir -p /usr/local/etc/redis && \
+    printf 'maxmemory 256mb\nmaxmemory-policy allkeys-lru\nappendonly yes\n' \
+    > /usr/local/etc/redis/aionima.conf
 
 CMD ["redis-server", "/usr/local/etc/redis/aionima.conf"]

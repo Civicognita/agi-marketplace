@@ -19,12 +19,12 @@ RUN apk add --no-cache --virtual .build-deps \
       proj \
       gdal \
       geos \
-  # pgvector — compile from source (use gcc, not clang, to avoid version mismatch)
+  # pgvector — compile from source, disable LLVM bitcode (avoids clang version mismatch)
   && cd /tmp \
   && git clone --branch v0.8.0 https://github.com/pgvector/pgvector.git \
   && cd pgvector \
-  && make CC=gcc OPTFLAGS="" PG_CONFIG=/usr/local/bin/pg_config \
-  && make install PG_CONFIG=/usr/local/bin/pg_config \
+  && make OPTFLAGS="" PG_CONFIG=/usr/local/bin/pg_config USE_PGXS=1 LLVM_CONFIG="" \
+  && make install PG_CONFIG=/usr/local/bin/pg_config USE_PGXS=1 \
   && cd / \
   && rm -rf /tmp/pgvector \
   # Cleanup build deps
