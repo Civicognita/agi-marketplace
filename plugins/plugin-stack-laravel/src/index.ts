@@ -26,7 +26,7 @@ export default createPlugin({
           // Custom GHCR image has all PHP extensions, Composer, and mod_rewrite pre-installed.
           // Fix permissions on writable dirs (storage, cache) — mounted volume is owned by host UID.
           const setup = [
-            "chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache 2>/dev/null || chmod -R 777 /var/www/html/storage /var/www/html/bootstrap/cache 2>/dev/null || true",
+            "chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database 2>/dev/null || chmod -R 777 /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database 2>/dev/null || true",
             "[ -d /var/www/html/vendor ] || composer install --no-interaction --optimize-autoloader --working-dir=/var/www/html",
           ].join(" && ");
           if (ctx.mode === "development") {
