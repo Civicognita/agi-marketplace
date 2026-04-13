@@ -1,16 +1,16 @@
 {
-  "name": "@aionima/plugin-stack-nextjs",
-  "version": "0.2.0",
+  "name": "@aionima/plugin-stack-fancy-ui",
+  "version": "0.1.0",
   "private": true,
   "type": "module",
   "exports": { ".": "./src/index.ts" },
   "aionima": {
-    "id": "stack-nextjs",
-    "name": "Next.js Stack",
-    "description": "React framework with SSR, file-based routing, and Tailwind CSS",
+    "id": "stack-fancy-ui",
+    "name": "Fancy UI Stack",
+    "description": "Preferred UI component libraries: react-fancy, fancy-code, fancy-sheets, react-echarts",
     "category": "stack",
     "provides": ["stacks"],
-    "depends": ["aionima-node-runtime", "stack-react"],
+    "depends": ["stack-react"],
     "permissions": [],
     "entry": "./src/index.ts",
     "aionimaVersion": ">=0.1.0"

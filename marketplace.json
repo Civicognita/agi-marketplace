@@ -244,7 +244,8 @@
         "stacks"
       ],
       "depends": [
-        "aionima-node-runtime"
+        "aionima-node-runtime",
+        "stack-react"
       ],
       "version": "0.2.0",
       "description": "React framework with SSR, file-based routing, and Tailwind CSS"
@@ -648,6 +649,17 @@
       ],
       "trustTier": "official",
       "category": "writing"
+    },
+    {
+      "name": "stack-fancy-ui",
+      "source": "./plugins/plugin-stack-fancy-ui",
+      "type": "plugin",
+      "category": "stack",
+      "provides": ["stacks"],
+      "depends": ["stack-react"],
+      "version": "0.1.0",
+      "description": "Preferred UI libraries: react-fancy, fancy-code, fancy-sheets, react-echarts",
+      "trustTier": "official"
     }
   ]
 }
