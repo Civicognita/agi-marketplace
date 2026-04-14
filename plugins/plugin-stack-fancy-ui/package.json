@@ -1,13 +1,13 @@
 {
   "name": "@aionima/plugin-stack-fancy-ui",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "exports": { ".": "./src/index.ts" },
   "aionima": {
     "id": "stack-fancy-ui",
     "name": "Fancy UI Stack",
-    "description": "Preferred UI component libraries: react-fancy, fancy-code, fancy-sheets, react-echarts",
+    "description": "react-fancy (components + hooks), fancy-code (embedded code editor), fancy-sheets (full spreadsheet with formulas), react-echarts (ECharts wrapper with typed chart components). Built on Tailwind CSS v4.",
     "category": "stack",
     "provides": ["stacks"],
     "depends": ["stack-react"],
