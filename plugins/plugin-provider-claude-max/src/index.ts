@@ -81,25 +81,18 @@ export default createPlugin({
       );
     }
 
-    // Settings page — shows subscription status, no editable fields (creds
-    // are managed by Claude Code, not by the user typing into a form).
+    // Settings page — custom section with connect/disconnect UX.
+    // The "claude-max-connection" section ID maps to ClaudeMaxConnectionSection
+    // in the dashboard's customSectionMap (PluginSettingsRenderer.tsx).
     api.registerSettingsPage(
       defineSettingsPage("provider-claude-max", "Claude Max")
-        .description("Claude Max subscription — OAuth tokens from Claude Code")
+        .description("Use your Claude Max subscription instead of API credits")
         .icon("sparkles")
         .position(11)
         .section({
-          id: "claude-max-status",
-          label: "Subscription Status",
-          configPath: "agent",
-          fields: [
-            {
-              id: "provider",
-              label: "Active Provider",
-              type: "text",
-              description: 'Set to "claude-max" in Settings > Gateway to use your subscription instead of API credits.',
-            },
-          ],
+          id: "claude-max-connection",
+          label: "Connection",
+          type: "custom",
         })
         .build(),
     );
