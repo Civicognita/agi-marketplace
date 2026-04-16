@@ -512,6 +512,17 @@
       "description": "Claude models — connect to Anthropic's API"
     },
     {
+      "name": "provider-claude-max",
+      "source": "./plugins/plugin-provider-claude-max",
+      "type": "plugin",
+      "category": "integration",
+      "provides": [
+        "llm-provider"
+      ],
+      "version": "0.1.0",
+      "description": "Use your Claude Max subscription instead of API credits — reads OAuth tokens from Claude Code"
+    },
+    {
       "name": "provider-openai",
       "source": "./plugins/plugin-provider-openai",
       "type": "plugin",
