@@ -8,11 +8,12 @@ export default createPlugin({
       description: "Generic Node.js application hosting with npm start",
       category: "framework",
       projectCategories: ["app", "web"],
+      compatibleLanguages: ["node"],
       requirements: [
         { id: "node", label: "Node.js Runtime", type: "expected" },
       ],
       containerConfig: {
-        image: "node:22-alpine",
+        image: "ghcr.io/civicognita/node:22",
         internalPort: 3000,
         shared: false,
         volumeMounts: (ctx) => [

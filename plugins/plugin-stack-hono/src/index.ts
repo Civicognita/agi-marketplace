@@ -15,6 +15,7 @@ export default createPlugin({
         "Lightweight Node.js API framework with Drizzle ORM for type-safe database access and Lucia for session-based authentication. Built for auth services and microservices.",
       category: "framework",
       projectCategories: ["app"],
+      compatibleLanguages: ["node"],
       requirements: [
         { id: "node", label: "Node.js Runtime", type: "expected" },
         { id: "database", label: "Database", description: "PostgreSQL or SQLite", type: "expected" },

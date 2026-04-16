@@ -14,9 +14,9 @@ const execFileAsync = promisify(execFile);
 const VERSION_TAGS = ["11.4", "10.11", "10.6"] as const;
 
 const VERSIONS = [
-  { id: "mariadb-11.4", name: "MariaDB 11.4", image: "mariadb:11.4", description: "MariaDB 11.4 LTS — latest long-term support" },
-  { id: "mariadb-10.11", name: "MariaDB 10.11", image: "mariadb:10.11", description: "MariaDB 10.11 LTS — previous long-term support" },
-  { id: "mariadb-10.6", name: "MariaDB 10.6", image: "mariadb:10.6", description: "MariaDB 10.6 LTS — maintenance" },
+  { id: "mariadb-11.4", name: "MariaDB 11.4", image: "ghcr.io/civicognita/mariadb:11.4", description: "MariaDB 11.4 LTS — latest long-term support" },
+  { id: "mariadb-10.11", name: "MariaDB 10.11", image: "ghcr.io/civicognita/mariadb:10.11", description: "MariaDB 10.11 LTS — previous long-term support" },
+  { id: "mariadb-10.6", name: "MariaDB 10.6", image: "ghcr.io/civicognita/mariadb:10.6", description: "MariaDB 10.6 LTS — maintenance" },
 ] as const;
 
 export default createPlugin({
@@ -70,7 +70,7 @@ export default createPlugin({
         for (const img of images) {
           for (const name of img.Names ?? []) {
             for (const tag of VERSION_TAGS) {
-              if (name.includes(`mariadb:${tag}`)) {
+              if (name.includes(`civicognita/mariadb:${tag}`)) {
                 installed.push(tag);
               }
             }
@@ -86,22 +86,22 @@ export default createPlugin({
       if (!(VERSION_TAGS as readonly string[]).includes(version)) {
         throw new Error(`Invalid MariaDB version: ${version}`);
       }
-      log.info(`pulling mariadb:${version}`);
+      log.info(`pulling ghcr.io/civicognita/mariadb:${version}`);
       await execFileAsync("podman", [
-        "pull", `docker.io/library/mariadb:${version}`,
+        "pull", `ghcr.io/civicognita/mariadb:${version}`,
       ], { timeout: 300_000 });
-      log.info(`mariadb:${version} pulled successfully`);
+      log.info(`ghcr.io/civicognita/mariadb:${version} pulled successfully`);
     },
 
     async uninstall(version: string): Promise<void> {
       if (!(VERSION_TAGS as readonly string[]).includes(version)) {
         throw new Error(`Invalid MariaDB version: ${version}`);
       }
-      log.info(`removing mariadb:${version}`);
+      log.info(`removing ghcr.io/civicognita/mariadb:${version}`);
       await execFileAsync("podman", [
-        "rmi", `mariadb:${version}`,
+        "rmi", `ghcr.io/civicognita/mariadb:${version}`,
       ], { timeout: 60_000 });
-      log.info(`mariadb:${version} removed`);
+      log.info(`ghcr.io/civicognita/mariadb:${version} removed`);
     },
   });
 

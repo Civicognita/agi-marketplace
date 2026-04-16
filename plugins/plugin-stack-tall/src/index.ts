@@ -15,13 +15,17 @@ export default createPlugin({
         "Laravel full-stack with Livewire for reactive components, Tailwind CSS for styling, and Vite for asset bundling. The standard Aionima pattern for PHP web applications.",
       category: "framework",
       projectCategories: ["app", "web"],
+      compatibleLanguages: ["php"],
       requirements: [
-        { id: "php", label: "PHP Runtime", type: "expected" },
-        { id: "composer", label: "Composer", type: "expected" },
-        { id: "laravel", label: "Laravel", type: "provided" },
+        { id: "laravel", label: "Laravel", type: "expected" },
+        { id: "tailwind", label: "Tailwind CSS", type: "expected" },
         { id: "livewire", label: "Livewire", type: "provided" },
-        { id: "tailwind", label: "Tailwind CSS", type: "provided" },
+        { id: "alpine-js", label: "Alpine.js", type: "provided" },
         { id: "vite", label: "Vite", type: "provided" },
+      ],
+      installActions: [
+        { id: "composer.require.livewire", label: "Install Livewire", command: "composer require livewire/livewire" },
+        { id: "npm.install.alpinejs", label: "Install Alpine.js", command: "npm install alpinejs" },
       ],
       guides: [
         {
@@ -65,14 +69,27 @@ export default createPlugin({
           ].join("\n"),
         },
       ],
+      logSources: [
+        { id: "laravel-log", label: "Laravel Log", type: "container-file" as const, containerPath: "/var/www/html/storage/logs/laravel.log" },
+      ],
       tools: [
-        { id: "artisan-serve", label: "php artisan serve", description: "Start Laravel dev server", action: "shell", command: "php artisan serve" },
-        { id: "artisan-migrate", label: "php artisan migrate", description: "Run database migrations", action: "shell", command: "php artisan migrate" },
+        // Common actions
+        { id: "artisan-migrate", label: "Migrate", description: "Run database migrations", action: "shell", command: "php artisan migrate" },
+        { id: "artisan-db-seed", label: "Seed", description: "Seed the database", action: "shell", command: "php artisan db:seed" },
+        { id: "artisan-test", label: "Test", description: "Run PestPHP tests", action: "shell", command: "php artisan test" },
+        { id: "artisan-optimize", label: "Optimize", description: "Cache config, routes, views, events", action: "shell", command: "php artisan optimize" },
+        { id: "artisan-optimize-clear", label: "Clear Cache", description: "Clear all cached config, routes, views", action: "shell", command: "php artisan optimize:clear" },
+        { id: "artisan-fresh-seed", label: "Full Reset", description: "Drop all tables, re-migrate, and seed", action: "shell", command: "php artisan migrate:fresh --seed" },
+        // Livewire
+        { id: "artisan-make-livewire", label: "make:livewire", description: "Scaffold a Livewire component", action: "shell", command: "php artisan make:livewire" },
+        // Dependencies
         { id: "composer-install", label: "composer install", description: "Install PHP dependencies", action: "shell", command: "composer install" },
         { id: "npm-install", label: "npm install", description: "Install frontend dependencies", action: "shell", command: "npm install" },
+        // Dev servers
+        { id: "artisan-serve", label: "artisan serve", description: "Start Laravel dev server", action: "shell", command: "php artisan serve" },
         { id: "vite-dev", label: "npm run dev", description: "Start Vite HMR server", action: "shell", command: "npm run dev" },
-        { id: "artisan-tinker", label: "php artisan tinker", description: "Interactive REPL", action: "shell", command: "php artisan tinker" },
-        { id: "pest-test", label: "php artisan test", description: "Run PestPHP tests", action: "shell", command: "php artisan test" },
+        // Setup
+        { id: "artisan-key-generate", label: "key:generate", description: "Generate application key", action: "shell", command: "php artisan key:generate" },
       ],
       icon: "layers",
     });

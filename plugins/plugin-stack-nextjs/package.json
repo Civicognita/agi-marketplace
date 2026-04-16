@@ -1,6 +1,6 @@
 {
   "name": "@aionima/plugin-stack-nextjs",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "private": true,
   "type": "module",
   "exports": { ".": "./src/index.ts" },
@@ -10,7 +10,7 @@
     "description": "React framework with SSR, file-based routing, and Tailwind CSS",
     "category": "stack",
     "provides": ["stacks"],
-    "depends": ["aionima-node-runtime"],
+    "depends": ["aionima-node-runtime", "stack-react"],
     "permissions": [],
     "entry": "./src/index.ts",
     "aionimaVersion": ">=0.1.0"

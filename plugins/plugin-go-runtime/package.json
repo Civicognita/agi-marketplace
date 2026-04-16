@@ -1,0 +1,21 @@
+{
+  "name": "@aionima/plugin-go-runtime",
+  "version": "0.1.1",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "aionima-go-runtime",
+    "name": "Go Runtimes",
+    "description": "Go runtime versions for project hosting",
+    "category": "runtime",
+    "provides": ["runtimes"],
+    "permissions": [],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0",
+    "bakedIn": true
+  },
+  "dependencies": {
+    "@aionima/sdk": "workspace:*"
+  }
+}

@@ -8,11 +8,12 @@ export default createPlugin({
       description: "Generic PHP application hosting with Apache",
       category: "framework",
       projectCategories: ["web"],
+      compatibleLanguages: ["php"],
       requirements: [
         { id: "php-runtime", label: "PHP Runtime", type: "expected" },
       ],
       containerConfig: {
-        image: "php:8.3-apache",
+        image: "ghcr.io/civicognita/php-apache:8.4",
         internalPort: 80,
         shared: false,
         volumeMounts: (ctx) => [
@@ -23,14 +24,15 @@ export default createPlugin({
           if (ctx.mode === "development") {
             return ["php", "-S", "0.0.0.0:80", "-t", "/var/www/html"];
           }
-          return [
-            "bash", "-c",
-            "a2enmod rewrite && docker-php-entrypoint apache2-foreground",
-          ];
+          // Use docker-php-entrypoint to properly initialize Apache (handles PID 1, user switching)
+          return ["docker-php-entrypoint", "apache2-foreground"];
         },
       },
       installActions: [
         { id: "composer.install", label: "Install Dependencies", command: "composer install" },
+      ],
+      logSources: [
+        { id: "apache-error", label: "Apache Error Log", type: "container-file" as const, containerPath: "/var/log/apache2/error.log" },
       ],
       devCommands: {},
       guides: [
@@ -38,6 +40,8 @@ export default createPlugin({
       ],
       tools: [
         { id: "composer-install", label: "composer install", description: "Install PHP dependencies", action: "shell", command: "composer install" },
+        { id: "composer-update", label: "composer update", description: "Update PHP dependencies", action: "shell", command: "composer update" },
+        { id: "composer-dump", label: "composer dump-autoload", description: "Regenerate autoloader", action: "shell", command: "composer dump-autoload" },
       ],
       icon: "box",
     });

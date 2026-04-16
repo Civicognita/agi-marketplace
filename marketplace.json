@@ -5,21 +5,9 @@
   },
   "metadata": {
     "version": "1.0",
-    "description": "Official Aionima plugin marketplace \u2014 default plugin catalog for Aionima gateways"
+    "description": "Official Aionima plugin marketplace — default plugin catalog for Aionima gateways"
   },
   "plugins": [
-    {
-      "name": "adminer",
-      "source": "./plugins/plugin-adminer",
-      "type": "plugin",
-      "category": "service",
-      "provides": [
-        "ux",
-        "services"
-      ],
-      "version": "0.1.0",
-      "description": "Database management portal"
-    },
     {
       "name": "aionima-mysql",
       "source": "./plugins/plugin-mysql",
@@ -30,7 +18,7 @@
         "runtimes",
         "stacks"
       ],
-      "version": "0.1.0",
+      "version": "0.2.1",
       "description": "MariaDB database service for projects"
     },
     {
@@ -41,7 +29,7 @@
       "provides": [
         "runtimes"
       ],
-      "version": "0.1.0",
+      "version": "0.2.1",
       "description": "Node.js runtime versions for project hosting"
     },
     {
@@ -52,7 +40,7 @@
       "provides": [
         "ux"
       ],
-      "version": "0.1.0",
+      "version": "0.1.1",
       "description": "Bridge OpenClaw agents into the AGI dashboard"
     },
     {
@@ -63,8 +51,41 @@
       "provides": [
         "runtimes"
       ],
-      "version": "0.1.0",
+      "version": "0.2.1",
       "description": "PHP runtime versions for project hosting"
+    },
+    {
+      "name": "aionima-python-runtime",
+      "source": "./plugins/plugin-python-runtime",
+      "type": "plugin",
+      "category": "runtime",
+      "provides": [
+        "runtimes"
+      ],
+      "version": "0.1.1",
+      "description": "Python runtime versions for project hosting"
+    },
+    {
+      "name": "aionima-go-runtime",
+      "source": "./plugins/plugin-go-runtime",
+      "type": "plugin",
+      "category": "runtime",
+      "provides": [
+        "runtimes"
+      ],
+      "version": "0.1.1",
+      "description": "Go runtime versions for project hosting"
+    },
+    {
+      "name": "aionima-rust-runtime",
+      "source": "./plugins/plugin-rust-runtime",
+      "type": "plugin",
+      "category": "runtime",
+      "provides": [
+        "runtimes"
+      ],
+      "version": "0.1.1",
+      "description": "Rust runtime versions for project hosting"
     },
     {
       "name": "aionima-postgres",
@@ -76,8 +97,8 @@
         "runtimes",
         "stacks"
       ],
-      "version": "0.1.0",
-      "description": "PostgreSQL database service for projects"
+      "version": "0.2.1",
+      "description": "PostgreSQL database service — required by the ID service for identity and credential storage"
     },
     {
       "name": "project-api",
@@ -87,8 +108,8 @@
       "provides": [
         "project-types"
       ],
-      "version": "0.1.0",
-      "description": "API service project type \u2014 hostable backend services"
+      "version": "0.1.1",
+      "description": "API service project type — hostable backend services composed with runtime and framework stacks"
     },
     {
       "name": "project-art",
@@ -98,7 +119,7 @@
       "provides": [
         "project-types"
       ],
-      "version": "0.1.0",
+      "version": "0.1.1",
       "description": "Art/Media project type for creative assets and multimedia content"
     },
     {
@@ -109,8 +130,8 @@
       "provides": [
         "project-types"
       ],
-      "version": "0.1.0",
-      "description": "Monorepo project type \u2014 multi-package repositories"
+      "version": "0.1.1",
+      "description": "Monorepo project type — multi-package repositories with shared tooling"
     },
     {
       "name": "project-ops",
@@ -120,8 +141,8 @@
       "provides": [
         "project-types"
       ],
-      "version": "0.1.0",
-      "description": "Operations project type \u2014 infrastructure and DevOps projects"
+      "version": "0.1.1",
+      "description": "Operations project type — infrastructure, DevOps, and system administration projects"
     },
     {
       "name": "project-staticsite",
@@ -131,8 +152,8 @@
       "provides": [
         "project-types"
       ],
-      "version": "0.1.0",
-      "description": "Static site project type \u2014 hostable static websites"
+      "version": "0.1.1",
+      "description": "Static site project type — hostable static websites served via nginx"
     },
     {
       "name": "project-webapp",
@@ -142,8 +163,8 @@
       "provides": [
         "project-types"
       ],
-      "version": "0.1.0",
-      "description": "Web application project type \u2014 hostable web projects"
+      "version": "0.1.1",
+      "description": "Web application project type — hostable web projects composed with framework and runtime stacks"
     },
     {
       "name": "project-writing",
@@ -153,8 +174,8 @@
       "provides": [
         "project-types"
       ],
-      "version": "0.1.0",
-      "description": "Writing/Literature project type for manuscripts and documentation"
+      "version": "0.1.1",
+      "description": "Writing/Literature project type — non-hostable projects for manuscripts, articles, and documentation"
     },
     {
       "name": "aionima-redis",
@@ -166,7 +187,7 @@
         "runtimes",
         "stacks"
       ],
-      "version": "0.1.0",
+      "version": "0.2.1",
       "description": "Redis in-memory cache and data store service"
     },
     {
@@ -179,7 +200,7 @@
         "ux"
       ],
       "version": "0.1.0",
-      "description": "RustDesk remote desktop server management"
+      "description": "RustDesk remote desktop server management — system service, knowledge, and agent tools"
     },
     {
       "name": "aionima-screensaver",
@@ -189,8 +210,8 @@
       "provides": [
         "ux"
       ],
-      "version": "0.1.0",
-      "description": "Drifting-panel screensaver with system stats and gateway status"
+      "version": "0.1.1",
+      "description": "Drifting-panel screensaver with system stats, gateway status, and sparkle effects"
     },
     {
       "name": "stack-hono",
@@ -203,7 +224,7 @@
       "depends": [
         "aionima-node-runtime"
       ],
-      "version": "0.1.0",
+      "version": "0.2.1",
       "description": "Lightweight Node.js API with Drizzle ORM and Lucia auth"
     },
     {
@@ -217,7 +238,7 @@
       "depends": [
         "aionima-php-runtime"
       ],
-      "version": "0.1.0",
+      "version": "0.8.1",
       "description": "Laravel PHP framework stack with Apache container hosting"
     },
     {
@@ -229,9 +250,10 @@
         "stacks"
       ],
       "depends": [
-        "aionima-node-runtime"
+        "aionima-node-runtime",
+        "stack-react"
       ],
-      "version": "0.1.0",
+      "version": "0.2.1",
       "description": "React framework with SSR, file-based routing, and Tailwind CSS"
     },
     {
@@ -245,7 +267,7 @@
       "depends": [
         "aionima-node-runtime"
       ],
-      "version": "0.1.0",
+      "version": "0.2.1",
       "description": "Generic Node.js application hosting with npm start"
     },
     {
@@ -259,7 +281,7 @@
       "depends": [
         "aionima-node-runtime"
       ],
-      "version": "0.1.0",
+      "version": "0.2.1",
       "description": "Vue.js framework with SSR, file-based routing, and auto-imports"
     },
     {
@@ -273,7 +295,7 @@
       "depends": [
         "aionima-php-runtime"
       ],
-      "version": "0.1.0",
+      "version": "0.3.1",
       "description": "Generic PHP application hosting with Apache"
     },
     {
@@ -287,8 +309,22 @@
       "depends": [
         "aionima-node-runtime"
       ],
-      "version": "0.1.0",
+      "version": "0.2.1",
       "description": "React SPA built with Vite, served via nginx in production"
+    },
+    {
+      "name": "stack-react",
+      "source": "./plugins/plugin-stack-react",
+      "type": "plugin",
+      "category": "stack",
+      "provides": [
+        "stacks"
+      ],
+      "depends": [
+        "aionima-node-runtime"
+      ],
+      "version": "0.1.1",
+      "description": "React package within a monorepo — component library or standalone app with its own dev server"
     },
     {
       "name": "stack-static-hosting",
@@ -298,8 +334,89 @@
       "provides": [
         "stacks"
       ],
-      "version": "0.1.0",
+      "version": "0.1.1",
       "description": "Nginx-based static file hosting for built websites"
+    },
+    {
+      "name": "stack-django",
+      "source": "./plugins/plugin-stack-django",
+      "type": "plugin",
+      "category": "stack",
+      "provides": [
+        "stacks"
+      ],
+      "depends": [
+        "aionima-python-runtime"
+      ],
+      "version": "0.1.1",
+      "description": "Python web framework with ORM, admin, and template engine"
+    },
+    {
+      "name": "stack-fastapi",
+      "source": "./plugins/plugin-stack-fastapi",
+      "type": "plugin",
+      "category": "stack",
+      "provides": [
+        "stacks"
+      ],
+      "depends": [
+        "aionima-python-runtime"
+      ],
+      "version": "0.1.1",
+      "description": "High-performance Python API with automatic OpenAPI docs"
+    },
+    {
+      "name": "stack-flask",
+      "source": "./plugins/plugin-stack-flask",
+      "type": "plugin",
+      "category": "stack",
+      "provides": [
+        "stacks"
+      ],
+      "depends": [
+        "aionima-python-runtime"
+      ],
+      "version": "0.1.1",
+      "description": "Lightweight Python web framework — minimal and extensible"
+    },
+    {
+      "name": "stack-go-app",
+      "source": "./plugins/plugin-stack-go-app",
+      "type": "plugin",
+      "category": "stack",
+      "provides": [
+        "stacks"
+      ],
+      "depends": [
+        "aionima-go-runtime"
+      ],
+      "version": "0.1.1",
+      "description": "Generic Go application hosting with go run / go build"
+    },
+    {
+      "name": "stack-rust-app",
+      "source": "./plugins/plugin-stack-rust-app",
+      "type": "plugin",
+      "category": "stack",
+      "provides": [
+        "stacks"
+      ],
+      "depends": [
+        "aionima-rust-runtime"
+      ],
+      "version": "0.1.1",
+      "description": "Rust application hosting with cargo run / cargo build"
+    },
+    {
+      "name": "stack-tailwind",
+      "source": "./plugins/plugin-stack-tailwind",
+      "type": "plugin",
+      "category": "stack",
+      "provides": [
+        "stacks"
+      ],
+      "version": "0.1.1",
+      "description": "Utility-first CSS framework with Vite integration"
     },
     {
       "name": "stack-tall",
@@ -310,9 +427,10 @@
         "stacks"
       ],
       "depends": [
-        "aionima-php-runtime"
+        "stack-laravel",
+        "stack-tailwind"
       ],
-      "version": "0.1.0",
+      "version": "0.3.1",
       "description": "Laravel full-stack with Livewire, Tailwind CSS, and Vite asset bundling"
     },
     {
@@ -325,7 +443,7 @@
         "ux"
       ],
       "version": "0.1.0",
-      "description": "xrdp remote desktop server management"
+      "description": "xrdp remote desktop server management — isolated RDP sessions with service control, logs, and connection info"
     },
     {
       "name": "channel-telegram",
@@ -335,8 +453,8 @@
       "provides": [
         "channels"
       ],
-      "version": "0.1.0",
-      "description": "Telegram messaging channel adapter (grammy)"
+      "version": "0.1.1",
+      "description": "Telegram messaging channel adapter"
     },
     {
       "name": "channel-discord",
@@ -346,8 +464,8 @@
       "provides": [
         "channels"
       ],
-      "version": "0.1.0",
-      "description": "Discord messaging channel adapter (discord.js)"
+      "version": "0.1.1",
+      "description": "Discord messaging channel adapter"
     },
     {
       "name": "channel-gmail",
@@ -357,8 +475,8 @@
       "provides": [
         "channels"
       ],
-      "version": "0.1.0",
-      "description": "Gmail email channel adapter (OAuth2)"
+      "version": "0.1.1",
+      "description": "Gmail OAuth2 messaging channel adapter"
     },
     {
       "name": "channel-signal",
@@ -368,8 +486,8 @@
       "provides": [
         "channels"
       ],
-      "version": "0.1.0",
-      "description": "Signal messaging channel adapter (signal-cli REST)"
+      "version": "0.1.1",
+      "description": "Signal messaging channel adapter"
     },
     {
       "name": "channel-whatsapp",
@@ -379,8 +497,8 @@
       "provides": [
         "channels"
       ],
-      "version": "0.1.0",
-      "description": "WhatsApp Business API channel adapter"
+      "version": "0.1.1",
+      "description": "WhatsApp Business API messaging channel adapter"
     },
     {
       "name": "provider-anthropic",
@@ -390,8 +508,19 @@
       "provides": [
         "ux"
       ],
+      "version": "0.1.1",
+      "description": "Claude models — connect to Anthropic's API"
+    },
+    {
+      "name": "provider-claude-max",
+      "source": "./plugins/plugin-provider-claude-max",
+      "type": "plugin",
+      "category": "integration",
+      "provides": [
+        "llm-provider"
+      ],
       "version": "0.1.0",
-      "description": "Claude models \u2014 Anthropic API provider"
+      "description": "Use your Claude Max subscription instead of API credits — reads OAuth tokens from Claude Code"
     },
     {
       "name": "provider-openai",
@@ -401,8 +530,8 @@
       "provides": [
         "ux"
       ],
-      "version": "0.1.0",
-      "description": "GPT models \u2014 OpenAI API provider"
+      "version": "0.1.1",
+      "description": "GPT models — connect to OpenAI's API"
     },
     {
       "name": "provider-ollama",
@@ -412,14 +541,14 @@
       "provides": [
         "ux"
       ],
-      "version": "0.1.0",
-      "description": "Local models \u2014 Ollama provider"
+      "version": "0.1.1",
+      "description": "Local models — connect to Ollama for on-device inference"
     },
     {
       "name": "worker-code",
       "source": "plugins/plugin-worker-code",
       "type": "plugin",
-      "description": "Code domain workers \u2014 engineer, hacker, reviewer, tester",
+      "description": "Code domain workers — engineer, hacker, reviewer, tester",
       "provides": [
         "workers"
       ],
@@ -430,7 +559,7 @@
       "name": "worker-k",
       "source": "plugins/plugin-worker-k",
       "type": "plugin",
-      "description": "Knowledge domain workers \u2014 analyst, cryptologist, librarian, linguist",
+      "description": "Knowledge domain workers — analyst, cryptologist, librarian, linguist",
       "provides": [
         "workers"
       ],
@@ -441,7 +570,7 @@
       "name": "worker-ux",
       "source": "plugins/plugin-worker-ux",
       "type": "plugin",
-      "description": "UX domain workers \u2014 designer.web, designer.cli",
+      "description": "UX domain workers — designer.web, designer.cli",
       "provides": [
         "workers"
       ],
@@ -452,7 +581,7 @@
       "name": "worker-strat",
       "source": "plugins/plugin-worker-strat",
       "type": "plugin",
-      "description": "Strategy domain workers \u2014 planner, prioritizer",
+      "description": "Strategy domain workers — planner, prioritizer",
       "provides": [
         "workers"
       ],
@@ -463,7 +592,7 @@
       "name": "worker-comm",
       "source": "plugins/plugin-worker-comm",
       "type": "plugin",
-      "description": "Communication domain workers \u2014 writer.tech, writer.policy, editor",
+      "description": "Communication domain workers — writer.tech, writer.policy, editor",
       "provides": [
         "workers"
       ],
@@ -474,7 +603,7 @@
       "name": "worker-ops",
       "source": "plugins/plugin-worker-ops",
       "type": "plugin",
-      "description": "Operations domain workers \u2014 deployer, custodian, syncer",
+      "description": "Operations domain workers — deployer, custodian, syncer",
       "provides": [
         "workers"
       ],
@@ -485,7 +614,7 @@
       "name": "worker-gov",
       "source": "plugins/plugin-worker-gov",
       "type": "plugin",
-      "description": "Governance domain workers \u2014 auditor, archivist",
+      "description": "Governance domain workers — auditor, archivist",
       "provides": [
         "workers"
       ],
@@ -496,7 +625,7 @@
       "name": "worker-data",
       "source": "plugins/plugin-worker-data",
       "type": "plugin",
-      "description": "Data domain workers \u2014 modeler, migrator",
+      "description": "Data domain workers — modeler, migrator",
       "provides": [
         "workers"
       ],
@@ -529,7 +658,7 @@
       "name": "stack-writing-novel",
       "source": "plugins/plugin-stack-writing-novel",
       "type": "plugin",
-      "description": "Novel writing stack \u2014 chapters, character profiles, worldbuilding",
+      "description": "Novel writing stack — chapters, character profiles, worldbuilding",
       "provides": [
         "stacks"
       ],
@@ -540,7 +669,7 @@
       "name": "stack-writing-screenplay",
       "source": "plugins/plugin-stack-writing-screenplay",
       "type": "plugin",
-      "description": "Screenplay writing stack \u2014 scenes, act structure",
+      "description": "Screenplay writing stack — scenes, act structure",
       "provides": [
         "stacks"
       ],
@@ -551,12 +680,27 @@
       "name": "stack-writing-research",
       "source": "plugins/plugin-stack-writing-research",
       "type": "plugin",
-      "description": "Research paper stack \u2014 academic sections, citations",
+      "description": "Research paper stack — academic sections, citations",
       "provides": [
         "stacks"
       ],
       "trustTier": "official",
       "category": "writing"
+    },
+    {
+      "name": "stack-fancy-ui",
+      "source": "./plugins/plugin-stack-fancy-ui",
+      "type": "plugin",
+      "category": "stack",
+      "provides": [
+        "stacks"
+      ],
+      "depends": [
+        "stack-react"
+      ],
+      "version": "0.2.0",
+      "description": "react-fancy (components + hooks), fancy-code (embedded code editor), fancy-sheets (full spreadsheet with formulas), react-echarts (ECharts wrapper with typed chart components). Built on Tailwind CSS v4.",
+      "trustTier": "official"
     }
   ]
 }

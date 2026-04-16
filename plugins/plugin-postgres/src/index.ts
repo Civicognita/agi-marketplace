@@ -14,9 +14,9 @@ const execFileAsync = promisify(execFile);
 const VERSION_TAGS = ["17", "16", "15"] as const;
 
 const VERSIONS = [
-  { id: "postgres-17", name: "PostgreSQL 17", image: "postgres:17-alpine", description: "PostgreSQL 17 — latest stable" },
-  { id: "postgres-16", name: "PostgreSQL 16", image: "postgres:16-alpine", description: "PostgreSQL 16 — previous stable" },
-  { id: "postgres-15", name: "PostgreSQL 15", image: "postgres:15-alpine", description: "PostgreSQL 15 — maintenance" },
+  { id: "postgres-17", name: "PostgreSQL 17", image: "ghcr.io/civicognita/postgres:17", description: "PostgreSQL 17 — latest stable (pgvector, PostGIS)" },
+  { id: "postgres-16", name: "PostgreSQL 16", image: "ghcr.io/civicognita/postgres:16", description: "PostgreSQL 16 — previous stable (pgvector, PostGIS)" },
+  { id: "postgres-15", name: "PostgreSQL 15", image: "ghcr.io/civicognita/postgres:15", description: "PostgreSQL 15 — maintenance (pgvector, PostGIS)" },
 ] as const;
 
 export default createPlugin({
@@ -70,7 +70,7 @@ export default createPlugin({
         for (const img of images) {
           for (const name of img.Names ?? []) {
             for (const tag of VERSION_TAGS) {
-              if (name.includes(`postgres:${tag}-alpine`)) {
+              if (name.includes(`civicognita/postgres:${tag}`)) {
                 installed.push(tag);
               }
             }
@@ -86,22 +86,22 @@ export default createPlugin({
       if (!(VERSION_TAGS as readonly string[]).includes(version)) {
         throw new Error(`Invalid PostgreSQL version: ${version}`);
       }
-      log.info(`pulling postgres:${version}-alpine`);
+      log.info(`pulling ghcr.io/civicognita/postgres:${version}`);
       await execFileAsync("podman", [
-        "pull", `docker.io/library/postgres:${version}-alpine`,
+        "pull", `ghcr.io/civicognita/postgres:${version}`,
       ], { timeout: 300_000 });
-      log.info(`postgres:${version}-alpine pulled successfully`);
+      log.info(`ghcr.io/civicognita/postgres:${version} pulled successfully`);
     },
 
     async uninstall(version: string): Promise<void> {
       if (!(VERSION_TAGS as readonly string[]).includes(version)) {
         throw new Error(`Invalid PostgreSQL version: ${version}`);
       }
-      log.info(`removing postgres:${version}-alpine`);
+      log.info(`removing ghcr.io/civicognita/postgres:${version}`);
       await execFileAsync("podman", [
-        "rmi", `postgres:${version}-alpine`,
+        "rmi", `ghcr.io/civicognita/postgres:${version}`,
       ], { timeout: 60_000 });
-      log.info(`postgres:${version}-alpine removed`);
+      log.info(`ghcr.io/civicognita/postgres:${version} removed`);
     },
   });
 

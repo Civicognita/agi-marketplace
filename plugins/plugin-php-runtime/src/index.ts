@@ -19,7 +19,7 @@ export default createPlugin({
     label: "PHP 8.5",
     language: "php",
     version: "8.5",
-    containerImage: "php:8.5-apache",
+    containerImage: "ghcr.io/civicognita/php-apache:8.5",
     internalPort: 80,
     projectTypes: ["php", "laravel"],
     installable: true,
@@ -34,7 +34,7 @@ export default createPlugin({
     label: "PHP 8.4",
     language: "php",
     version: "8.4",
-    containerImage: "php:8.4-apache",
+    containerImage: "ghcr.io/civicognita/php-apache:8.4",
     internalPort: 80,
     projectTypes: ["php", "laravel"],
     installable: true,
@@ -49,22 +49,7 @@ export default createPlugin({
     label: "PHP 8.3",
     language: "php",
     version: "8.3",
-    containerImage: "php:8.3-apache",
-    internalPort: 80,
-    projectTypes: ["php", "laravel"],
-    installable: true,
-    dependencies: [
-      { name: "composer", version: "2.x", type: "managed" },
-    ],
-  });
-
-  // PHP 8.2
-  api.registerRuntime({
-    id: "php-8.2",
-    label: "PHP 8.2",
-    language: "php",
-    version: "8.2",
-    containerImage: "php:8.2-apache",
+    containerImage: "ghcr.io/civicognita/php-apache:8.3",
     internalPort: 80,
     projectTypes: ["php", "laravel"],
     installable: true,
@@ -85,7 +70,6 @@ export default createPlugin({
           { value: "php-8.5", label: "PHP 8.5 (latest)" },
           { value: "php-8.4", label: "PHP 8.4" },
           { value: "php-8.3", label: "PHP 8.3" },
-          { value: "php-8.2", label: "PHP 8.2" },
         ],
         defaultValue: "php-8.5",
         projectTypes: ["php", "laravel"],
@@ -99,14 +83,14 @@ export default createPlugin({
     language: "php",
 
     listAvailable(): string[] {
-      return ["8.5", "8.4", "8.3", "8.2"];
+      return ["8.5", "8.4", "8.3"];
     },
 
     async listInstalled(): Promise<string[]> {
       const installed: string[] = [];
-      for (const ver of ["8.5", "8.4", "8.3", "8.2"]) {
+      for (const ver of ["8.5", "8.4", "8.3"]) {
         try {
-          await execFileAsync("podman", ["image", "exists", `php:${ver}-apache`], { timeout: 10_000 });
+          await execFileAsync("podman", ["image", "exists", `ghcr.io/civicognita/php-apache:${ver}`], { timeout: 10_000 });
           installed.push(ver);
         } catch {
           // Image not pulled yet
@@ -116,31 +100,31 @@ export default createPlugin({
     },
 
     async install(version: string): Promise<void> {
-      const valid = ["8.5", "8.4", "8.3", "8.2"];
+      const valid = ["8.5", "8.4", "8.3"];
       if (!valid.includes(version)) throw new Error(`Invalid PHP version: ${version}`);
 
-      log.info(`pulling container image php:${version}-apache`);
+      log.info(`pulling container image ghcr.io/civicognita/php-apache:${version}`);
       try {
-        await execFileAsync("podman", ["pull", `php:${version}-apache`], { timeout: 300_000 });
+        await execFileAsync("podman", ["pull", `ghcr.io/civicognita/php-apache:${version}`], { timeout: 300_000 });
       } catch (err: unknown) {
         const stderr = (err as { stderr?: string })?.stderr ?? "";
-        throw new Error(`Failed to pull php:${version}-apache: ${stderr || (err instanceof Error ? err.message : String(err))}`);
+        throw new Error(`Failed to pull ghcr.io/civicognita/php-apache:${version}: ${stderr || (err instanceof Error ? err.message : String(err))}`);
       }
-      log.info(`php:${version}-apache pulled successfully`);
+      log.info(`ghcr.io/civicognita/php-apache:${version} pulled successfully`);
     },
 
     async uninstall(version: string): Promise<void> {
-      const valid = ["8.5", "8.4", "8.3", "8.2"];
+      const valid = ["8.5", "8.4", "8.3"];
       if (!valid.includes(version)) throw new Error(`Invalid PHP version: ${version}`);
 
-      log.info(`removing container image php:${version}-apache`);
+      log.info(`removing container image ghcr.io/civicognita/php-apache:${version}`);
       try {
-        await execFileAsync("podman", ["rmi", `php:${version}-apache`], { timeout: 60_000 });
+        await execFileAsync("podman", ["rmi", `ghcr.io/civicognita/php-apache:${version}`], { timeout: 60_000 });
       } catch (err: unknown) {
         const stderr = (err as { stderr?: string })?.stderr ?? "";
-        throw new Error(`Failed to remove php:${version}-apache: ${stderr || (err instanceof Error ? err.message : String(err))}`);
+        throw new Error(`Failed to remove ghcr.io/civicognita/php-apache:${version}: ${stderr || (err instanceof Error ? err.message : String(err))}`);
       }
-      log.info(`php:${version}-apache removed`);
+      log.info(`ghcr.io/civicognita/php-apache:${version} removed`);
     },
   });
 
@@ -164,7 +148,6 @@ export default createPlugin({
         { value: "8.5", label: "PHP 8.5" },
         { value: "8.4", label: "PHP 8.4" },
         { value: "8.3", label: "PHP 8.3" },
-        { value: "8.2", label: "PHP 8.2" },
       ],
       defaultValue: "8.4",
     })

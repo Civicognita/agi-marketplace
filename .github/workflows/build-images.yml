@@ -1,0 +1,117 @@
+# Build and push custom container images to GHCR.
+# Triggers on changes to images/ or manual dispatch.
+
+name: Build Container Images
+
+on:
+  push:
+    branches: [dev, main]
+    paths:
+      - "images/**"
+  workflow_dispatch:
+    inputs:
+      image:
+        description: "Image to build (php-apache, node, postgres, mariadb, redis, or 'all')"
+        required: false
+        default: "all"
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_PREFIX: ghcr.io/civicognita
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Determine which images changed (or build all on manual dispatch)
+  # ---------------------------------------------------------------------------
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - id: set-matrix
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ inputs.image }}" != "all" ]]; then
+            # Manual dispatch for a specific image
+            IMAGE="${{ inputs.image }}"
+            case "$IMAGE" in
+              php-apache) VERSIONS='["8.3","8.4","8.5"]' ; ARG="PHP_VERSION" ;;
+              node)       VERSIONS='["20","22","24"]'           ; ARG="NODE_VERSION" ;;
+              postgres)   VERSIONS='["15","16","17"]'           ; ARG="PG_VERSION" ;;
+              mariadb)    VERSIONS='["10.6","10.11","11.4"]'    ; ARG="MARIADB_VERSION" ;;
+              redis)      VERSIONS='["6.2","7.2","7.4"]'        ; ARG="REDIS_VERSION" ;;
+              python)     VERSIONS='["3.11","3.12","3.13"]'     ; ARG="PYTHON_VERSION" ;;
+              go)         VERSIONS='["1.22","1.23","1.24"]'     ; ARG="GO_VERSION" ;;
+              rust)       VERSIONS='["1.86","1.87"]'            ; ARG="RUST_VERSION" ;;
+              *) echo "Unknown image: $IMAGE" && exit 1 ;;
+            esac
+            echo "matrix={\"include\":[{\"image\":\"$IMAGE\",\"versions\":$VERSIONS,\"arg\":\"$ARG\"}]}" >> "$GITHUB_OUTPUT"
+          else
+            # Build all images (push to images/** or manual 'all')
+            echo 'matrix={"include":[
+              {"image":"php-apache","versions":["8.3","8.4","8.5"],"arg":"PHP_VERSION"},
+              {"image":"node","versions":["20","22","24"],"arg":"NODE_VERSION"},
+              {"image":"postgres","versions":["15","16","17"],"arg":"PG_VERSION"},
+              {"image":"mariadb","versions":["10.6","10.11","11.4"],"arg":"MARIADB_VERSION"},
+              {"image":"redis","versions":["6.2","7.2","7.4"],"arg":"REDIS_VERSION"},
+              {"image":"python","versions":["3.11","3.12","3.13"],"arg":"PYTHON_VERSION"},
+              {"image":"go","versions":["1.22","1.23","1.24"],"arg":"GO_VERSION"},
+              {"image":"rust","versions":["1.86","1.87"],"arg":"RUST_VERSION"}
+            ]}' | tr -d '\n' >> "$GITHUB_OUTPUT"
+          fi
+
+  # ---------------------------------------------------------------------------
+  # Build & push each image × version combination
+  # ---------------------------------------------------------------------------
+  build:
+    needs: detect
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.detect.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push versions
+        run: |
+          IMAGE="${{ matrix.image }}"
+          ARG="${{ matrix.arg }}"
+          DATE=$(date +%Y%m%d)
+
+          for VERSION in $(echo '${{ toJson(matrix.versions) }}' | jq -r '.[]'); do
+            echo "::group::Building $IMAGE:$VERSION"
+
+            docker buildx build \
+              --build-arg "$ARG=$VERSION" \
+              --tag "${{ env.IMAGE_PREFIX }}/$IMAGE:$VERSION" \
+              --tag "${{ env.IMAGE_PREFIX }}/$IMAGE:$VERSION-$DATE" \
+              --push \
+              --platform linux/amd64 \
+              "images/$IMAGE"
+
+            echo "::endgroup::"
+          done
+
+      - name: Set package visibility to public
+        if: github.ref == 'refs/heads/main'
+        run: |
+          # GHCR packages default to private — flip to public on main branch pushes
+          echo "Note: Package visibility must be set to public manually in GitHub org settings"
+          echo "or via the GitHub API with admin:org scope (not available in GITHUB_TOKEN)."

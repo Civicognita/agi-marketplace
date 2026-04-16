@@ -1,0 +1,20 @@
+{
+  "name": "@aionima/plugin-stack-tailwind",
+  "version": "0.1.1",
+  "private": true,
+  "type": "module",
+  "exports": { ".": "./src/index.ts" },
+  "aionima": {
+    "id": "stack-tailwind",
+    "name": "Tailwind CSS Stack",
+    "description": "Utility-first CSS framework with Vite integration",
+    "category": "stack",
+    "provides": ["stacks"],
+    "permissions": [],
+    "entry": "./src/index.ts",
+    "aionimaVersion": ">=0.1.0"
+  },
+  "dependencies": {
+    "@aionima/sdk": "workspace:*"
+  }
+}
