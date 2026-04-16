@@ -1,6 +1,6 @@
 {
   "name": "@aionima/provider-claude-max",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "exports": {
@@ -12,9 +12,9 @@
     "description": "Use your Claude Max subscription instead of API credits — reads OAuth tokens from Claude Code",
     "aionimaVersion": ">=0.1.0",
     "category": "integration",
-    "provides": ["llm-provider"],
+    "provides": ["ux"],
     "entry": "./src/index.ts",
-    "bakedIn": false,
+    "bakedIn": true,
     "disableable": true
   },
   "dependencies": {
