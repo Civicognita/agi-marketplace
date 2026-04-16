@@ -11,7 +11,7 @@ import { readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { homedir } from "node:os";
 import { createHash } from "node:crypto";
-import { createRequire } from "node:module";
+import { createRequire as makeRequire } from "node:module";
 
 interface ClaudeCredentials {
   claudeAiOauth: {
@@ -112,7 +112,7 @@ export default createPlugin({
       requiresApiKey: false,
       models: ["claude-opus-4-6", "claude-sonnet-4-6", "claude-haiku-4-5-20251001"],
       factory: (config: { defaultModel?: string; maxTokens?: number; maxRetries?: number; retryBaseMs?: number }) => {
-        const esmRequire = createRequire(import.meta.url);
+        const esmRequire = makeRequire(import.meta.url);
         const Anthropic = esmRequire("@anthropic-ai/sdk").default;
         let currentToken = getAccessToken();
         const client = new Anthropic({ authToken: currentToken });
