@@ -11,9 +11,11 @@ import { readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { homedir } from "node:os";
 import { createHash } from "node:crypto";
-// No createRequire — the bundler renames it back and collides with the
-// gateway's scope. Instead, pre-import the SDK at activation (async) and
-// store the constructor for the sync factory function.
+// The plugin build tool injects `const require = createRequire("/opt/aionima/package.json")`
+// at the top of dist/index.js. This require resolves from the gateway's
+// node_modules where @anthropic-ai/sdk lives. Declare it so TypeScript
+// accepts the call in ESM source.
+declare const require: (id: string) => Record<string, unknown>;
 
 interface ClaudeCredentials {
   claudeAiOauth: {
@@ -59,12 +61,8 @@ function getAccessToken(): string {
   return creds.accessToken;
 }
 
-// Pre-imported SDK constructor — resolved at activation (async) so the
-// sync factory function can use it without dynamic require/import.
-let AnthropicSDK: { new(opts: Record<string, unknown>): { messages: { create(body: Record<string, unknown>): Promise<Record<string, unknown>> }; _options: Record<string, unknown> } };
-
 export default createPlugin({
-  async activate(api) {
+  activate(api) {
     const log = api.getLogger();
 
     const creds = loadCredentials();
@@ -81,15 +79,6 @@ export default createPlugin({
         `provider-claude-max: loaded ${plan} subscription (tier: ${tier}, ` +
         `token expires in ~${String(expiresIn)}h)`,
       );
-    }
-
-    // Pre-import the Anthropic SDK so the sync factory function can use it.
-    try {
-      const mod = await import("@anthropic-ai/sdk");
-      AnthropicSDK = (mod.default ?? mod) as typeof AnthropicSDK;
-    } catch (err) {
-      log.warn(`provider-claude-max: failed to import @anthropic-ai/sdk: ${err instanceof Error ? err.message : String(err)}`);
-      return;
     }
 
     // Settings page — shows subscription status, no editable fields (creds
@@ -127,7 +116,7 @@ export default createPlugin({
       requiresApiKey: false,
       models: ["claude-opus-4-6", "claude-sonnet-4-6", "claude-haiku-4-5-20251001"],
       factory: (config: { defaultModel?: string; maxTokens?: number; maxRetries?: number; retryBaseMs?: number }) => {
-        const Anthropic = AnthropicSDK;
+        const Anthropic = require("@anthropic-ai/sdk").default as { new(opts: Record<string, unknown>): { messages: { create(body: unknown): Promise<Record<string, unknown>> }; _options: Record<string, unknown> } };
         let currentToken = getAccessToken();
         const client = new Anthropic({ authToken: currentToken });
         const defaultModel = config.defaultModel ?? "claude-sonnet-4-6";
