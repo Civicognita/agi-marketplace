@@ -111,7 +111,12 @@ export default createPlugin({
       factory: (config: { defaultModel?: string; maxTokens?: number; maxRetries?: number; retryBaseMs?: number }) => {
         const Anthropic = require("@anthropic-ai/sdk").default as { new(opts: Record<string, unknown>): { messages: { create(body: unknown): Promise<Record<string, unknown>> }; _options: Record<string, unknown> } };
         let currentToken = getAccessToken();
-        const client = new Anthropic({ authToken: currentToken });
+        const client = new Anthropic({
+          authToken: currentToken,
+          defaultHeaders: {
+            "anthropic-beta": "claude-code-20250219,oauth-2025-04-20",
+          },
+        });
         const defaultModel = config.defaultModel ?? "claude-sonnet-4-6";
         const maxTokens = config.maxTokens ?? 8192;
         const maxRetries = config.maxRetries ?? 3;
