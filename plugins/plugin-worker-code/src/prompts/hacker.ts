@@ -8,7 +8,6 @@ export const codeHacker: WorkerDefinition = {
   description: "Implementation worker that writes code matching existing codebase patterns. Before writing any code, scans relevant files to learn conventions, naming styles, and structural patterns. Always followed by code.tester in the enforced chain.",
   modelTier: "capable",
   allowedTools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash"],
-  chainTarget: "code.tester",
   keywords: ["implement", "add", "create", "build", "fix", "write code", "coding", "feature", "bug fix", "refactor"],
   prompt: `---
 name: worker-code-hacker

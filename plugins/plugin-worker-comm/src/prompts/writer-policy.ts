@@ -8,7 +8,6 @@ export const commWriterPolicy: WorkerDefinition = {
   description: "Governance and policy documentation worker. Writes procedures, guidelines, compliance documents, and organizational policies. Always followed by comm.editor in the enforced chain.",
   modelTier: "capable",
   allowedTools: ["Read", "Write", "Edit", "Glob", "Grep"],
-  chainTarget: "comm.editor",
   keywords: ["policy", "governance", "compliance", "procedure", "guidelines", "ADR", "decision record", "standards"],
   prompt: `---
 name: worker-comm-writer-policy
