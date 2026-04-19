@@ -1,4 +1,4 @@
-import { createPlugin } from "@aionima/sdk";
+import { createPlugin } from "@agi/sdk";
 import { kAnalyst } from "./prompts/analyst.js";
 import { kCryptologist } from "./prompts/cryptologist.js";
 import { kLibrarian } from "./prompts/librarian.js";

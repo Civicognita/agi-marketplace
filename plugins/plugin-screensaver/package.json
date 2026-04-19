@@ -1,5 +1,5 @@
 {
-  "name": "@aionima/plugin-screensaver",
+  "name": "@agi/plugin-screensaver",
   "version": "0.1.1",
   "private": true,
   "type": "module",
@@ -17,7 +17,7 @@
     "disableable": true
   },
   "dependencies": {
-    "@aionima/sdk": "workspace:*"
+    "@agi/sdk": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.0.0"

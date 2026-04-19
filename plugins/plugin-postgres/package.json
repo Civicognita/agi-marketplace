@@ -1,5 +1,5 @@
 {
-  "name": "@aionima/plugin-postgres",
+  "name": "@agi/plugin-postgres",
   "version": "0.2.1",
   "private": true,
   "type": "module",
@@ -17,6 +17,6 @@
     "disableable": false
   },
   "dependencies": {
-    "@aionima/sdk": "workspace:*"
+    "@agi/sdk": "workspace:*"
   }
 }

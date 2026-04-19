@@ -1,5 +1,5 @@
 {
-  "name": "@aionima/plugin-node-runtime",
+  "name": "@agi/plugin-node-runtime",
   "version": "0.2.1",
   "private": true,
   "type": "module",
@@ -16,6 +16,6 @@
     "bakedIn": true
   },
   "dependencies": {
-    "@aionima/sdk": "workspace:*"
+    "@agi/sdk": "workspace:*"
   }
 }

@@ -1,6 +1,6 @@
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-import { createPlugin, defineSettings, defineSettingsPage } from "@aionima/sdk";
+import { createPlugin, defineSettings, defineSettingsPage } from "@agi/sdk";
 
 const execFileAsync = promisify(execFile);
 

@@ -1,4 +1,4 @@
-import { createPlugin } from "@aionima/sdk";
+import { createPlugin } from "@agi/sdk";
 import { codeEngineer } from "./prompts/engineer.js";
 import { codeHacker } from "./prompts/hacker.js";
 import { codeReviewer } from "./prompts/reviewer.js";
