@@ -9,6 +9,17 @@
   },
   "plugins": [
     {
+      "name": "agi-lemonade-runtime",
+      "source": "./plugins/plugin-lemonade-runtime",
+      "type": "plugin",
+      "category": "runtime",
+      "provides": [
+        "system-services"
+      ],
+      "version": "0.1.0",
+      "description": "Local AI server with NPU/GPU/CPU auto-routing. Installs Lemonade + FastFlowLM and registers Settings + system service; LLM provider 'lemonade' is built into AGI core."
+    },
+    {
       "name": "aionima-mysql",
       "source": "./plugins/plugin-mysql",
       "type": "plugin",
