@@ -13,11 +13,18 @@
 
 set -euo pipefail
 
+# Non-interactive by default — when invoked from AGI's system-service
+# install endpoint there's no TTY, and debconf prompts otherwise wedge
+# the whole apt transaction.
+export DEBIAN_FRONTEND=noninteractive
+
 emit() {
   printf '{"phase":"lemonade-install","status":"%s","details":"%s"}\n' "$1" "$2"
 }
 
-FLM_RELEASE_URL="https://api.github.com/repos/lemonade-sdk/lemonade/releases/latest"
+# FLM is published by the FastFlowLM project (separate from lemonade-sdk).
+# Per-Ubuntu-version .debs with predictable naming.
+FLM_RELEASE_URL="https://api.github.com/repos/FastFlowLM/FastFlowLM/releases/latest"
 
 detect_os() {
   local os_name
@@ -45,12 +52,12 @@ install_ubuntu() {
       emit "apt" "adding lemonade-team PPA"
       sudo add-apt-repository -y ppa:lemonade-team/stable
       sudo apt update
-      emit "apt" "installing libxrt-npu2 + amdxdna-dkms"
-      sudo apt install -y libxrt-npu2 amdxdna-dkms
+      emit "apt" "installing libxrt-npu2 + amdxdna-dkms + lemonade-server"
+      sudo -E DEBIAN_FRONTEND=noninteractive apt install -y libxrt-npu2 amdxdna-dkms lemonade-server
       ;;
     26.04)
-      emit "apt" "installing libxrt-npu2 + amdxdna-dkms (already in archive)"
-      sudo apt install -y libxrt-npu2 amdxdna-dkms
+      emit "apt" "installing libxrt-npu2 + amdxdna-dkms + lemonade-server (already in archive)"
+      sudo -E DEBIAN_FRONTEND=noninteractive apt install -y libxrt-npu2 amdxdna-dkms lemonade-server
       ;;
     *)
       emit "error" "Ubuntu $version is not currently tested. Lemonade officially supports 24.04, 25.10, 26.04."
@@ -58,27 +65,28 @@ install_ubuntu() {
       ;;
   esac
 
-  # FLM .deb — Lemonade's FastFlowLM runtime with NPU support.
-  emit "flm" "resolving latest FLM release"
+  # FastFlowLM .deb — per-Ubuntu-version asset from FastFlowLM/FastFlowLM
+  # releases. Filename pattern: fastflowlm_VERSION_ubuntu<ver>_amd64.deb.
+  emit "flm" "resolving FastFlowLM .deb for Ubuntu $version"
   local flm_url
   flm_url="$(
     curl -sL "$FLM_RELEASE_URL" \
-      | grep -oE 'https://[^"]+flm[^"]*_amd64\.deb' \
+      | grep -oE "https://[^\"]+fastflowlm_[^\"]+_ubuntu${version}_amd64\.deb" \
       | head -1
   )"
   if [ -z "$flm_url" ]; then
-    emit "error" "could not resolve FLM .deb URL from GitHub releases"
+    emit "error" "could not resolve FastFlowLM .deb for Ubuntu $version from FastFlowLM/FastFlowLM releases"
     return 1
   fi
   emit "flm" "downloading $flm_url"
   local tmp
   tmp="$(mktemp -t flm-XXXXXX.deb)"
   curl -sL -o "$tmp" "$flm_url"
-  emit "flm" "installing FLM .deb"
-  sudo apt install -y "$tmp"
+  emit "flm" "installing FastFlowLM .deb"
+  sudo -E DEBIAN_FRONTEND=noninteractive apt install -y "$tmp"
   rm -f "$tmp"
 
-  emit "done" "Lemonade + FLM installed. REBOOT recommended — new amdxdna-dkms module needs a clean load cycle."
+  emit "done" "lemonade-server + FastFlowLM installed. Lemonade listens on port 13305. Reboot recommended but not strictly required — amdxdna module is already loaded on this kernel."
   return 0
 }
 

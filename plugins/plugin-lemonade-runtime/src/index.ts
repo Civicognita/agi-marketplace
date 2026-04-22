@@ -51,7 +51,7 @@ export default createPlugin({
       name: "Lemonade Server",
       description:
         "Local AI server — serves GGUF/ONNX LLMs, auto-selects NPU/GPU/CPU " +
-        "backend per model. OpenAI/Anthropic/Ollama-compatible APIs on port 8000.",
+        "backend per model. OpenAI/Anthropic/Ollama-compatible APIs on port 13305.",
       unitName: "lemonade-server.service",
       installedCheck: "command -v lemonade-server || command -v flm",
       installCommand: `bash "${installScript}"`,
@@ -84,8 +84,8 @@ export default createPlugin({
               id: "baseUrl",
               label: "Base URL",
               type: "text",
-              defaultValue: "http://127.0.0.1:8000",
-              placeholder: "http://127.0.0.1:8000",
+              defaultValue: "http://127.0.0.1:13305",
+              placeholder: "http://127.0.0.1:13305",
               description: "Lemonade API endpoint. Default is localhost:8000.",
             },
             {
