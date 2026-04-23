@@ -104,7 +104,7 @@ export default createPlugin({
 
   // Hosting extension — cache version selector in the Development tab
   api.registerHostingExtension({
-    pluginId: "aionima-redis",
+    pluginId: "agi-redis",
     fields: [
       {
         id: "redisVersion",

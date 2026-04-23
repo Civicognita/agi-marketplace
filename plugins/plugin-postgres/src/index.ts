@@ -107,7 +107,7 @@ export default createPlugin({
 
   // Hosting extension — database version selector in the Development tab
   api.registerHostingExtension({
-    pluginId: "aionima-postgres",
+    pluginId: "agi-postgres",
     fields: [
       {
         id: "postgresVersion",

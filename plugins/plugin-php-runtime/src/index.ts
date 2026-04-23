@@ -60,7 +60,7 @@ export default createPlugin({
 
   // Register hosting extension field for PHP version selection
   api.registerHostingExtension({
-    pluginId: "aionima-php-runtime",
+    pluginId: "agi-php-runtime",
     fields: [
       {
         id: "runtimeId",

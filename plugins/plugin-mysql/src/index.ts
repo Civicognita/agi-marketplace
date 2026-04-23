@@ -107,7 +107,7 @@ export default createPlugin({
 
   // Hosting extension — database version selector in the Development tab
   api.registerHostingExtension({
-    pluginId: "aionima-mysql",
+    pluginId: "agi-mysql",
     fields: [
       {
         id: "mariadbVersion",
