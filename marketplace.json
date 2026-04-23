@@ -16,8 +16,8 @@
       "provides": [
         "system-services"
       ],
-      "version": "0.1.0",
-      "description": "Local AI server with NPU/GPU/CPU auto-routing. Installs Lemonade + FastFlowLM and registers Settings + system service; LLM provider 'lemonade' is built into AGI core."
+      "version": "0.1.2",
+      "description": "Local AI server with NPU/GPU/CPU auto-routing. Installs Lemonade + FastFlowLM, signs the amdxdna DKMS module with a MOK for Secure Boot, adds the amd_iommu=force_isolation kernel flag needed for SVA binding on Strix-class NPUs, and registers Settings + system service."
     },
     {
       "name": "aionima-mysql",
