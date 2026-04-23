@@ -16,8 +16,8 @@
       "provides": [
         "system-services"
       ],
-      "version": "0.1.2",
-      "description": "Local AI server with NPU/GPU/CPU auto-routing. Installs Lemonade + FastFlowLM, signs the amdxdna DKMS module with a MOK for Secure Boot, adds the amd_iommu=force_isolation kernel flag needed for SVA binding on Strix-class NPUs, and registers Settings + system service."
+      "version": "0.1.3",
+      "description": "Local AI server with NPU/GPU/CPU auto-routing. Installs Lemonade + FastFlowLM, signs the amdxdna DKMS module with a MOK for Secure Boot, adds the amd_iommu=force_isolation kernel flag needed for SVA binding on Strix-class NPUs, and registers Settings + system service + 4 Aion agent tools (lemonade_status/models/pull/load) that proxy through AGI's /api/lemonade/* routes."
     },
     {
       "name": "aionima-mysql",
