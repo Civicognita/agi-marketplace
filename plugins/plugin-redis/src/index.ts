@@ -159,7 +159,7 @@ export default createPlugin({
         internalPort: 6379,
         shared: true,
         sharedKey: v.id,
-        volumeMounts: () => [`aionima-${v.id}-data:/data`],
+        volumeMounts: () => [`agi-${v.id}-data:/data`],
         env: () => ({}),
         command: () => ["redis-server", "--appendonly", "yes"],
         healthCheck: "redis-cli ping",

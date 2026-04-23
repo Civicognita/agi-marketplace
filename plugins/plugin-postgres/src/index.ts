@@ -189,7 +189,7 @@ export default createPlugin({
         internalPort: 5432,
         shared: true,
         sharedKey: v.id,
-        volumeMounts: () => [`aionima-${v.id}-data:/var/lib/postgresql/data`],
+        volumeMounts: () => [`agi-${v.id}-data:/var/lib/postgresql/data`],
         env: () => ({ POSTGRES_PASSWORD: "aionima-root" }),
         healthCheck: "pg_isready -U postgres",
       },

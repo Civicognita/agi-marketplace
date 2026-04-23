@@ -189,7 +189,7 @@ export default createPlugin({
         internalPort: 3306,
         shared: true,
         sharedKey: v.id,
-        volumeMounts: () => [`aionima-${v.id}-data:/var/lib/mysql`],
+        volumeMounts: () => [`agi-${v.id}-data:/var/lib/mysql`],
         env: () => ({ MARIADB_ROOT_PASSWORD: "aionima-root" }),
         healthCheck: "healthcheck --connect --innodb_initialized",
       },
