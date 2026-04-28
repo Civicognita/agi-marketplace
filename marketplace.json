@@ -83,6 +83,24 @@
       ]
     },
     {
+      "name": "agi-chrome-devtools-mcp",
+      "source": "./plugins/plugin-chrome-devtools-mcp",
+      "type": "plugin",
+      "category": "integration",
+      "provides": [
+        "ux"
+      ],
+      "adf": [
+        "0AGENT"
+      ],
+      "version": "0.1.0",
+      "description": "Chrome DevTools for Agents (chrome-devtools-mcp) — MCP server template that registers Google's official Chrome DevTools MCP server in the per-project MCP-tab dropdown. Provides agent tools for performance traces, network inspection, screenshots, console messages, and Puppeteer-driven browser automation.",
+      "aliases": [
+        "aionima-chrome-devtools-mcp",
+        "chrome-devtools"
+      ]
+    },
+    {
       "name": "agi-php-runtime",
       "source": "./plugins/plugin-php-runtime",
       "type": "plugin",
