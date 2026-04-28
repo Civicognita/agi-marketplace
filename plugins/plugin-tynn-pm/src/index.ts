@@ -74,7 +74,7 @@ export default createPlugin({
     // s127 t488 — register the tynn-pm PmProvider via definePmProvider.
     // Fields declare the config shape the dashboard uses to render the
     // "configure provider" form (server URL + Tynn API key). Factory
-    // currently returns a placeholder; real wiring lands in t489.
+    // currently returns a placeholder; real wiring lands in t489 follow-up.
     api.registerPmProvider(
       definePmProvider("tynn-pm", "Tynn")
         .description(
@@ -103,6 +103,23 @@ export default createPlugin({
         .build(),
     );
 
-    log.info("plugin-tynn-pm activated (s127 t486+t487+t488; t489 MCP template + real factory pending)");
+    // s127 t489 — register the per-project MCP server template. Surfaces in
+    // the project's MCP-tab dropdown so owners can configure a tynn-MCP
+    // server without manually editing project config. Template carries the
+    // default endpoint URL + the env var name that holds the bearer token
+    // (resolved against the project's .env at connect time).
+    api.registerMcpServerTemplate({
+      id: "tynn",
+      name: "Tynn",
+      description:
+        "Tynn-the-service via MCP. Provides PM tools (list-tasks, set-status, " +
+        "add-comment, getActiveFocusProgress, etc) for the agent. HTTP transport " +
+        "with Bearer auth against tynn.ai.",
+      transport: "http",
+      defaultUrl: "https://tynn.ai/mcp/tynn",
+      authTokenKey: "TYNN_API_KEY",
+    });
+
+    log.info("plugin-tynn-pm activated (s127 t486+t487+t488+t489; real factory still pending)");
   },
 });
