@@ -64,6 +64,25 @@
       ]
     },
     {
+      "name": "agi-tynn-pm",
+      "source": "./plugins/plugin-tynn-pm",
+      "type": "plugin",
+      "category": "integration",
+      "provides": [
+        "ux"
+      ],
+      "adf": [
+        "0UX",
+        "0AGENT"
+      ],
+      "version": "0.1.0",
+      "description": "Tynn-the-service as a marketplace plugin — full MCP-backed PM experience plus future Kanban MApp. Tynn-lite stays baked-in as the file-based fallback; tynn-pm is the upgrade path.",
+      "aliases": [
+        "aionima-tynn-pm",
+        "tynn-plugin"
+      ]
+    },
+    {
       "name": "agi-php-runtime",
       "source": "./plugins/plugin-php-runtime",
       "type": "plugin",
