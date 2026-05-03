@@ -1,0 +1,36 @@
+{
+  "name": "@agi/plaid-api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "aionima": {
+    "id": "plaid-api",
+    "name": "Plaid",
+    "description": "Plaid API consumer plugin — links bank accounts, fetches transactions and balances, verifies account holder identity. Plaid Link OAuth flow + 4 agent tools (list-accounts / fetch-transactions / get-balance / identity-verify) for use by the Accounting / Budget / Expense MApps and any other tool consumer. Owner-entered credentials sealed via TPM2.",
+    "category": "integration",
+    "entry": "./src/index.ts",
+    "permissions": [
+      "network",
+      "config.read",
+      "config.write",
+      "secrets.read",
+      "secrets.write"
+    ],
+    "provides": [
+      "tools"
+    ],
+    "adf": [
+      "0AGENT",
+      "0FUNC"
+    ],
+    "aionimaVersion": ">=0.4.0",
+    "bakedIn": false,
+    "disableable": true
+  },
+  "dependencies": {
+    "@agi/sdk": "workspace:*"
+  }
+}

@@ -101,6 +101,25 @@
       ]
     },
     {
+      "name": "agi-plaid-api",
+      "source": "./plugins/plugin-plaid-api",
+      "type": "plugin",
+      "category": "integration",
+      "provides": [
+        "tools"
+      ],
+      "adf": [
+        "0AGENT",
+        "0FUNC"
+      ],
+      "version": "0.1.0",
+      "description": "Plaid API consumer plugin — links bank accounts via Plaid Link, fetches transactions and balances, verifies account holder identity. Registers 4 agent tools (plaid:list-accounts / fetch-transactions / get-balance / identity-verify) for use by the Accounting Ledger / Budget Tracker / Expense Reports MApps and any other tool consumer. Phase 1 scaffold today; Plaid Link OAuth + real API calls + TPM2 sealing in Phase 2-4.",
+      "aliases": [
+        "aionima-plaid-api",
+        "plaid"
+      ]
+    },
+    {
       "name": "agi-php-runtime",
       "source": "./plugins/plugin-php-runtime",
       "type": "plugin",
