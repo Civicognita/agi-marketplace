@@ -22,28 +22,28 @@ This plugin **never collects credentials** in agi config. Per CLAUDE.md
 
 | Phase | Tracking | Status | Repo |
 |-------|----------|--------|------|
-| 1 — scaffold + 4 tool stubs | t611 | shipped (cycle 205, reworked cycle 210) | `agi-marketplace` |
-| 2 — Local-ID Plaid provider + OAuth flow + token broker | t614 | backlog | `agi-local-id` |
-| 3 — agi tool handlers wire to broker + Plaid SDK calls | t615 | backlog (blocked on t614) | `agi-marketplace` |
-| 4 — `federation-identity.md` doc note explaining the broker pattern | t616 | backlog (blocked on t614 + t615) | `agi` |
+| 1 — scaffold + 4 tool stubs | t611 | shipped (cycles 205 + 210) | `agi-marketplace` |
+| 2 — Local-ID Plaid provider + OAuth flow + token broker | t614 | shipped (cycle 211) | `agi-local-id` |
+| 3 — agi tool handlers wire to broker + Plaid API calls | t615 | shipped (cycle 212) | `agi-marketplace` |
+| 4 — `federation-identity.md` doc note explaining the broker pattern | t616 | shipped (cycle 212) | `agi` |
 
-Tool stubs throw `notImplemented` errors today. The catalog entry and tool
-registration surfaces are wired so users can install the plugin and observe
-what tools it provides; actual Plaid API calls light up in t615.
+All four tools call Plaid's API end-to-end. They fetch a fresh access_token
+per item from Local-ID's broker, fetch PLAID_CLIENT_ID + PLAID_SECRET from
+the agi Vault, then call the appropriate Plaid endpoint via direct HTTPS.
 
 ## Tools
 
-| Tool | Description |
-|------|-------------|
-| `plaid:list-accounts` | List linked bank accounts (id, name, type, mask, parent item id) |
-| `plaid:fetch-transactions` | Fetch transactions for an account in a date range |
-| `plaid:get-balance` | Current balance for an account |
-| `plaid:identity-verify` | Account holder identity fields (name, email, phone, address). Ships in t615 alongside the other 3 tools per Q-9 owner answer cycle 209. |
+| Tool | Inputs | Description |
+|------|--------|-------------|
+| `plaid:list-accounts` | (none) | Aggregates accounts across all linked items. Returns each account with its parent `itemId`, name, type, subtype, mask, and balances. |
+| `plaid:fetch-transactions` | `{itemId, startDate, endDate, accountIds?}` | Paginated transaction fetch. Returns id, amount (positive=debit), date, merchant name, category, pending status. |
+| `plaid:get-balance` | `{itemId, accountIds?}` | Current available, current, and limit balances per account with ISO currency. |
+| `plaid:identity-verify` | `{itemId}` | Account holder names / emails / phones / addresses (KYC). Ships per Q-9 owner answer cycle 211. |
 
-Once t615 lands, mini-agents in the Accounting / Budget Tracker / Expense
-Reports MApps can auto-discover these tools and call them through their
-`toolMode=auto` dispatch (cycle-191 Hybrid mini-agent shape) without
-explicit per-MApp tool whitelisting.
+Mini-agents in the Accounting / Budget Tracker / Expense Reports MApps can
+auto-discover these tools and call them through their `toolMode=auto`
+dispatch (cycle-191 Hybrid mini-agent shape) without explicit per-MApp
+tool whitelisting.
 
 ## Setup (when t614 ships)
 
