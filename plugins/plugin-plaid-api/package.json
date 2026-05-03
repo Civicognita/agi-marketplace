@@ -9,15 +9,12 @@
   "aionima": {
     "id": "plaid-api",
     "name": "Plaid",
-    "description": "Plaid API consumer plugin — links bank accounts, fetches transactions and balances, verifies account holder identity. Plaid Link OAuth flow + 4 agent tools (list-accounts / fetch-transactions / get-balance / identity-verify) for use by the Accounting / Budget / Expense MApps and any other tool consumer. Owner-entered credentials sealed via TPM2.",
+    "description": "System-level Plaid integration. Registers 4 agent tools (list-accounts / fetch-transactions / get-balance / identity-verify) globally to Aion's tool palette so Aion can read bank accounts directly; MApps (Accounting / Budget Tracker / Expenses) are secondary consumers via mini-agent auto-discovery. Plaid Link OAuth flow lives in Local-ID (mirrors GitHub provider pattern); PLAID_CLIENT_ID + PLAID_SECRET resolved from agi Vault at runtime. No plugin-side credential collection.",
     "category": "integration",
     "entry": "./src/index.ts",
     "permissions": [
       "network",
-      "config.read",
-      "config.write",
-      "secrets.read",
-      "secrets.write"
+      "config.read"
     ],
     "provides": [
       "tools"

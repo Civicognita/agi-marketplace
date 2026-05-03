@@ -113,7 +113,7 @@
         "0FUNC"
       ],
       "version": "0.1.0",
-      "description": "Plaid API consumer plugin — links bank accounts via Plaid Link, fetches transactions and balances, verifies account holder identity. Registers 4 agent tools (plaid:list-accounts / fetch-transactions / get-balance / identity-verify) for use by the Accounting Ledger / Budget Tracker / Expense Reports MApps and any other tool consumer. Phase 1 scaffold today; Plaid Link OAuth + real API calls + TPM2 sealing in Phase 2-4.",
+      "description": "System-level Plaid integration for Aion. Registers 4 agent tools globally (plaid:list-accounts / fetch-transactions / get-balance / identity-verify) so Aion can read bank accounts directly; MApps are secondary consumers via mini-agent auto-discovery. Plaid Link OAuth flow lives in Local-ID (mirrors GitHub provider); PLAID_CLIENT_ID + PLAID_SECRET resolved from agi Vault at runtime. Phase 1 scaffold today; t614 (Local-ID OAuth) + t615 (real API calls) + t616 (doc) follow.",
       "aliases": [
         "aionima-plaid-api",
         "plaid"

@@ -2,47 +2,48 @@
  * plugin-plaid-api — Plaid API consumer plugin (s147 t611).
  *
  * Status:
- *   - Phase 1 ✓ (scaffold): plugin lifecycle, settings page for credentials,
- *     4 tool stubs throwing notImplemented, ADF classification (0AGENT + 0FUNC)
- *   - Phase 2 (deferred): Plaid Link OAuth flow + link_token exchange
- *   - Phase 3 (deferred): real Plaid API SDK calls for the 4 tools
- *   - Phase 4 (deferred): TPM2-sealed credential storage wiring
+ *   - Phase 1 ✓ (scaffold): plugin lifecycle + 4 tool stubs throwing
+ *     notImplemented + ADF classification (0AGENT + 0FUNC)
+ *   - t614 (deferred — agi-local-id repo): Plaid Link OAuth flow + token
+ *     broker route lives in Local-ID, mirroring the GitHub provider pattern
+ *   - t615 (deferred — this plugin): tool handlers fetch access_tokens from
+ *     Local-ID broker, fetch PLAID_CLIENT_ID + PLAID_SECRET from agi Vault,
+ *     then call Plaid SDK. identity-verify ships alongside the other 3 tools
+ *     per Q-9 owner answer cycle 209.
+ *   - t616 (deferred — agi/docs): federation-identity.md doc note explaining
+ *     the broker pattern, mirroring the GitHub flow doc
  *
- * Architecture rationale: the t611 description named `defineProvider` but
- * that builder is specifically for LLM Providers (Anthropic/OpenAI/Ollama).
- * Plaid is an external-API consumer — the right SDK shape is `defineTool`
- * for each agent action plus `defineSettingsPage` for credentials. Owner's
- * actual intent ("API consumer service") matches this shape.
- *
- * Security posture:
- *   - Credentials (Plaid Client ID + Secret) are owner-entered at install
- *     time. Per CLAUDE.md § prohibited_actions, Claude never enters or
- *     pre-fills these fields.
- *   - TPM2 sealing of the secret happens via the existing ~/.agi/secrets/
- *     infrastructure when Phase 4 lands. Today the settings page collects
- *     credentials into config; the sealing migration is a follow-up.
- *   - Plaid Link OAuth flow (Phase 2) follows the Local-ID-owns-identity
- *     rule: the plugin serves a redirect endpoint for the Plaid hosted Link
- *     flow but does not implement an account/auth UI. Plaid is an external
- *     API the plugin consumes; user identity within Aionima still flows
- *     through Local-ID.
+ * Architecture (cycle 209 owner-corrected):
+ *   - **System-level integration**, not per-project plugin. Tools register
+ *     globally to the agent's tool palette so Aion can read bank accounts
+ *     directly. MApps (Accounting / Budget Tracker / Expenses) are secondary
+ *     consumers via mini-agent auto-discovery.
+ *   - **OAuth in Local-ID** per `feedback_third_party_oauth_lives_in_localid`:
+ *     same pattern as the existing GitHub provider. Local-ID hosts the
+ *     "Connect Bank Account" UI + Plaid Link widget + token storage.
+ *   - **Secrets in agi Vault** per owner directive cycle 209: PLAID_CLIENT_ID
+ *     and PLAID_SECRET live as Vault entries (gateway-scoped, TPM2-sealed via
+ *     the existing ~/.agi/secrets/vault/ pipeline). Both Local-ID (during
+ *     OAuth) and this plugin (during tool calls) resolve from Vault at
+ *     runtime; no plugin-side credential collection.
+ *   - **No defineSettingsPage**: this plugin does not collect credentials.
+ *     The cycle-205 settings page was removed cycle 210 in line with the
+ *     corrected architecture.
  *
  * ADF classification: 0AGENT + 0FUNC
  *   - 0AGENT: registers 4 agent tools (list-accounts, fetch-transactions,
- *     get-balance, identity-verify) into the project's tool palette
- *   - 0FUNC: external-data integration that mini-agents in the Accounting
- *     / Budget Tracker / Expense Reports MApps can auto-discover and call
- *     once their per-screen agentic dispatch lands (deferred until screens
- *     runtime supports it; cycle-202 only proved componentRef element
- *     dispatch)
+ *     get-balance, identity-verify) into Aion's tool palette globally
+ *   - 0FUNC: external-data integration that any tool consumer (Aion direct,
+ *     MApp mini-agents, Workflows) can call through the registered tools
  */
 
-import { createPlugin, defineSettingsPage, defineTool } from "@agi/sdk";
+import { createPlugin, defineTool } from "@agi/sdk";
 
 const NOT_IMPLEMENTED = (op: string) =>
   `plugin-plaid-api:${op} is registered but not yet implemented. ` +
-  `Awaiting Phase 2 (Plaid Link OAuth) + Phase 3 (real Plaid API SDK calls). ` +
-  `Settings page collects credentials; tool handlers throw until phases ship.`;
+  `Awaiting t614 (Local-ID Plaid provider — agi-local-id repo) + ` +
+  `t615 (agi-side tool handlers wire to Local-ID broker + Plaid SDK calls). ` +
+  `Tool handler will throw until t614 + t615 ship.`;
 
 function notImplemented(op: string) {
   return async () => {
@@ -55,67 +56,10 @@ export default createPlugin({
     const log = api.getLogger();
     log.info("plugin-plaid-api Phase 1 scaffold activating");
 
-    api.registerSettingsPage(
-      defineSettingsPage("plaid-api", "Plaid")
-        .description(
-          "Connect a Plaid account to enable bank-account linking, " +
-          "transaction fetching, balance checks, and identity verification " +
-          "for use by Accounting / Budget Tracker / Expense Reports MApps " +
-          "and any other tool consumer.",
-        )
-        .icon("link")
-        .position(70)
-        .section({
-          id: "plaid-credentials",
-          label: "Plaid Credentials",
-          description:
-            "Enter your Plaid client credentials. Get them from the " +
-            "Plaid dashboard at dashboard.plaid.com. Sandbox credentials " +
-            "are safe to use during setup; switch to development or " +
-            "production once linked accounts are live. These secrets " +
-            "will be TPM2-sealed once Phase 4 ships.",
-          configPath: "plugins.plaidApi",
-          fields: [
-            {
-              id: "enabled",
-              label: "Enabled",
-              type: "toggle",
-              configKey: "enabled",
-            },
-            {
-              id: "environment",
-              label: "Plaid Environment",
-              type: "select",
-              configKey: "environment",
-              options: [
-                { value: "sandbox", label: "Sandbox (test data)" },
-                { value: "development", label: "Development (real institutions, limited)" },
-                { value: "production", label: "Production (live)" },
-              ],
-              placeholder: "sandbox",
-            },
-            {
-              id: "clientId",
-              label: "Client ID",
-              type: "text",
-              configKey: "clientId",
-              placeholder: "5e..." ,
-            },
-            {
-              id: "secret",
-              label: "Secret",
-              type: "password",
-              configKey: "secret",
-            },
-          ],
-        })
-        .build(),
-    );
-
     api.registerTool(
       defineTool(
         "plaid:list-accounts",
-        "List all bank accounts linked via Plaid for the current project. Returns account id, name, official name, type, subtype, and last-four mask.",
+        "List all bank accounts linked via Plaid. Returns account id, name, official name, type, subtype, last-four mask, and the parent Plaid item id.",
       )
         .inputSchema({
           type: "object",
@@ -179,7 +123,7 @@ export default createPlugin({
     api.registerTool(
       defineTool(
         "plaid:identity-verify",
-        "Verify the account holder identity for a linked Plaid account. Returns name, email, phone, and address fields Plaid has on file. KYC use case — owner-judgment-gated whether to ship in Phase 2 or defer for regulatory reasons.",
+        "Verify the account holder identity for a linked Plaid account. Returns name, email, phone, and address fields Plaid has on file. Ships in t615 alongside the other 3 tools per Q-9 owner answer cycle 209.",
       )
         .inputSchema({
           type: "object",
@@ -196,6 +140,6 @@ export default createPlugin({
         .build(),
     );
 
-    log.info("plugin-plaid-api Phase 1 scaffold activated; 4 tool stubs registered, all throwing notImplemented until Phase 2/3 ship");
+    log.info("plugin-plaid-api Phase 1 scaffold activated; 4 tool stubs registered, all throwing notImplemented until t614 + t615 ship");
   },
 });
