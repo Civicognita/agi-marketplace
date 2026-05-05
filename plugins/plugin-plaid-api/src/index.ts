@@ -1,127 +1,93 @@
 /**
- * plugin-plaid-api — Plaid API consumer plugin (s147 t611 / t614 / t615 / t616).
+ * plugin-plaid-api — Plaid integration for Aion (s147 t611 + t614 + t615 +
+ * t616, REWRITTEN cycle 221 per s149 t627 + t629).
  *
  * System-level integration. Tools register globally to Aion's tool palette
  * so Aion can read bank accounts directly. MApps (Accounting Ledger /
  * Budget Tracker / Expense Reports) are secondary consumers via mini-agent
  * auto-discovery.
  *
- * Architecture (cycle 211 plan; Phases 1-3 shipped):
- *   - Plaid Link OAuth flow lives in Local-ID at /api/auth/plaid-link/* —
- *     mirrors the existing GitHub provider pattern. Owner connects banks
- *     via the Local-ID dashboard's browser-side Plaid Link widget.
- *   - PLAID_CLIENT_ID + PLAID_SECRET live as Vault entries (gateway-scoped,
- *     TPM2-sealed via the existing ~/.agi/secrets/vault/ pipeline). Vault
- *     entry IDs come from owner-set env vars
- *     (PLAID_CLIENT_ID_VAULT_REF + PLAID_SECRET_VAULT_REF). Per
- *     `feedback_localid_private_be_careful_what_ships_in_agi`, nothing
- *     Plaid-related is hardcoded in this source.
- *   - Multi-bank support via role-encoding: Local-ID stores each linked
- *     Plaid item as a connections row with role="plaid-item:<itemId>".
+ * Architecture (post s149 cycle 215 unification — all Plaid traffic
+ * routes through Hive-ID since it's the only publicly-accessible piece
+ * of the stack):
  *
- * Tool handlers fetch the access_token from Local-ID's broker, fetch
- * PLAID_CLIENT_ID + PLAID_SECRET from agi Vault, then call Plaid's API
- * directly via fetch() (no `plaid` npm SDK dependency — keeps the plugin
- * dependency surface minimal and matches the Local-ID side).
+ *   Aion tool call (this plugin)
+ *     → Local-ID /api/proxy/plaid/<endpoint>?role=plaid-item:<itemId>
+ *     → Hive-ID /api/proxy/plaid/<endpoint> (Bearer DToken)
+ *     → Plaid /<endpoint>
+ *     → response unwinds back
+ *
+ * agi never holds Plaid creds OR access_tokens — Local-ID holds only an
+ * encrypted DToken that Hive-ID issued at OAuth completion. The DToken
+ * is bound to a specific connection at Hive-ID; Hive-ID resolves
+ * client_id+secret+access_token before calling Plaid.
+ *
+ * Per `feedback_localid_private_be_careful_what_ships_in_agi` — nothing
+ * Plaid-specific lives in agi source.
  *
  * ADF classification: 0AGENT + 0FUNC.
  *
  * See agi/docs/agents/federation-identity.md § Plaid integration for the
- * canonical broker-pattern documentation (s147 t616).
+ * canonical broker-pattern documentation (s149 t628 — pending).
  */
 
 import { createPlugin, defineTool } from "@agi/sdk";
 
 // ---------------------------------------------------------------------------
-// Plaid environment URLs (public Plaid product tier endpoints)
+// Local-ID proxy caller
 // ---------------------------------------------------------------------------
 
-const PLAID_API_BASE = {
-  sandbox: "https://sandbox.plaid.com",
-  development: "https://development.plaid.com",
-  production: "https://production.plaid.com",
-} as const;
+const LOCAL_ID_BASE_URL_DEFAULT = "https://id.ai.on";
 
-type PlaidEnv = keyof typeof PLAID_API_BASE;
+async function callLocalIdProxy<T = unknown>(
+  endpoint: string,
+  body: Record<string, unknown>,
+  opts?: { role?: string },
+): Promise<T> {
+  const base = process.env.LOCAL_ID_BASE_URL ?? LOCAL_ID_BASE_URL_DEFAULT;
+  const role = opts?.role ?? "owner";
+  const url = `${base}/api/proxy/plaid/${endpoint}?role=${encodeURIComponent(role)}`;
 
-function getPlaidEnv(): PlaidEnv {
-  const env = (process.env.PLAID_ENV ?? "sandbox").toLowerCase();
-  if (env === "sandbox" || env === "development" || env === "production") return env;
-  return "sandbox";
-}
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify(body),
+    signal: AbortSignal.timeout(20_000),
+  });
 
-// ---------------------------------------------------------------------------
-// Vault helper — reads PLAID_CLIENT_ID + PLAID_SECRET via the gateway's
-// own Vault HTTP API. The plugin runs inside the gateway process, so the
-// fetch goes to localhost — same private-network gate used by Local-ID
-// when it reads the same entries during OAuth.
-// ---------------------------------------------------------------------------
-
-interface PlaidCreds {
-  clientId: string;
-  secret: string;
-}
-
-async function fetchVaultValue(vaultEntryId: string): Promise<string> {
-  const base = process.env.LOCAL_GATEWAY_URL ?? "http://localhost:3100";
-  const url = `${base}/api/vault/${encodeURIComponent(vaultEntryId)}`;
-  const res = await fetch(url, { signal: AbortSignal.timeout(5_000) });
-  if (!res.ok) {
-    const text = await res.text().catch(() => "");
-    throw new Error(`vault read failed (${res.status}): ${text.slice(0, 200)}`);
-  }
-  const body = (await res.json()) as { value?: string };
-  if (typeof body.value !== "string" || body.value.length === 0) {
-    throw new Error("vault entry returned empty value");
-  }
-  return body.value;
-}
-
-async function getPlaidCreds(): Promise<PlaidCreds> {
-  const clientIdRef = process.env.PLAID_CLIENT_ID_VAULT_REF;
-  const secretRef = process.env.PLAID_SECRET_VAULT_REF;
-  if (!clientIdRef || !secretRef) {
-    throw new Error(
-      "Plaid is not configured: set PLAID_CLIENT_ID_VAULT_REF + " +
-        "PLAID_SECRET_VAULT_REF env vars on the gateway, pointing to Vault " +
-        "entries holding the Plaid client_id + secret. Create the entries " +
-        "in the dashboard's Vault tab.",
-    );
-  }
-  const [clientId, secret] = await Promise.all([
-    fetchVaultValue(clientIdRef),
-    fetchVaultValue(secretRef),
-  ]);
-  return { clientId, secret };
-}
-
-// ---------------------------------------------------------------------------
-// Local-ID broker — fetches a fresh Plaid access_token for a given item
-// ---------------------------------------------------------------------------
-
-async function getPlaidToken(itemId: string): Promise<string> {
-  const base = process.env.LOCAL_ID_BASE_URL ?? "https://id.ai.on";
-  const role = `plaid-item:${itemId}`;
-  const url = `${base}/api/auth/plaid-link/token?provider=plaid&role=${encodeURIComponent(role)}`;
-  const res = await fetch(url, { signal: AbortSignal.timeout(5_000) });
   if (res.status === 404) {
+    const text = await res.text().catch(() => "");
     throw new Error(
-      `No Plaid item linked with itemId="${itemId}". ` +
-        `Connect a bank account at ${base}/dashboard.`,
+      `No Plaid item linked for role="${role}" at ${base}. ` +
+        `Connect a bank account at ${base.replace("/api/proxy/plaid", "")}/dashboard. ` +
+        (text ? `Detail: ${text.slice(0, 200)}` : ""),
     );
   }
+
+  const respText = await res.text();
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(respText);
+  } catch {
+    parsed = { raw: respText };
+  }
+
   if (!res.ok) {
-    throw new Error(
-      `Plaid token unavailable from Local-ID (HTTP ${res.status}). ` +
-        `Connect a bank at ${base}/dashboard or check Local-ID is running.`,
-    );
+    const errBody = parsed as { error?: string; status?: number; response?: { error_message?: string; error_code?: string } };
+    const upstreamMsg = errBody.response?.error_message ?? errBody.error ?? `HTTP ${res.status}`;
+    const upstreamCode = errBody.response?.error_code ?? "unknown";
+    const err = new Error(`Plaid ${endpoint} ${upstreamCode}: ${upstreamMsg}`);
+    (err as Error & { plaidErrorCode?: string; status?: number }).plaidErrorCode = upstreamCode;
+    (err as Error & { status?: number }).status = res.status;
+    throw err;
   }
-  const body = (await res.json()) as { accessToken?: string };
-  if (!body.accessToken) {
-    throw new Error("Local-ID returned empty Plaid access token");
-  }
-  return body.accessToken;
+
+  return parsed as T;
 }
+
+// ---------------------------------------------------------------------------
+// Local-ID list-items helper — for plaid:list-accounts aggregation
+// ---------------------------------------------------------------------------
 
 interface PlaidItem {
   itemId: string;
@@ -130,11 +96,10 @@ interface PlaidItem {
   connectedAt: string;
 }
 
-async function listPlaidItems(): Promise<PlaidItem[]> {
-  const base = process.env.LOCAL_ID_BASE_URL ?? "https://id.ai.on";
-  const res = await fetch(`${base}/api/auth/plaid-link/items`, {
-    signal: AbortSignal.timeout(5_000),
-  });
+async function listLinkedItems(): Promise<PlaidItem[]> {
+  const base = process.env.LOCAL_ID_BASE_URL ?? LOCAL_ID_BASE_URL_DEFAULT;
+  const url = `${base}/api/auth/plaid-link/items`;
+  const res = await fetch(url, { signal: AbortSignal.timeout(5_000) });
   if (!res.ok) {
     throw new Error(
       `Failed to list Plaid items from Local-ID (HTTP ${res.status}). ` +
@@ -142,40 +107,6 @@ async function listPlaidItems(): Promise<PlaidItem[]> {
     );
   }
   return (await res.json()) as PlaidItem[];
-}
-
-// ---------------------------------------------------------------------------
-// Plaid API helper — single HTTP entrypoint for /accounts/get,
-// /transactions/get, /accounts/balance/get, /identity/get
-// ---------------------------------------------------------------------------
-
-interface PlaidErrorBody {
-  error_code?: string;
-  error_message?: string;
-  error_type?: string;
-  display_message?: string;
-}
-
-async function plaidApiCall<T>(endpoint: string, body: object): Promise<T> {
-  const env = getPlaidEnv();
-  const res = await fetch(`${PLAID_API_BASE[env]}${endpoint}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    body: JSON.stringify(body),
-    signal: AbortSignal.timeout(15_000),
-  });
-  const data = (await res.json()) as Record<string, unknown> & PlaidErrorBody;
-  if (!res.ok) {
-    const code = data.error_code ?? "unknown";
-    const message = data.display_message ?? data.error_message ?? `HTTP ${res.status}`;
-    const err = new Error(`Plaid ${endpoint} ${code}: ${message}`);
-    (err as Error & { plaidErrorCode?: string }).plaidErrorCode = code;
-    throw err;
-  }
-  return data as T;
 }
 
 // ---------------------------------------------------------------------------
@@ -227,7 +158,7 @@ interface RawPlaidIdentityOwner {
 export default createPlugin({
   async activate(api) {
     const log = api.getLogger();
-    log.info("plugin-plaid-api activating with real Plaid handlers");
+    log.info("plugin-plaid-api activating — calls Local-ID proxy → Hive-ID → Plaid (s149 unified architecture)");
 
     // ─────────────────────────────────────────────────────────────────────
     // plaid:list-accounts — aggregates accounts across ALL linked items
@@ -243,16 +174,15 @@ export default createPlugin({
           additionalProperties: false,
         })
         .handler(async () => {
-          const items = await listPlaidItems();
+          const items = await listLinkedItems();
           if (items.length === 0) {
-            const base = process.env.LOCAL_ID_BASE_URL ?? "https://id.ai.on";
+            const base = process.env.LOCAL_ID_BASE_URL ?? LOCAL_ID_BASE_URL_DEFAULT;
             return {
               accounts: [],
               note: `No banks linked yet. Connect one at ${base}/dashboard.`,
             };
           }
 
-          const creds = await getPlaidCreds();
           const aggregated: Array<{
             itemId: string;
             institutionLabel: string;
@@ -269,14 +199,10 @@ export default createPlugin({
 
           for (const item of items) {
             try {
-              const token = await getPlaidToken(item.itemId);
-              const data = await plaidApiCall<{ accounts: RawPlaidAccount[] }>(
-                "/accounts/get",
-                {
-                  client_id: creds.clientId,
-                  secret: creds.secret,
-                  access_token: token,
-                },
+              const data = await callLocalIdProxy<{ accounts: RawPlaidAccount[] }>(
+                "accounts-get",
+                {},
+                { role: `plaid-item:${item.itemId}` },
               );
               for (const account of data.accounts) {
                 aggregated.push({
@@ -315,20 +241,9 @@ export default createPlugin({
         .inputSchema({
           type: "object",
           properties: {
-            itemId: {
-              type: "string",
-              description: "Plaid item id (from list-accounts output)",
-            },
-            startDate: {
-              type: "string",
-              format: "date",
-              description: "ISO date YYYY-MM-DD (inclusive)",
-            },
-            endDate: {
-              type: "string",
-              format: "date",
-              description: "ISO date YYYY-MM-DD (inclusive)",
-            },
+            itemId: { type: "string", description: "Plaid item id (from list-accounts output)" },
+            startDate: { type: "string", format: "date", description: "ISO date YYYY-MM-DD (inclusive)" },
+            endDate: { type: "string", format: "date", description: "ISO date YYYY-MM-DD (inclusive)" },
             accountIds: {
               type: "array",
               items: { type: "string" },
@@ -350,32 +265,28 @@ export default createPlugin({
             throw new Error("itemId, startDate, and endDate are required");
           }
 
-          const [token, creds] = await Promise.all([
-            getPlaidToken(itemId),
-            getPlaidCreds(),
-          ]);
-
           const all: RawPlaidTransaction[] = [];
           let offset = 0;
           const PAGE = 100;
           let total = Infinity;
 
           while (offset < total) {
-            const data = await plaidApiCall<{
+            const data = await callLocalIdProxy<{
               transactions: RawPlaidTransaction[];
               total_transactions: number;
-            }>("/transactions/get", {
-              client_id: creds.clientId,
-              secret: creds.secret,
-              access_token: token,
-              start_date: startDate,
-              end_date: endDate,
-              options: {
-                count: PAGE,
-                offset,
-                ...(accountIds ? { account_ids: accountIds } : {}),
+            }>(
+              "transactions-get",
+              {
+                start_date: startDate,
+                end_date: endDate,
+                options: {
+                  count: PAGE,
+                  offset,
+                  ...(accountIds ? { account_ids: accountIds } : {}),
+                },
               },
-            });
+              { role: `plaid-item:${itemId}` },
+            );
             all.push(...data.transactions);
             total = data.total_transactions;
             offset += data.transactions.length;
@@ -412,10 +323,7 @@ export default createPlugin({
         .inputSchema({
           type: "object",
           properties: {
-            itemId: {
-              type: "string",
-              description: "Plaid item id (from list-accounts output)",
-            },
+            itemId: { type: "string", description: "Plaid item id (from list-accounts output)" },
             accountIds: {
               type: "array",
               items: { type: "string" },
@@ -433,19 +341,10 @@ export default createPlugin({
 
           if (!itemId) throw new Error("itemId is required");
 
-          const [token, creds] = await Promise.all([
-            getPlaidToken(itemId),
-            getPlaidCreds(),
-          ]);
-
-          const data = await plaidApiCall<{ accounts: RawPlaidAccount[] }>(
-            "/accounts/balance/get",
-            {
-              client_id: creds.clientId,
-              secret: creds.secret,
-              access_token: token,
-              ...(accountIds ? { options: { account_ids: accountIds } } : {}),
-            },
+          const data = await callLocalIdProxy<{ accounts: RawPlaidAccount[] }>(
+            "balance-get",
+            accountIds ? { options: { account_ids: accountIds } } : {},
+            { role: `plaid-item:${itemId}` },
           );
 
           return {
@@ -463,7 +362,7 @@ export default createPlugin({
     );
 
     // ─────────────────────────────────────────────────────────────────────
-    // plaid:identity-verify (KYC) — ships per Q-9 owner answer cycle 211
+    // plaid:identity-verify (KYC)
     // ─────────────────────────────────────────────────────────────────────
     api.registerTool(
       defineTool(
@@ -473,10 +372,7 @@ export default createPlugin({
         .inputSchema({
           type: "object",
           properties: {
-            itemId: {
-              type: "string",
-              description: "Plaid item id (from list-accounts output)",
-            },
+            itemId: { type: "string", description: "Plaid item id (from list-accounts output)" },
           },
           required: ["itemId"],
           additionalProperties: false,
@@ -485,18 +381,13 @@ export default createPlugin({
           const itemId = String(input.itemId ?? "");
           if (!itemId) throw new Error("itemId is required");
 
-          const [token, creds] = await Promise.all([
-            getPlaidToken(itemId),
-            getPlaidCreds(),
-          ]);
-
-          const data = await plaidApiCall<{
+          const data = await callLocalIdProxy<{
             accounts: Array<RawPlaidAccount & { owners: RawPlaidIdentityOwner[] }>;
-          }>("/identity/get", {
-            client_id: creds.clientId,
-            secret: creds.secret,
-            access_token: token,
-          });
+          }>(
+            "identity-get",
+            {},
+            { role: `plaid-item:${itemId}` },
+          );
 
           return {
             accounts: data.accounts.map((a) => ({
@@ -515,7 +406,7 @@ export default createPlugin({
     );
 
     log.info(
-      "plugin-plaid-api activated; 4 tools registered (list-accounts, fetch-transactions, get-balance, identity-verify) — calling Plaid via Local-ID broker + agi Vault credentials",
+      "plugin-plaid-api activated; 4 tools registered (list-accounts, fetch-transactions, get-balance, identity-verify) — calling Local-ID proxy → Hive-ID gateway → Plaid",
     );
   },
 });
