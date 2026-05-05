@@ -112,8 +112,8 @@
         "0AGENT",
         "0FUNC"
       ],
-      "version": "0.2.0",
-      "description": "System-level Plaid integration for Aion. Registers 4 agent tools globally (plaid:list-accounts / fetch-transactions / get-balance / identity-verify) so Aion can read bank accounts directly; MApps are secondary consumers via mini-agent auto-discovery. Plaid Link OAuth flow lives in Local-ID (mirrors GitHub provider); PLAID_CLIENT_ID + PLAID_SECRET resolved from agi Vault at runtime. End-to-end shipped (s147 t611+t614+t615+t616).",
+      "version": "0.3.0",
+      "description": "System-level Plaid integration for Aion. Registers 4 agent tools globally (plaid:list-accounts / fetch-transactions / get-balance / identity-verify) so Aion can read bank accounts directly; MApps are secondary consumers via mini-agent auto-discovery. All Plaid traffic routes through Hive-ID's third-party API gateway (s149 unified pattern) — agi → Local-ID proxy → Hive-ID → Plaid. Tokens never leave Hive-ID; agi holds nothing Plaid-specific. Closed end-to-end (s147 + s149 t624/t626/t627).",
       "aliases": [
         "aionima-plaid-api",
         "plaid"
