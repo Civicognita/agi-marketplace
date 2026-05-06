@@ -137,24 +137,13 @@ export default createPlugin({
             },
           ],
         })
-        .section({
-          id: "lemonade-routing",
-          label: "Routing",
-          configPath: "agent.router",
-          fields: [
-            {
-              id: "localFirst",
-              label: "Local wins when present",
-              type: "toggle",
-              defaultValue: true,
-              description:
-                "When on, every turn routes through Lemonade except when " +
-                "cost-mode is 'max' (the explicit 'escalate to paid API' hint). " +
-                "Turn off to preserve pre-plugin behavior where API providers " +
-                "handle non-local cost-modes even if Lemonade is available.",
-            },
-          ],
-        })
+        // s111 t374 — Provider plugin settings slim-down. Routing controls
+        // (localFirst, escalation, floor/ceiling) belong on the system-level
+        // Settings → Providers page, not on a per-Provider plugin's settings.
+        // Plugin pages express only "what models are available through this
+        // Provider on this system." The agent.router.localFirst config field
+        // remains consumed by the agent-router (default: true) — it's just
+        // not configurable from this plugin's UI anymore.
         .build(),
     );
 
