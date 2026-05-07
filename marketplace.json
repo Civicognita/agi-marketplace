@@ -214,17 +214,6 @@
       "description": "Art/Media project type for creative assets and multimedia content"
     },
     {
-      "name": "project-monorepo",
-      "source": "./plugins/plugin-project-monorepo",
-      "type": "plugin",
-      "category": "project",
-      "provides": [
-        "project-types"
-      ],
-      "version": "0.1.1",
-      "description": "Monorepo project type \u2014 multi-package repositories with shared tooling"
-    },
-    {
       "name": "project-ops",
       "source": "./plugins/plugin-project-ops",
       "type": "plugin",
