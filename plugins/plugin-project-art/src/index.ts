@@ -5,7 +5,6 @@ export default createPlugin({
     api.registerProjectType({
       id: "art",
       label: "Art Project",
-      category: "media",
       hostable: true,
       defaultMeta: {
         type: "art",

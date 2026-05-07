@@ -5,7 +5,6 @@ export default createPlugin({
     api.registerProjectType({
       id: "writing",
       label: "Writing Project",
-      category: "literature",
       hostable: true,
       defaultMeta: {
         type: "writing",

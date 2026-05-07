@@ -5,7 +5,6 @@ export default createPlugin({
     api.registerProjectType({
       id: "ops",
       label: "Ops",
-      category: "ops",
       hostable: false,
       defaultMeta: {
         type: "ops",
