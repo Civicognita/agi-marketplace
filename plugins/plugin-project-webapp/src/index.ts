@@ -5,7 +5,6 @@ export default createPlugin({
     api.registerProjectType({
       id: "web-app",
       label: "Web App",
-      category: "web",
       hostable: true,
       defaultMeta: {
         type: "web-app",

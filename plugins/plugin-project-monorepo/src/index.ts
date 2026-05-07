@@ -5,7 +5,6 @@ export default createPlugin({
     api.registerProjectType({
       id: "monorepo",
       label: "Monorepo",
-      category: "monorepo",
       hostable: false,
       defaultMeta: {
         type: "monorepo",

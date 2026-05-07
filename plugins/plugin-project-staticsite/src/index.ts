@@ -5,7 +5,6 @@ export default createPlugin({
     api.registerProjectType({
       id: "static-site",
       label: "Static Site",
-      category: "web",
       hostable: true,
       defaultMeta: {
         type: "static-site",
