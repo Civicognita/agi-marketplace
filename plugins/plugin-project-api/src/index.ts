@@ -5,7 +5,6 @@ export default createPlugin({
     api.registerProjectType({
       id: "api-service",
       label: "API Service",
-      category: "app",
       hostable: true,
       defaultMeta: {
         type: "api-service",

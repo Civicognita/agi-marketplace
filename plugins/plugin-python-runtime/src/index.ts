@@ -51,7 +51,7 @@ export default createPlugin({
   });
 
   api.registerHostingExtension({
-    pluginId: "aionima-python-runtime",
+    pluginId: "agi-python-runtime",
     fields: [
       {
         id: "runtimeId",

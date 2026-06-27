@@ -42,7 +42,7 @@ export default createPlugin({
   });
 
   api.registerHostingExtension({
-    pluginId: "aionima-go-runtime",
+    pluginId: "agi-go-runtime",
     fields: [
       {
         id: "runtimeId",

@@ -1,6 +1,6 @@
 {
   "name": "@agi/provider-openai",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "type": "module",
   "exports": {
@@ -11,7 +11,7 @@
     "name": "OpenAI",
     "description": "GPT models — connect to OpenAI's API",
     "aionimaVersion": ">=0.1.0",
-    "category": "integration",
+    "category": "provider",
     "provides": ["ux"],
     "entry": "./src/index.ts",
     "bakedIn": true,

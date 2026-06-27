@@ -37,7 +37,7 @@ export default createPlugin({
   });
 
   api.registerHostingExtension({
-    pluginId: "aionima-rust-runtime",
+    pluginId: "agi-rust-runtime",
     fields: [
       {
         id: "runtimeId",

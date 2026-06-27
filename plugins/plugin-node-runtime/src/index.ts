@@ -63,7 +63,7 @@ export default createPlugin({
 
   // Register hosting extension field for Node version selection
   api.registerHostingExtension({
-    pluginId: "aionima-node-runtime",
+    pluginId: "agi-node-runtime",
     fields: [
       {
         id: "runtimeId",
